@@ -1,0 +1,8 @@
+{
+  "name": "hh-miniapp-ci",
+  "version": "1.0.0",
+  "private": true,
+  "description": "CI tooling for HH WeChat mini program (miniprogram-ci auto upload)",
+  "scripts": { "upload": "node ci/upload.js" },
+  "dependencies": { "miniprogram-ci": "^2.1.13" }
+}

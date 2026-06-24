@@ -10,3 +10,5 @@ tmp/
 hh-client.tar.gz
 preview.html
 .codebanana/contexts/
+
+*.key

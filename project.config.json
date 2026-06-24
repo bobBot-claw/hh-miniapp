@@ -2,30 +2,15 @@
   "miniprogramRoot": "client/",
   "cloudfunctionRoot": "server/",
   "setting": {
-    "urlCheck": true,
-    "es6": true,
-    "enhance": true,
-    "postcss": true,
-    "preloadBackgroundData": false,
-    "minified": true,
-    "newFeature": true,
-    "coverView": true,
-    "nodeModules": false,
-    "autoAudits": false,
-    "showShadowRootInWxmlPanel": true,
-    "scopeDataCheck": false,
-    "uglifyFileName": false,
-    "checkInvalidKey": true,
-    "checkSiteMap": true,
-    "uploadWithSourceMap": true,
-    "compileHotReLoad": false,
-    "babelSetting": {
-      "ignore": [],
-      "disablePlugins": [],
-      "outputPath": ""
-    }
+    "urlCheck": true, "es6": true, "enhance": true, "postcss": true,
+    "preloadBackgroundData": false, "minified": true, "newFeature": true,
+    "coverView": true, "nodeModules": false, "autoAudits": false,
+    "showShadowRootInWxmlPanel": true, "scopeDataCheck": false,
+    "uglifyFileName": false, "checkInvalidKey": true, "checkSiteMap": true,
+    "uploadWithSourceMap": true, "compileHotReLoad": false,
+    "babelSetting": { "ignore": [], "disablePlugins": [], "outputPath": "" }
   },
-  "appid": "",
+  "appid": "wx91db22c766984692",
   "projectname": "hh-miniapp",
   "libVersion": "3.3.4",
   "condition": {}

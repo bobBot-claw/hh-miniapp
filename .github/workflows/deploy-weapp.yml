@@ -1,0 +1,46 @@
+name: Deploy WeChat Mini Program
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'client/**'
+      - 'ci/**'
+      - '.github/workflows/deploy-weapp.yml'
+  workflow_dispatch: {}
+
+concurrency:
+  group: weapp-upload
+  cancel-in-progress: false
+
+jobs:
+  upload:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install miniprogram-ci
+        run: npm install miniprogram-ci@2 --no-save
+      - name: Write upload private key
+        env:
+          WX_UPLOAD_KEY: ${{ secrets.WX_UPLOAD_KEY }}
+        run: |
+          printf '%s' "$WX_UPLOAD_KEY" > "${GITHUB_WORKSPACE}/private.key"
+          if [ ! -s "${GITHUB_WORKSPACE}/private.key" ]; then
+            echo "::error::Secret WX_UPLOAD_KEY 为空"; exit 1
+          fi
+      - name: Upload to WeChat
+        env:
+          WX_APPID: wx91db22c766984692
+          WX_PRIVATE_KEY_PATH: ${{ github.workspace }}/private.key
+          WX_VERSION: 1.0.${{ github.run_number }}
+          WX_DESC: ${{ github.event.head_commit.message }}
+          WX_ROBOT: '1'
+        run: node ci/upload.js
+      - name: Cleanup private key
+        if: always()
+        run: rm -f "${GITHUB_WORKSPACE}/private.key"
