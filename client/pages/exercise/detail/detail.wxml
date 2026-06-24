@@ -1,0 +1,53 @@
+<!--pages/exercise/detail/detail.wxml - 运动详情-->
+<view class="page-exercise-detail">
+  <view wx:if="{{loading}}" class="loading-container">
+    <text class="text-secondary">加载中...</text>
+  </view>
+
+  <block wx:if="{{exercise}}">
+    <!-- 封面/视频预览 -->
+    <view class="detail-cover" style="background: {{exercise.cover_gradient || 'linear-gradient(135deg, #7c6ff7, #4ecdc4)'}}">
+      <text class="detail-cover-emoji">{{exercise.emoji || '💪'}}</text>
+    </view>
+
+    <!-- 基本信息 -->
+    <view class="detail-info">
+      <text class="detail-title">{{exercise.title}}</text>
+      <text class="detail-subtitle text-secondary">{{exercise.subtitle}}</text>
+
+      <view class="detail-tags">
+        <text class="tag">{{exercise.category_label || exercise.category}}</text>
+        <text class="tag">⏱ {{exercise.duration_text || '5min'}}</text>
+        <text wx:if="{{exercise.difficulty}}" class="tag">{{exercise.difficulty}}</text>
+        <text wx:if="{{exercise.position_type}}" class="tag">{{exercise.position_type}}</text>
+      </view>
+    </view>
+
+    <!-- 开始按钮 -->
+    <view class="detail-action">
+      <view class="btn-start" bindtap="onStartTap">
+        <text>开始跟练</text>
+      </view>
+    </view>
+
+    <!-- 练习要点 -->
+    <view class="detail-section">
+      <text class="section-label">🎯 目标部位</text>
+      <view class="target-body-list">
+        <text wx:for="{{exercise.target_body}}" wx:key="*this" class="target-tag">{{item}}</text>
+      </view>
+    </view>
+
+    <view class="detail-section">
+      <text class="section-label">💪 解决问题</text>
+      <view class="target-body-list">
+        <text wx:for="{{exercise.problem_tags}}" wx:key="*this" class="target-tag">{{item}}</text>
+      </view>
+    </view>
+
+    <view wx:if="{{exercise.description}}" class="detail-section">
+      <text class="section-label">📝 说明</text>
+      <text class="detail-desc text-secondary">{{exercise.description}}</text>
+    </view>
+  </block>
+</view>

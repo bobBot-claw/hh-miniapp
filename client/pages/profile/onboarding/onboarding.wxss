@@ -1,0 +1,79 @@
+/* pages/profile/onboarding/onboarding.wxss */
+
+.page-onboarding {
+  min-height: 100vh;
+  background: var(--color-bg);
+  display: flex;
+  flex-direction: column;
+  padding: 80rpx 32rpx 32rpx;
+}
+
+/* 进度点 */
+.dot {
+  width: 16rpx;
+  height: 16rpx;
+  border-radius: 50%;
+  background: var(--color-border);
+}
+
+.dot-active {
+  background: var(--color-primary);
+}
+
+/* 步骤内容 */
+.step-content {
+  flex: 1;
+  padding-top: 60rpx;
+}
+
+.step-title {
+  font-size: var(--font-size-xl);
+  font-weight: 700;
+  display: block;
+  margin-bottom: 12rpx;
+}
+
+.step-subtitle {
+  font-size: var(--font-size-base);
+  display: block;
+  margin-bottom: 48rpx;
+}
+
+/* 选项 */
+.options-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+}
+
+.option-card {
+  padding: 32rpx 28rpx;
+  background: var(--color-bg-card);
+  border-radius: var(--radius-lg);
+  border: 2rpx solid transparent;
+  display: flex;
+  flex-direction: column;
+  gap: 4rpx;
+}
+
+.option-selected {
+  border-color: var(--color-primary);
+  background: rgba(124, 111, 247, 0.1);
+}
+
+.option-label {
+  font-size: var(--font-size-md);
+  font-weight: 500;
+}
+
+.option-desc {
+  font-size: var(--font-size-sm);
+  padding-left: 4rpx;
+}
+
+/* 底部按钮 */
+.bottom-bar {
+  display: flex;
+  gap: 16rpx;
+  padding-bottom: calc(32rpx + env(safe-area-inset-bottom));
+}

@@ -1,0 +1,280 @@
+/* pages/index/index.wxss - 首页样式 v2.0 */
+
+.page-index {
+  min-height: 100vh;
+  background: var(--color-bg);
+}
+
+.home-scroll {
+  height: 100vh;
+}
+
+/* ===== 问候区 ===== */
+.greeting-section {
+  padding: 60rpx 32rpx 24rpx;
+}
+
+.greeting-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12rpx;
+}
+
+.greeting-icon {
+  font-size: 48rpx;
+  margin-right: 16rpx;
+}
+
+.greeting-text {
+  font-size: var(--font-size-xl);
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.daily-text {
+  font-size: var(--font-size-base);
+  color: var(--color-text-secondary);
+  margin-left: 64rpx;
+  line-height: 1.6;
+}
+
+/* ===== Onboarding 引导 ===== */
+.onboarding-prompt {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 80vh;
+  padding: 48rpx;
+}
+
+.onboarding-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 80rpx 48rpx;
+  background: var(--color-bg-card);
+  border-radius: var(--radius-xl);
+  text-align: center;
+}
+
+.onboarding-emoji {
+  font-size: 96rpx;
+  margin-bottom: 32rpx;
+}
+
+.onboarding-title {
+  font-size: var(--font-size-xl);
+  font-weight: 700;
+  margin-bottom: 16rpx;
+}
+
+.onboarding-desc {
+  font-size: var(--font-size-base);
+  color: var(--color-text-secondary);
+  margin-bottom: 48rpx;
+}
+
+/* ===== 通用区块 ===== */
+.section {
+  margin-bottom: 16rpx;
+  padding: 0 32rpx;
+}
+
+.section-header {
+  margin-bottom: 20rpx;
+}
+
+.section-title {
+  font-size: var(--font-size-md);
+  font-weight: 700;
+  margin-right: 16rpx;
+}
+
+/* ===== 今日行动 - 主推荐 ===== */
+.primary-card {
+  background: var(--color-bg-card);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+}
+
+.primary-cover {
+  height: 240rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.primary-emoji {
+  font-size: 80rpx;
+}
+
+.primary-info {
+  padding: 28rpx 28rpx 20rpx;
+  display: flex;
+  flex-direction: column;
+  gap: 10rpx;
+}
+
+.primary-title {
+  font-size: 36rpx;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.primary-subtitle {
+  font-size: var(--font-size-sm);
+}
+
+.primary-meta {
+  gap: 16rpx;
+}
+
+.primary-reason {
+  font-size: var(--font-size-sm);
+  color: var(--color-primary);
+  font-weight: 500;
+}
+
+.primary-action {
+  padding: 20rpx 28rpx 28rpx;
+}
+
+.action-btn-text {
+  display: inline-block;
+  background: var(--color-primary);
+  color: white;
+  padding: 16rpx 40rpx;
+  border-radius: var(--radius-lg);
+  font-size: var(--font-size-base);
+  font-weight: 600;
+}
+
+/* ===== 备选行动 ===== */
+.alt-list {
+  display: flex;
+  gap: 16rpx;
+}
+
+.alt-card {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  background: var(--color-bg-card);
+  border-radius: var(--radius-lg);
+  padding: 20rpx;
+  gap: 16rpx;
+}
+
+.alt-emoji-wrap {
+  width: 72rpx;
+  height: 72rpx;
+  border-radius: var(--radius-md);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.alt-emoji {
+  font-size: 32rpx;
+}
+
+.alt-info {
+  display: flex;
+  flex-direction: column;
+  gap: 6rpx;
+  min-width: 0;
+}
+
+.alt-title {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.alt-meta {
+  white-space: nowrap;
+}
+
+/* ===== 能力值进度条 ===== */
+.stat-bar-wrap {
+  padding: 8rpx 0;
+}
+
+.stat-bar-bg {
+  height: 16rpx;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 8rpx;
+  overflow: hidden;
+}
+
+.stat-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--color-primary), #4ecdc4);
+  border-radius: 8rpx;
+  transition: width 0.5s ease;
+}
+
+.stat-weekly-row {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 12rpx;
+}
+
+/* ===== 健康贴士 ===== */
+.tip-card {
+  background: var(--color-bg-card);
+  border-radius: var(--radius-lg);
+  padding: 24rpx;
+  display: flex;
+  flex-direction: column;
+  gap: 12rpx;
+}
+
+.tip-text {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+}
+
+.tip-action {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+}
+
+/* ===== 冥想卡片 ===== */
+.meditation-card {
+  display: flex;
+  align-items: center;
+  background: var(--color-bg-card);
+  border-radius: var(--radius-lg);
+  padding: 20rpx;
+  gap: 20rpx;
+}
+
+.meditation-cover {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: var(--radius-md);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.meditation-emoji {
+  font-size: 36rpx;
+}
+
+.meditation-info {
+  display: flex;
+  flex-direction: column;
+  gap: 6rpx;
+}
+
+.meditation-title {
+  font-size: var(--font-size-base);
+  font-weight: 600;
+}

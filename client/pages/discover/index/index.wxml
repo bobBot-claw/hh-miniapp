@@ -1,0 +1,61 @@
+<!--pages/discover/index/index.wxml - 发现页（知识+冥想）-->
+<view class="page-discover">
+  <view wx:if="{{loading}}" class="loading-container">
+    <text class="text-secondary">加载中...</text>
+  </view>
+
+  <scroll-view wx:else scroll-y class="discover-scroll">
+    <!-- 健康知识 -->
+    <view class="section">
+      <view class="section-header">
+        <text class="section-title">💡 健康知识</text>
+      </view>
+      <view class="knowledge-list">
+        <view
+          wx:for="{{knowledge}}"
+          wx:key="id"
+          class="knowledge-card"
+          data-id="{{item.id}}"
+          bindtap="onKnowledgeTap"
+        >
+          <view class="knowledge-tag-wrap">
+            <text class="knowledge-category-tag">{{item.category_label || item.category}}</text>
+          </view>
+          <text class="knowledge-title">{{item.title}}</text>
+          <text class="knowledge-content text-secondary text-sm">{{item.content}}</text>
+          <text class="knowledge-read text-muted text-xs">{{item.read_count}} 人读过</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 冥想推荐 -->
+    <view class="section">
+      <view class="section-header flex-between">
+        <text class="section-title">🧘 冥想</text>
+        <text class="section-more text-secondary text-sm" bindtap="onMeditationMore">更多 ›</text>
+      </view>
+      <scroll-view scroll-x class="meditation-scroll">
+        <view class="meditation-list">
+          <view
+            wx:for="{{meditations}}"
+            wx:key="id"
+            class="meditation-card"
+            data-id="{{item.id}}"
+            bindtap="onMeditationTap"
+          >
+            <view class="meditation-cover" style="background: {{item.cover_gradient || 'linear-gradient(135deg, #7c6ff7, #9d93fa)'}}">
+              <text class="meditation-emoji">{{item.emoji || '🧘'}}</text>
+            </view>
+            <view class="meditation-info">
+              <text class="meditation-title">{{item.title}}</text>
+              <text class="meditation-sub text-secondary text-xs">{{item.subtitle}}</text>
+              <text class="text-muted text-xs">⏱ {{item.duration_text}}</text>
+            </view>
+          </view>
+        </view>
+      </scroll-view>
+    </view>
+
+    <view style="height: 40rpx;"></view>
+  </scroll-view>
+</view>

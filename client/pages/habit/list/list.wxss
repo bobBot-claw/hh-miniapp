@@ -1,0 +1,13 @@
+/* pages/habit/list/list.wxss */
+.page-habit-list { min-height: 100vh; background: var(--color-bg); padding: 32rpx; }
+.header { margin-bottom: 32rpx; }
+.habit-cards { display: flex; flex-direction: column; gap: 16rpx; }
+.habit-checked { opacity: 0.6; }
+.checkin-btn {
+  background: var(--color-primary);
+  color: white;
+  padding: 8rpx 24rpx;
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+}

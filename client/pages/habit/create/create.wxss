@@ -1,0 +1,12 @@
+/* pages/habit/create/create.wxss */
+.template-card {
+  display: flex; flex-direction: column; align-items: center;
+  padding: 28rpx 16rpx; background: var(--color-bg-card);
+  border-radius: var(--radius-lg); border: 2rpx solid transparent;
+}
+.template-selected { border-color: var(--color-primary); background: rgba(124,111,247,0.15); }
+.custom-input {
+  background: var(--color-bg-card); border-radius: var(--radius-md);
+  padding: 20rpx 24rpx; color: var(--color-text); font-size: var(--font-size-base);
+  width: 100%;
+}

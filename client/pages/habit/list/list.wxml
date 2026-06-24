@@ -1,0 +1,50 @@
+<!--pages/habit/list/list.wxml-->
+<view class="page-habit-list">
+  <view class="header flex-between">
+    <text class="text-lg" style="font-weight:700;">我的习惯</text>
+    <view class="btn-primary" style="padding:12rpx 28rpx;font-size:24rpx;" bindtap="onCreateHabit">
+      <text>+ 添加习惯</text>
+    </view>
+  </view>
+
+  <view wx:if="{{loading}}" class="loading-container">
+    <text class="text-secondary">加载中...</text>
+  </view>
+
+  <block wx:else>
+    <view wx:if="{{habits.length === 0}}" class="empty-state">
+      <text class="empty-icon">✅</text>
+      <text class="empty-text">还没有习惯，添加一个开始吧</text>
+    </view>
+
+    <view wx:else class="habit-cards">
+      <view
+        wx:for="{{habits}}"
+        wx:key="id"
+        class="habit-card card {{item.todayChecked ? 'habit-checked' : ''}}"
+        data-id="{{item.id}}"
+        bindtap="onHabitDetail"
+      >
+        <view class="flex-between">
+          <view class="flex-row" style="gap:16rpx;">
+            <text style="font-size:40rpx;">{{item.icon}}</text>
+            <view class="flex-col">
+              <text style="font-weight:600;">{{item.name}}</text>
+              <text wx:if="{{item.streak > 0}}" class="text-sm text-accent">🔥 连续 {{item.streak}} 天</text>
+            </view>
+          </view>
+          <view
+            wx:if="{{!item.todayChecked}}"
+            class="checkin-btn"
+            data-id="{{item.id}}"
+            data-index="{{index}}"
+            catchtap="onCheckin"
+          >
+            <text>打卡</text>
+          </view>
+          <text wx:else style="font-size:32rpx;">✅</text>
+        </view>
+      </view>
+    </view>
+  </block>
+</view>

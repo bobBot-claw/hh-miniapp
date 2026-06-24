@@ -1,0 +1,29 @@
+/* pages/exercise/list/list.wxss */
+.page-exercise-list { min-height: 100vh; background: var(--color-bg); }
+
+.category-scroll { white-space: nowrap; padding: 20rpx 24rpx; }
+.category-list { display: inline-flex; gap: 16rpx; }
+.category-tag {
+  display: inline-block; padding: 12rpx 24rpx; border-radius: var(--radius-lg);
+  background: var(--color-bg-card); font-size: var(--font-size-sm); color: var(--color-text-secondary);
+}
+.category-active { background: var(--color-primary); color: white; }
+
+.exercise-scroll { height: calc(100vh - 100rpx); }
+.exercise-grid { display: flex; flex-wrap: wrap; gap: 16rpx; padding: 0 24rpx 40rpx; }
+.exercise-card {
+  width: calc(50% - 8rpx); background: var(--color-bg-card);
+  border-radius: var(--radius-lg); overflow: hidden;
+}
+.exercise-cover {
+  height: 160rpx; display: flex; justify-content: center; align-items: center; position: relative;
+}
+.exercise-emoji { font-size: 56rpx; }
+.exercise-duration-badge {
+  position: absolute; top: 12rpx; right: 12rpx; font-size: 20rpx;
+  background: rgba(0,0,0,0.4); color: white; padding: 4rpx 12rpx; border-radius: 8rpx;
+}
+.exercise-info { padding: 16rpx; display: flex; flex-direction: column; gap: 6rpx; }
+.exercise-title { font-size: var(--font-size-sm); font-weight: 600; line-height: 1.4; }
+.exercise-sub { line-height: 1.4; }
+.exercise-meta { display: flex; gap: 8rpx; align-items: center; margin-top: 4rpx; }

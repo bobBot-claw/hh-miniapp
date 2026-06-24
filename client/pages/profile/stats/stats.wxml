@@ -1,0 +1,58 @@
+<!--pages/profile/stats/stats.wxml - 能力值详情 v2.0-->
+<view class="page-stats">
+  <view wx:if="{{loading}}" class="loading-container">
+    <text class="text-secondary">加载中...</text>
+  </view>
+
+  <scroll-view wx:else scroll-y class="stats-scroll">
+    <view class="stats-header">
+      <text class="stats-title">能力值面板</text>
+      <text class="stats-subtitle text-secondary text-sm">每次运动后能力值会增长</text>
+    </view>
+
+    <!-- 能力值详情 -->
+    <view class="ability-list">
+      <view wx:for="{{abilities}}" wx:key="key" class="ability-card">
+        <view class="ability-top">
+          <text class="ability-emoji">{{item.emoji}}</text>
+          <view class="ability-info">
+            <text class="ability-name">{{item.name}}</text>
+            <text class="ability-level text-secondary text-xs">{{item.value >= 80 ? '高级' : item.value >= 50 ? '中级' : '初级'}}</text>
+          </view>
+          <text class="ability-value">{{item.value}}</text>
+        </view>
+        <view class="ability-bar-bg">
+          <view class="ability-bar-fill" style="width: {{item.value}}%; background: {{item.color}};"></view>
+        </view>
+        <text class="ability-hint text-muted text-xs" wx:if="{{item.value < 50}}">
+          继续运动可以提升{{item.name}}💪
+        </text>
+      </view>
+    </view>
+
+    <!-- 总体统计 -->
+    <view class="summary-section" wx:if="{{stats}}">
+      <view class="summary-title">📊 总体统计</view>
+      <view class="summary-grid">
+        <view class="summary-item">
+          <text class="summary-value">{{stats.total_exercises || 0}}</text>
+          <text class="summary-label text-secondary text-xs">完成运动</text>
+        </view>
+        <view class="summary-item">
+          <text class="summary-value">{{stats.total_minutes || 0}}</text>
+          <text class="summary-label text-secondary text-xs">运动分钟</text>
+        </view>
+        <view class="summary-item">
+          <text class="summary-value">{{stats.streak || 0}}</text>
+          <text class="summary-label text-secondary text-xs">连续天数</text>
+        </view>
+        <view class="summary-item">
+          <text class="summary-value">{{stats.level || 1}}</text>
+          <text class="summary-label text-secondary text-xs">当前等级</text>
+        </view>
+      </view>
+    </view>
+
+    <view style="height: 40rpx;"></view>
+  </scroll-view>
+</view>

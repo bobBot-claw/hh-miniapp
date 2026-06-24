@@ -1,0 +1,196 @@
+/* app.wxss - HH小程序全局样式 */
+
+/* ===== 设计变量 ===== */
+page {
+  --color-bg: #1a1a2e;
+  --color-bg-card: #252542;
+  --color-bg-elevated: #2d2d52;
+  --color-primary: #7c6ff7;
+  --color-primary-light: #9d93fa;
+  --color-primary-dark: #5b4fd4;
+  --color-accent: #4ecdc4;
+  --color-accent-warm: #ff6b6b;
+  --color-text: #f0f0f5;
+  --color-text-secondary: #8e8ea0;
+  --color-text-muted: #5a5a72;
+  --color-border: #3a3a5c;
+  --color-success: #4ecdc4;
+  --color-warning: #ffe66d;
+  --color-danger: #ff6b6b;
+
+  --font-size-xs: 20rpx;
+  --font-size-sm: 24rpx;
+  --font-size-base: 28rpx;
+  --font-size-md: 32rpx;
+  --font-size-lg: 36rpx;
+  --font-size-xl: 44rpx;
+  --font-size-xxl: 56rpx;
+
+  --radius-sm: 12rpx;
+  --radius-md: 20rpx;
+  --radius-lg: 28rpx;
+  --radius-xl: 36rpx;
+
+  --spacing-xs: 8rpx;
+  --spacing-sm: 16rpx;
+  --spacing-md: 24rpx;
+  --spacing-lg: 32rpx;
+  --spacing-xl: 48rpx;
+
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: var(--font-size-base);
+  line-height: 1.6;
+}
+
+/* ===== 全局重置 ===== */
+view, text, image, scroll-view {
+  box-sizing: border-box;
+}
+
+/* ===== 通用类 ===== */
+.container {
+  padding: var(--spacing-md);
+  padding-bottom: calc(var(--spacing-xl) + env(safe-area-inset-bottom));
+}
+
+.flex-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.flex-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.flex-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.flex-1 {
+  flex: 1;
+}
+
+.text-primary { color: var(--color-primary); }
+.text-secondary { color: var(--color-text-secondary); }
+.text-muted { color: var(--color-text-muted); }
+.text-accent { color: var(--color-accent); }
+.text-warning { color: var(--color-warning); }
+.text-danger { color: var(--color-danger); }
+
+.text-sm { font-size: var(--font-size-sm); }
+.text-base { font-size: var(--font-size-base); }
+.text-md { font-size: var(--font-size-md); }
+.text-lg { font-size: var(--font-size-lg); }
+.text-xl { font-size: var(--font-size-xl); }
+
+/* ===== 卡片样式 ===== */
+.card {
+  background: var(--color-bg-card);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-lg);
+  margin-bottom: var(--spacing-md);
+}
+
+.card-elevated {
+  background: var(--color-bg-elevated);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-lg);
+  margin-bottom: var(--spacing-md);
+}
+
+/* ===== 按钮样式 ===== */
+.btn-primary {
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
+  color: white;
+  border-radius: var(--radius-xl);
+  padding: 24rpx 48rpx;
+  font-size: var(--font-size-md);
+  font-weight: 600;
+  text-align: center;
+  border: none;
+}
+
+.btn-primary::after {
+  border: none;
+}
+
+.btn-outline {
+  background: transparent;
+  color: var(--color-primary);
+  border: 2rpx solid var(--color-primary);
+  border-radius: var(--radius-xl);
+  padding: 22rpx 46rpx;
+  font-size: var(--font-size-md);
+  font-weight: 600;
+  text-align: center;
+}
+
+.btn-outline::after {
+  border: none;
+}
+
+/* ===== 标签样式 ===== */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 6rpx 16rpx;
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-xs);
+  background: var(--color-bg-elevated);
+  color: var(--color-text-secondary);
+}
+
+.tag-active {
+  background: var(--color-primary);
+  color: white;
+}
+
+/* ===== 分割线 ===== */
+.divider {
+  height: 1rpx;
+  background: var(--color-border);
+  margin: var(--spacing-md) 0;
+}
+
+/* ===== 滚动区域 ===== */
+.scroll-h {
+  white-space: nowrap;
+}
+
+/* ===== 加载状态 ===== */
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 80rpx 0;
+}
+
+/* ===== 空状态 ===== */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 120rpx 60rpx;
+}
+
+.empty-state .empty-icon {
+  font-size: 80rpx;
+  margin-bottom: var(--spacing-md);
+}
+
+.empty-state .empty-text {
+  font-size: var(--font-size-base);
+  color: var(--color-text-secondary);
+}

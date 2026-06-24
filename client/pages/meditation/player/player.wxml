@@ -1,0 +1,58 @@
+<!--pages/meditation/player/player.wxml - 冥想播放器 v2.0-->
+<view class="page-meditation-player">
+  <!-- 播放界面 -->
+  <view wx:if="{{!completed}}" class="player-container" style="background: {{meditation.cover_gradient || 'linear-gradient(180deg, #2d1b69, #1a1a2e)'}}">
+    <!-- 返回按钮 -->
+    <view class="back-btn" bindtap="wx.navigateBack">
+      <text class="back-icon">←</text>
+    </view>
+
+    <!-- 冥想信息 -->
+    <view class="meditation-info">
+      <text class="meditation-emoji">{{meditation.emoji || '🧘'}}</text>
+      <text class="meditation-title">{{meditation.title}}</text>
+      <text class="meditation-subtitle text-white-70">{{meditation.subtitle}}</text>
+    </view>
+
+    <!-- 进度环 -->
+    <view class="progress-ring-container">
+      <view class="progress-ring">
+        <view class="progress-ring-bg"></view>
+        <view class="progress-ring-fill" style="background: conic-gradient(rgba(255,255,255,0.8) {{progress}}%, transparent {{progress}}%);"></view>
+        <view class="progress-ring-inner">
+          <text class="progress-time">{{formatTime(currentTime)}}</text>
+          <text class="progress-total text-white-50">{{formatTime(totalTime)}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 播放控制 -->
+    <view class="controls">
+      <view class="play-btn" bindtap="onTogglePlay">
+        <text class="play-icon">{{isPlaying ? '⏸' : '▶'}}</text>
+      </view>
+    </view>
+
+    <!-- 提示 -->
+    <text class="hint-text text-white-50">戴上耳机，效果更佳 🎧</text>
+  </view>
+
+  <!-- 完成反馈 -->
+  <view wx:if="{{completed && feedback}}" class="feedback-container">
+    <view class="feedback-card">
+      <text class="feedback-emoji">🎉</text>
+      <text class="feedback-title">冥想完成！</text>
+      <text class="feedback-text">{{feedback.encouragement}}</text>
+
+      <view wx:if="{{feedback.stat_gains}}" class="stat-gains">
+        <view wx:for="{{feedback.stat_gains}}" wx:key="index" wx:for-index="key" wx:for-item="val" class="stat-gain-item">
+          <text class="stat-gain-text">🧠 身心平衡 +{{val}}</text>
+        </view>
+      </view>
+
+      <view class="btn-primary" bindtap="onCloseFeedback">
+        <text>好的 👍</text>
+      </view>
+    </view>
+  </view>
+</view>

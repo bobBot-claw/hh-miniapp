@@ -1,0 +1,118 @@
+<!--pages/exercise/player/player.wxml - 跟练播放器 v2.0 (含 Mock 降级)-->
+<view class="page-exercise-player">
+  <view wx:if="{{loading}}" class="loading-container">
+    <text class="text-secondary">加载中...</text>
+  </view>
+
+  <!-- 跟练中 -->
+  <block wx:if="{{exercise && !feedback}}">
+    <view class="player-header">
+      <text class="player-title">{{exercise.title}}</text>
+      <text class="player-category text-secondary text-sm">{{exercise.category_label || ''}}</text>
+    </view>
+
+    <!-- 有真实视频 -->
+    <view wx:if="{{hasVideo}}" class="video-container">
+      <video
+        id="exerciseVideo"
+        src="{{exercise.video_url}}"
+        class="exercise-video"
+        controls="{{true}}"
+        show-center-play-btn="{{true}}"
+        enable-progress-gesture="{{true}}"
+        object-fit="contain"
+        bindplay="onVideoPlay"
+        bindpause="onVideoPause"
+        bindended="onVideoEnded"
+        bindtimeupdate="onVideoTimeUpdate"
+        poster="{{exercise.thumbnail_url || ''}}"
+      />
+    </view>
+
+    <!-- Mock 模式：动画模拟器 -->
+    <view wx:else class="mock-player-container">
+      <!-- 倒计时 -->
+      <view wx:if="{{timerPhase === 'ready'}}" class="mock-ready">
+        <view class="mock-exercise-emoji">{{exercise.emoji || '🏋️'}}</view>
+        <text class="mock-exercise-name">{{exercise.title}}</text>
+        <text class="mock-duration">预计 {{duration}}s</text>
+        <view class="btn-start-mock" bindtap="onStartMock">
+          <text>开始跟练</text>
+        </view>
+      </view>
+
+      <view wx:elif="{{timerPhase === 'countdown'}}" class="mock-countdown">
+        <text class="countdown-number">{{countDown}}</text>
+        <text class="countdown-text">准备开始...</text>
+      </view>
+
+      <!-- 播放中 -->
+      <view wx:elif="{{timerPhase === 'playing'}}" class="mock-playing">
+        <view class="mock-animation-area">
+          <view class="pulse-ring {{mockPlaying ? 'pulsing' : ''}}"></view>
+          <view class="pulse-ring delay {{mockPlaying ? 'pulsing' : ''}}"></view>
+          <text class="mock-playing-emoji">{{exercise.emoji || '🏋️'}}</text>
+        </view>
+        <view class="mock-progress-bar">
+          <view class="mock-progress-fill" style="width: {{mockProgress}}%"></view>
+        </view>
+        <text class="mock-time">{{formatTime(currentTime)}} / {{formatTime(duration)}}</text>
+
+        <view class="mock-controls">
+          <view wx:if="{{mockPlaying}}" class="btn-mock-pause" bindtap="onPauseMock">
+            <text>⏸ 暂停</text>
+          </view>
+          <view wx:else class="btn-mock-resume" bindtap="onResumeMock">
+            <text>▶ 继续</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 动作提示 -->
+    <view class="player-hint" wx:if="{{hasVideo}}">
+      <text class="hint-text">💡 跟着视频做，动作缓慢，不要用力</text>
+    </view>
+
+    <!-- 完成按钮 -->
+    <view class="player-footer" wx:if="{{hasVideo || timerPhase === 'playing'}}">
+      <view class="btn-done" bindtap="onDoneTap">
+        <text>{{completed ? '完成了' : '结束跟练'}}</text>
+      </view>
+    </view>
+  </block>
+
+  <!-- 完成反馈页 -->
+  <block wx:if="{{feedback}}">
+    <view class="feedback-container">
+      <text class="feedback-celebration">✨ 🎉 ✨</text>
+      <text class="feedback-encouragement">{{feedback.encouragement}}</text>
+      <text class="feedback-body-hint" wx:if="{{feedback.body_hint}}">{{feedback.body_hint}}</text>
+
+      <!-- 能力值增长 -->
+      <view class="stat-gains" wx:if="{{feedback.stat_gains}}">
+        <view wx:for="{{feedback.stat_gains}}" wx:key="stat" class="stat-gain-item">
+          <text class="stat-gain-label">{{item.label}}</text>
+          <text class="stat-gain-value">+{{item.gain}}</text>
+        </view>
+      </view>
+
+      <!-- 成就 -->
+      <view wx:if="{{feedback.achievement}}" class="achievement-unlock">
+        <text class="achievement-emoji">🏆</text>
+        <text class="achievement-title">{{feedback.achievement.title}}</text>
+        <text class="achievement-desc text-secondary text-sm">{{feedback.achievement.description}}</text>
+      </view>
+
+      <!-- 下一步 -->
+      <view class="feedback-actions">
+        <view class="btn-another" bindtap="onDoAnotherTap">
+          <text>再来一个</text>
+        </view>
+        <view class="btn-done-feedback" bindtap="onDoneTap">
+          <text>完成了</text>
+        </view>
+      </view>
+    </view>
+  </block>
+</view>

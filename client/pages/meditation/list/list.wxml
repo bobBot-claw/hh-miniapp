@@ -1,0 +1,53 @@
+<!--pages/meditation/list/list.wxml - 冥想列表-->
+<view class="page-meditation-list">
+  <!-- 标签筛选 -->
+  <scroll-view scroll-x class="tag-scroll">
+    <view class="tag-list">
+      <view
+        wx:for="{{tags}}"
+        wx:key="key"
+        class="tag-item {{activeTag === item.key ? 'tag-active' : ''}}"
+        data-tag="{{item.key}}"
+        bindtap="onTagTap"
+      >
+        <text>{{item.label}}</text>
+      </view>
+    </view>
+  </scroll-view>
+
+  <!-- 冥想列表 -->
+  <scroll-view scroll-y class="meditation-scroll">
+    <view wx:if="{{loading}}" class="loading-container">
+      <text class="text-secondary">加载中...</text>
+    </view>
+
+    <block wx:else>
+      <view wx:if="{{filteredList.length === 0}}" class="empty-state">
+        <text class="empty-icon">🧘</text>
+        <text class="empty-text">暂无内容</text>
+      </view>
+
+      <view wx:else class="meditation-grid">
+        <view
+          wx:for="{{filteredList}}"
+          wx:key="id"
+          class="meditation-card"
+          data-id="{{item.id}}"
+          bindtap="onMeditationTap"
+        >
+          <view class="meditation-cover" style="background: {{item.coverGradient || 'linear-gradient(135deg, #7c6ff7, #4ecdc4)'}}">
+            <text class="meditation-cover-emoji">{{item.emoji || '🧘'}}</text>
+          </view>
+          <view class="meditation-info">
+            <text class="meditation-title">{{item.title}}</text>
+            <text class="meditation-subtitle text-secondary">{{item.subtitle}}</text>
+            <view class="meditation-meta flex-row">
+              <text class="text-sm text-muted">⏱ {{item.durationText}}</text>
+              <text wx:if="{{item.difficultyLabel}}" class="tag">{{item.difficultyLabel}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </block>
+  </scroll-view>
+</view>

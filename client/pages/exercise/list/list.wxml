@@ -1,0 +1,54 @@
+<!--pages/exercise/list/list.wxml - 运动分类列表-->
+<view class="page-exercise-list">
+  <!-- 分类标签 -->
+  <scroll-view scroll-x class="category-scroll">
+    <view class="category-list">
+      <view
+        class="category-tag {{activeCategory === '' ? 'category-active' : ''}}"
+        bindtap="onCategoryTap"
+        data-key=""
+      >
+        <text>全部</text>
+      </view>
+      <view
+        wx:for="{{categories}}"
+        wx:key="key"
+        class="category-tag {{activeCategory === item.key ? 'category-active' : ''}}"
+        bindtap="onCategoryTap"
+        data-key="{{item.key}}"
+      >
+        <text>{{item.emoji}} {{item.label}}</text>
+      </view>
+    </view>
+  </scroll-view>
+
+  <!-- 运动列表 -->
+  <view wx:if="{{loading}}" class="loading-container">
+    <text class="text-secondary">加载中...</text>
+  </view>
+
+  <scroll-view wx:else scroll-y class="exercise-scroll">
+    <view class="exercise-grid">
+      <view
+        wx:for="{{exercises}}"
+        wx:key="id"
+        class="exercise-card"
+        data-id="{{item.id}}"
+        bindtap="onExerciseTap"
+      >
+        <view class="exercise-cover" style="background: {{item.cover_gradient || 'linear-gradient(135deg, #7c6ff7, #4ecdc4)'}}">
+          <text class="exercise-emoji">{{item.emoji || '💪'}}</text>
+          <text class="exercise-duration-badge">{{item.duration_text || '5min'}}</text>
+        </view>
+        <view class="exercise-info">
+          <text class="exercise-title">{{item.title}}</text>
+          <text class="exercise-sub text-secondary text-sm">{{item.subtitle}}</text>
+          <view class="exercise-meta">
+            <text class="text-xs text-muted">{{item.category_label || ''}}</text>
+            <text wx:if="{{item.difficulty}}" class="tag tag-sm">{{item.difficulty}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+</view>

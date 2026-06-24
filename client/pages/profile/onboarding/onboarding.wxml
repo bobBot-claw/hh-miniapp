@@ -1,0 +1,40 @@
+<!--pages/profile/onboarding/onboarding.wxml-->
+<view class="page-onboarding">
+  <!-- 进度指示器 -->
+  <view class="progress-dots flex-center" style="gap:12rpx;">
+    <view
+      wx:for="{{steps}}"
+      wx:key="index"
+      class="dot {{step >= index ? 'dot-active' : ''}}"
+    ></view>
+  </view>
+
+  <!-- 当前步骤 -->
+  <view class="step-content">
+    <text class="step-title">{{steps[step].title}}</text>
+    <text class="step-subtitle text-secondary">{{steps[step].subtitle}}</text>
+
+    <view class="options-list">
+      <view
+        wx:for="{{steps[step].options}}"
+        wx:key="key"
+        class="option-card {{item.selected ? 'option-selected' : ''}}"
+        data-index="{{index}}"
+        bindtap="onOptionTap"
+      >
+        <text class="option-label">{{item.label}}</text>
+        <text wx:if="{{item.desc}}" class="option-desc text-secondary">{{item.desc}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 底部按钮 -->
+  <view class="bottom-bar">
+    <view wx:if="{{step > 0}}" class="btn-outline" bindtap="onBack">
+      <text>上一步</text>
+    </view>
+    <view class="btn-primary" style="flex:1;" bindtap="onNext">
+      <text>{{step === steps.length - 1 ? '完成设置' : '下一步'}}</text>
+    </view>
+  </view>
+</view>

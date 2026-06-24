@@ -1,0 +1,86 @@
+/* pages/meditation/list/list.wxss */
+
+.page-meditation-list {
+  min-height: 100vh;
+  background: var(--color-bg);
+}
+
+.tag-scroll {
+  white-space: nowrap;
+  padding: 24rpx 32rpx;
+}
+
+.tag-list {
+  display: inline-flex;
+  gap: 16rpx;
+}
+
+.tag-item {
+  display: inline-flex;
+  padding: 12rpx 28rpx;
+  border-radius: var(--radius-xl);
+  background: var(--color-bg-card);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+}
+
+.tag-item.tag-active {
+  background: var(--color-primary);
+  color: white;
+}
+
+.meditation-scroll {
+  height: calc(100vh - 100rpx);
+  padding: 0 32rpx;
+}
+
+.meditation-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+}
+
+.meditation-card {
+  display: flex;
+  flex-direction: row;
+  background: var(--color-bg-card);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.meditation-cover {
+  width: 160rpx;
+  min-height: 160rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.meditation-cover-emoji {
+  font-size: 48rpx;
+}
+
+.meditation-info {
+  flex: 1;
+  padding: 20rpx 24rpx;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 6rpx;
+}
+
+.meditation-title {
+  font-size: var(--font-size-base);
+  font-weight: 600;
+}
+
+.meditation-subtitle {
+  font-size: var(--font-size-sm);
+}
+
+.meditation-meta {
+  gap: 12rpx;
+  margin-top: 4rpx;
+}
