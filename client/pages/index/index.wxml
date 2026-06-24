@@ -1,4 +1,4 @@
-<!--pages/index/index.wxml - 首页 v2.0 - 小红书瀑布流版-->
+<!--pages/index/index.wxml - 首页 v2.0 - 分区横滑版-->
 <view class="page-index">
   <!-- 加载状态 -->
   <view wx:if="{{loading}}" class="loading-container">
@@ -22,13 +22,15 @@
     <block wx:if="{{hasProfile}}">
       <scroll-view scroll-y class="home-scroll" enhanced="{{true}}">
 
-        <!-- 顶部简短问候 -->
+        <!-- ═══ 第一屏：今日行动 + 进度 ═══ -->
+
+        <!-- 问候 -->
         <view class="greeting-bar">
           <text class="greeting-icon">{{timeIcon}}</text>
           <text class="greeting-text">{{greeting}}</text>
         </view>
 
-        <!-- ★ 今日行动 - 主推荐大卡片 -->
+        <!-- 今日行动主卡片 -->
         <view class="hero-section" wx:if="{{primaryRecommend}}" bindtap="onPrimaryTap">
           <view class="hero-card" style="background: {{primaryRecommend.cover_gradient || 'linear-gradient(160deg, #7c6ff7, #4ecdc4)'}}">
             <text class="hero-emoji-bg">{{primaryRecommend.emoji || '💪'}}</text>
@@ -51,68 +53,119 @@
           </view>
         </view>
 
-        <!-- ★ AI 智能推荐 - 小红书瀑布流 -->
-        <view class="recommend-section" wx:if="{{recommendCards.length > 0}}">
-          <view class="section-header">
-            <text class="section-title">为你推荐</text>
-            <text class="section-sub">AI 根据你的状态智能推荐</text>
+        <!-- 进度展示 -->
+        <view class="progress-section" wx:if="{{userStats}}">
+          <view class="progress-header">
+            <text class="progress-title">🔥 连续{{userStats.streak || 0}}天 · 已运动{{userStats.total_exercises || 0}}次</text>
+            <text class="progress-link" bindtap="onViewStats">详情 ›</text>
           </view>
+          <view class="progress-bars">
+            <view class="progress-item" wx:for="{{userStats.abilities}}" wx:key="key">
+              <text class="progress-emoji">{{item.emoji}}</text>
+              <view class="progress-bar-bg">
+                <view class="progress-bar-fill" style="width: {{item.value}}%; background: {{item.color}};"></view>
+              </view>
+              <text class="progress-value">{{item.value}}</text>
+            </view>
+          </view>
+        </view>
 
-          <!-- 双列瀑布流 -->
-          <view class="waterfall">
-            <!-- 左列 -->
-            <view class="waterfall-col">
-              <view
-                wx:for="{{recommendCards}}"
-                wx:key="id"
-                wx:if="{{index % 2 === 0}}"
-                class="rec-card {{item.card_height === 'tall' ? 'rec-card-tall' : 'rec-card-short'}}"
-                data-id="{{item.id}}"
-                bindtap="onCardTap"
-              >
-                <!-- 封面区 -->
-                <view class="rec-cover" style="background: {{item.cover_gradient || 'linear-gradient(135deg, #7c6ff7, #4ecdc4)'}}">
-                  <text class="rec-cover-emoji">{{item.emoji}}</text>
-                </view>
-                <!-- 信息区 -->
-                <view class="rec-body">
-                  <text class="rec-title">{{item.title}}</text>
-                  <!-- AI 推荐理由 -->
-                  <view class="rec-reason" wx:if="{{item.reason}}">
-                    <text class="rec-reason-icon">{{item.reason.icon}}</text>
-                    <text class="rec-reason-text">{{item.reason.reason}}</text>
+        <!-- ═══ 第二屏起：分类分区推荐 ═══ -->
+
+        <view class="category-sections">
+          <!-- 每个分类分区 -->
+          <view wx:for="{{categorySections}}" wx:key="key" class="category-section">
+            <!-- 分区头部 -->
+            <view class="cat-header">
+              <view class="cat-title-wrap">
+                <text class="cat-emoji">{{item.emoji}}</text>
+                <text class="cat-title">{{item.label}}</text>
+              </view>
+              <view class="cat-reason" wx:if="{{item.section_reason}}">
+                <text class="cat-reason-icon">{{item.section_reason.icon}}</text>
+                <text class="cat-reason-text">{{item.section_reason.text}}</text>
+              </view>
+            </view>
+
+            <!-- 横滑卡片 -->
+            <scroll-view scroll-x class="cat-scroll" enhanced="{{true}}" show-scrollbar="{{false}}">
+              <view class="cat-card-list">
+                <view
+                  wx:for="{{item.exercises}}"
+                  wx:for-item="ex"
+                  wx:key="id"
+                  class="cat-card"
+                  data-id="{{ex.id}}"
+                  bindtap="onCardTap"
+                >
+                  <view class="cat-card-cover" style="background: {{ex.cover_gradient || 'linear-gradient(135deg, #7c6ff7, #4ecdc4)'}}">
+                    <text class="cat-card-emoji">{{ex.emoji}}</text>
                   </view>
-                  <view class="rec-footer">
-                    <text class="rec-duration">⏱ {{item.duration_text}}</text>
-                    <text class="rec-tag" wx:if="{{item.reason}}">{{item.reason.tag}}</text>
+                  <view class="cat-card-body">
+                    <text class="cat-card-title">{{ex.title}}</text>
+                    <text class="cat-card-sub">{{ex.subtitle}}</text>
+                    <view class="cat-card-reason" wx:if="{{ex.reason}}">
+                      <text class="cat-card-reason-text">{{ex.reason.icon}} {{ex.reason.reason}}</text>
+                    </view>
+                    <view class="cat-card-footer">
+                      <text class="cat-card-duration">⏱ {{ex.duration_text}}</text>
+                      <text class="cat-card-tag" wx:if="{{ex.reason}}">{{ex.reason.tag}}</text>
+                    </view>
                   </view>
                 </view>
               </view>
+            </scroll-view>
+          </view>
+
+          <!-- 更多抽屉 -->
+          <view class="drawer-section">
+            <view class="drawer-toggle" bindtap="onToggleDrawer">
+              <text class="drawer-toggle-text">{{showMore ? '收起' : '更多推荐'}}</text>
+              <text class="drawer-toggle-icon">{{showMore ? '▲' : '▼'}}</text>
             </view>
-            <!-- 右列 -->
-            <view class="waterfall-col">
+            <view class="drawer-content {{showMore ? 'drawer-open' : 'drawer-closed'}}">
               <view
-                wx:for="{{recommendCards}}"
-                wx:key="id"
-                wx:if="{{index % 2 === 1}}"
-                class="rec-card {{item.card_height === 'tall' ? 'rec-card-tall' : 'rec-card-short'}}"
-                data-id="{{item.id}}"
-                bindtap="onCardTap"
+                wx:for="{{moreCategories}}"
+                wx:key="key"
+                class="category-section"
               >
-                <view class="rec-cover" style="background: {{item.cover_gradient || 'linear-gradient(135deg, #7c6ff7, #4ecdc4)'}}">
-                  <text class="rec-cover-emoji">{{item.emoji}}</text>
-                </view>
-                <view class="rec-body">
-                  <text class="rec-title">{{item.title}}</text>
-                  <view class="rec-reason" wx:if="{{item.reason}}">
-                    <text class="rec-reason-icon">{{item.reason.icon}}</text>
-                    <text class="rec-reason-text">{{item.reason.reason}}</text>
+                <view class="cat-header">
+                  <view class="cat-title-wrap">
+                    <text class="cat-emoji">{{item.emoji}}</text>
+                    <text class="cat-title">{{item.label}}</text>
                   </view>
-                  <view class="rec-footer">
-                    <text class="rec-duration">⏱ {{item.duration_text}}</text>
-                    <text class="rec-tag" wx:if="{{item.reason}}">{{item.reason.tag}}</text>
+                  <view class="cat-reason" wx:if="{{item.section_reason}}">
+                    <text class="cat-reason-icon">{{item.section_reason.icon}}</text>
+                    <text class="cat-reason-text">{{item.section_reason.text}}</text>
                   </view>
                 </view>
+                <scroll-view scroll-x class="cat-scroll" enhanced="{{true}}" show-scrollbar="{{false}}">
+                  <view class="cat-card-list">
+                    <view
+                      wx:for="{{item.exercises}}"
+                      wx:for-item="ex"
+                      wx:key="id"
+                      class="cat-card"
+                      data-id="{{ex.id}}"
+                      bindtap="onCardTap"
+                    >
+                      <view class="cat-card-cover" style="background: {{ex.cover_gradient || 'linear-gradient(135deg, #7c6ff7, #4ecdc4)'}}">
+                        <text class="cat-card-emoji">{{ex.emoji}}</text>
+                      </view>
+                      <view class="cat-card-body">
+                        <text class="cat-card-title">{{ex.title}}</text>
+                        <text class="cat-card-sub">{{ex.subtitle}}</text>
+                        <view class="cat-card-reason" wx:if="{{ex.reason}}">
+                          <text class="cat-card-reason-text">{{ex.reason.icon}} {{ex.reason.reason}}</text>
+                        </view>
+                        <view class="cat-card-footer">
+                          <text class="cat-card-duration">⏱ {{ex.duration_text}}</text>
+                          <text class="cat-card-tag" wx:if="{{ex.reason}}">{{ex.reason.tag}}</text>
+                        </view>
+                      </view>
+                    </view>
+                  </view>
+                </scroll-view>
               </view>
             </view>
           </view>
@@ -135,7 +188,7 @@
           </view>
         </view>
 
-        <view style="height: 40rpx;"></view>
+        <view style="height: 60rpx;"></view>
       </scroll-view>
     </block>
   </block>
