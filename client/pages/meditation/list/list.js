@@ -1,4 +1,4 @@
-// pages/meditation/list/list.js - 冥想列表 v2.0
+// pages/meditation/list/list.js - 静养模块（冥想练习）v2.0
 const api = require('../../../utils/api')
 
 Page({
@@ -8,17 +8,23 @@ Page({
     activeTag: 'all',
     tags: [
       { key: 'all', label: '全部' },
-      { key: 'breathing', label: '呼吸' },
+      { key: 'breath', label: '呼吸' },
       { key: 'body_scan', label: '身体扫描' },
       { key: 'mindfulness', label: '正念' },
-      { key: 'sleep', label: '助眠' },
-      { key: 'focus', label: '专注' }
+      { key: 'dynamic', label: '动态冥想' },
+      { key: 'sleep', label: '助眠' }
     ],
     loading: true
   },
 
   onLoad() {
     this.loadMeditations()
+  },
+
+  onShow() {
+    if (typeof this.getTabBar === 'function' && this.getTabBar()) {
+      this.getTabBar().setData({ selected: 2 })
+    }
   },
 
   async loadMeditations() {
@@ -40,7 +46,7 @@ Page({
     const tag = e.currentTarget.dataset.tag
     const filtered = tag === 'all'
       ? this.data.meditations
-      : this.data.meditations.filter(m => m.category === tag || (m.tags && m.tags.includes(tag)))
+      : this.data.meditations.filter(m => m.category === tag)
     this.setData({ activeTag: tag, filteredList: filtered })
   },
 

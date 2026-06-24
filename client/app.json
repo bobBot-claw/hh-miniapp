@@ -6,7 +6,6 @@
     "pages/exercise/player/player",
     "pages/meditation/list/list",
     "pages/meditation/player/player",
-    "pages/discover/index/index",
     "pages/profile/index/index",
     "pages/profile/onboarding/onboarding",
     "pages/profile/stats/stats"
@@ -37,8 +36,8 @@
         "selectedIconPath": "assets/icons/exercise-active.png"
       },
       {
-        "pagePath": "pages/discover/index/index",
-        "text": "发现",
+        "pagePath": "pages/meditation/list/list",
+        "text": "静养",
         "iconPath": "assets/icons/discover.png",
         "selectedIconPath": "assets/icons/discover-active.png"
       },

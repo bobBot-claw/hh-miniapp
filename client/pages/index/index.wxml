@@ -96,21 +96,10 @@
           </view>
         </view>
 
-        <!-- 健康贴士 -->
-        <view class="section">
-          <view class="section-header">
-            <text class="section-title">💡 健康贴士</text>
-          </view>
-          <view class="tip-card">
-            <text class="tip-text">久坐1小时了？站起来活动3分钟，比不动强100倍。</text>
-            <text class="tip-action text-accent" bindtap="onTipTap">试试久坐急救 →</text>
-          </view>
-        </view>
-
-        <!-- 冥想入口（辅助） -->
+        <!-- 静养入口（辅助） -->
         <view class="section" wx:if="{{meditationRecommend}}">
           <view class="section-header">
-            <text class="section-title">🧘 冥想</text>
+            <text class="section-title">🧘 静养</text>
           </view>
           <view class="meditation-card" bindtap="onMeditationTap">
             <view class="meditation-cover" style="background: {{meditationRecommend.cover_gradient || 'linear-gradient(135deg, #7c6ff7, #9d93fa)'}}">
