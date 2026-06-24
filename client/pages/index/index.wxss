@@ -1,4 +1,4 @@
-/* pages/index/index.wxss - 首页样式 v2.0 - 主卡片视觉中心版 */
+/* pages/index/index.wxss - 首页样式 v2.0 - 小红书瀑布流版 */
 
 .page-index {
   min-height: 100vh;
@@ -9,7 +9,7 @@
   height: 100vh;
 }
 
-/* ===== 顶部问候栏（紧凑） ===== */
+/* ===== 顶部问候栏 ===== */
 .greeting-bar {
   display: flex;
   align-items: center;
@@ -27,7 +27,7 @@
   color: var(--color-text);
 }
 
-/* ===== ★ 今日行动 - 主推荐大卡片（视觉中心） ===== */
+/* ===== ★ 主推荐大卡片 ===== */
 .hero-section {
   padding: 8rpx 32rpx 24rpx;
 }
@@ -35,9 +35,7 @@
 .hero-card {
   position: relative;
   border-radius: 32rpx;
-  min-height: 560rpx;
-  /* 占第一屏 60%+：iPhone 屏幕约 1334rpx，560rpx ≈ 42%，加上顶部问候 + padding ≈ 55% */
-  /* 实际加上圆角渐变氛围感，视觉占比远超 50% */
+  min-height: 520rpx;
   padding: 40rpx 36rpx 36rpx;
   display: flex;
   flex-direction: column;
@@ -45,7 +43,6 @@
   overflow: hidden;
 }
 
-/* 背景 emoji 装饰 */
 .hero-emoji-bg {
   position: absolute;
   top: -20rpx;
@@ -55,7 +52,6 @@
   pointer-events: none;
 }
 
-/* 标签行 */
 .hero-tags {
   display: flex;
   gap: 12rpx;
@@ -69,16 +65,14 @@
   background: rgba(255,255,255,0.18);
   padding: 6rpx 20rpx;
   border-radius: 20rpx;
-  backdrop-filter: blur(8px);
 }
 
-/* 标题区 */
 .hero-content {
   margin-top: 60rpx;
 }
 
 .hero-title {
-  font-size: 52rpx;
+  font-size: 48rpx;
   font-weight: 800;
   color: #fff;
   display: block;
@@ -94,12 +88,11 @@
   line-height: 1.5;
 }
 
-/* 底部信息栏 */
 .hero-footer {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-top: 48rpx;
+  margin-top: 40rpx;
 }
 
 .hero-meta {
@@ -122,6 +115,126 @@
   font-size: 30rpx;
   font-weight: 700;
   box-shadow: 0 4rpx 20rpx rgba(0,0,0,0.15);
+}
+
+/* ===== ★ 瀑布流推荐 ===== */
+.recommend-section {
+  padding: 8rpx 32rpx 0;
+}
+
+.section-header {
+  margin-bottom: 20rpx;
+}
+
+.section-title {
+  font-size: var(--font-size-md);
+  font-weight: 700;
+}
+
+.section-sub {
+  font-size: 22rpx;
+  color: var(--color-text-secondary);
+  margin-left: 12rpx;
+}
+
+/* 瀑布流容器 */
+.waterfall {
+  display: flex;
+  gap: 16rpx;
+}
+
+.waterfall-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+}
+
+/* 推荐卡片 */
+.rec-card {
+  background: var(--color-bg-card);
+  border-radius: 20rpx;
+  overflow: hidden;
+}
+
+.rec-card-tall .rec-cover {
+  height: 220rpx;
+}
+
+.rec-card-short .rec-cover {
+  height: 160rpx;
+}
+
+.rec-cover {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.rec-cover-emoji {
+  font-size: 56rpx;
+}
+
+.rec-body {
+  padding: 16rpx 20rpx 18rpx;
+}
+
+.rec-title {
+  font-size: 28rpx;
+  font-weight: 700;
+  color: var(--color-text);
+  display: block;
+  line-height: 1.4;
+  margin-bottom: 10rpx;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* AI 推荐理由 */
+.rec-reason {
+  display: flex;
+  align-items: flex-start;
+  gap: 6rpx;
+  margin-bottom: 12rpx;
+  padding: 8rpx 12rpx;
+  background: rgba(124, 111, 247, 0.08);
+  border-radius: 10rpx;
+}
+
+.rec-reason-icon {
+  font-size: 22rpx;
+  flex-shrink: 0;
+  margin-top: 2rpx;
+}
+
+.rec-reason-text {
+  font-size: 22rpx;
+  color: var(--color-primary);
+  line-height: 1.5;
+  flex: 1;
+}
+
+.rec-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.rec-duration {
+  font-size: 22rpx;
+  color: var(--color-text-secondary);
+}
+
+.rec-tag {
+  font-size: 18rpx;
+  color: var(--color-primary);
+  background: rgba(124, 111, 247, 0.12);
+  padding: 2rpx 12rpx;
+  border-radius: 8rpx;
+  font-weight: 500;
 }
 
 /* ===== Onboarding 引导 ===== */
@@ -174,88 +287,6 @@
 .section {
   margin-bottom: 16rpx;
   padding: 0 32rpx;
-}
-
-.section-header {
-  margin-bottom: 16rpx;
-}
-
-.section-title {
-  font-size: var(--font-size-md);
-  font-weight: 700;
-}
-
-/* ===== 备选行动（横滑） ===== */
-.alt-scroll {
-  white-space: nowrap;
-}
-
-.alt-list {
-  display: inline-flex;
-  gap: 16rpx;
-}
-
-.alt-card {
-  display: inline-flex;
-  align-items: center;
-  background: var(--color-bg-card);
-  border-radius: var(--radius-lg);
-  padding: 16rpx 20rpx;
-  gap: 14rpx;
-  min-width: 280rpx;
-}
-
-.alt-emoji-wrap {
-  width: 64rpx;
-  height: 64rpx;
-  border-radius: var(--radius-md);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-shrink: 0;
-}
-
-.alt-emoji {
-  font-size: 28rpx;
-}
-
-.alt-info {
-  display: flex;
-  flex-direction: column;
-  gap: 4rpx;
-  min-width: 0;
-}
-
-.alt-title {
-  font-size: var(--font-size-sm);
-  font-weight: 600;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 180rpx;
-}
-
-.alt-meta {
-  white-space: nowrap;
-}
-
-/* ===== 能力值进度条 ===== */
-.stat-bar-wrap {
-  padding: 8rpx 0;
-}
-
-.stat-bar-bg {
-  height: 12rpx;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 6rpx;
-  overflow: hidden;
-}
-
-.stat-bar-fill {
-  height: 100%;
-  background: linear-gradient(90deg, var(--color-primary), #4ecdc4);
-  border-radius: 6rpx;
-  transition: width 0.5s ease;
 }
 
 /* ===== 冥想卡片 ===== */

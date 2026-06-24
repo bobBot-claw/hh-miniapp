@@ -10,6 +10,7 @@ Page({
     dailyText: '',
     primaryRecommend: null,
     alternatives: [],
+    recommendCards: [],
     meditationRecommend: null,
     userStats: null,
     hasProfile: false
@@ -34,7 +35,6 @@ Page({
   async initPage() {
     this.setData({ loading: true })
 
-    // 设置问候语
     const greeting = util.getGreeting()
     const tod = util.getTimeOfDay()
     const timeIcon = this.getTimeIcon(tod)
@@ -57,12 +57,8 @@ Page({
 
   getTimeIcon(tod) {
     const icons = {
-      morning: '☀️',
-      forenoon: '🌤️',
-      noon: '🌞',
-      afternoon: '⛅',
-      evening: '🌙',
-      night: '🌃'
+      morning: '☀️', forenoon: '🌤️', noon: '🌞',
+      afternoon: '⛅', evening: '🌙', night: '🌃'
     }
     return icons[tod] || '✨'
   },
@@ -84,6 +80,7 @@ Page({
       this.setData({
         primaryRecommend: res.primary || null,
         alternatives: res.alternatives || [],
+        recommendCards: res.recommend_cards || [],
         meditationRecommend: res.meditation || null,
         dailyText: res.daily_text || this.getDefaultDailyText(),
         userStats: res.user_stats || null,
@@ -94,6 +91,7 @@ Page({
       this.setData({
         primaryRecommend: null,
         alternatives: [],
+        recommendCards: [],
         loading: false,
         dailyText: this.getDefaultDailyText()
       })
@@ -117,36 +115,29 @@ Page({
   onPrimaryTap() {
     const item = this.data.primaryRecommend
     if (!item) return
-    wx.navigateTo({
-      url: `/pages/exercise/detail/detail?id=${item.id}`
-    })
+    wx.navigateTo({ url: `/pages/exercise/detail/detail?id=${item.id}` })
+  },
+
+  // 点击推荐卡片
+  onCardTap(e) {
+    const { id } = e.currentTarget.dataset
+    wx.navigateTo({ url: `/pages/exercise/detail/detail?id=${id}` })
   },
 
   // 点击备选
   onAltTap(e) {
     const { id } = e.currentTarget.dataset
-    wx.navigateTo({
-      url: `/pages/exercise/detail/detail?id=${id}`
-    })
+    wx.navigateTo({ url: `/pages/exercise/detail/detail?id=${id}` })
   },
 
   // 点击冥想
   onMeditationTap() {
     const item = this.data.meditationRecommend
     if (!item) {
-      wx.navigateTo({ url: '/pages/meditation/list/list' })
+      wx.switchTab({ url: '/pages/meditation/list/list' })
       return
     }
-    wx.navigateTo({
-      url: `/pages/meditation/player/player?id=${item.id}`
-    })
-  },
-
-  // 点击健康贴士
-  onTipTap() {
-    wx.navigateTo({
-      url: '/pages/exercise/list/list?category=first_aid'
-    })
+    wx.navigateTo({ url: `/pages/meditation/player/player?id=${item.id}` })
   },
 
   // 开始 onboarding

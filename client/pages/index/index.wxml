@@ -1,4 +1,4 @@
-<!--pages/index/index.wxml - 首页（今日行动）v2.0 - 主卡片视觉中心版-->
+<!--pages/index/index.wxml - 首页 v2.0 - 小红书瀑布流版-->
 <view class="page-index">
   <!-- 加载状态 -->
   <view wx:if="{{loading}}" class="loading-container">
@@ -20,7 +20,7 @@
 
     <!-- 已完成 onboarding -->
     <block wx:if="{{hasProfile}}">
-      <scroll-view scroll-y class="home-scroll">
+      <scroll-view scroll-y class="home-scroll" enhanced="{{true}}">
 
         <!-- 顶部简短问候 -->
         <view class="greeting-bar">
@@ -28,22 +28,18 @@
           <text class="greeting-text">{{greeting}}</text>
         </view>
 
-        <!-- ★ 今日行动 - 主推荐卡片（视觉中心，占第一屏 60%+） -->
+        <!-- ★ 今日行动 - 主推荐大卡片 -->
         <view class="hero-section" wx:if="{{primaryRecommend}}" bindtap="onPrimaryTap">
           <view class="hero-card" style="background: {{primaryRecommend.cover_gradient || 'linear-gradient(160deg, #7c6ff7, #4ecdc4)'}}">
-            <!-- 大号 emoji 背景 -->
             <text class="hero-emoji-bg">{{primaryRecommend.emoji || '💪'}}</text>
-            <!-- 标签 -->
             <view class="hero-tags">
               <text class="hero-tag">{{primaryRecommend.category_label}}</text>
               <text class="hero-tag" wx:if="{{primaryRecommend.difficulty}}">{{primaryRecommend.difficulty}}</text>
             </view>
-            <!-- 标题区 -->
             <view class="hero-content">
               <text class="hero-title">{{primaryRecommend.title}}</text>
               <text class="hero-subtitle">{{primaryRecommend.subtitle}}</text>
             </view>
-            <!-- 底部信息栏 -->
             <view class="hero-footer">
               <view class="hero-meta">
                 <text class="hero-meta-item">⏱ {{primaryRecommend.duration_text}}</text>
@@ -55,40 +51,69 @@
           </view>
         </view>
 
-        <!-- 备选行动（紧凑横排） -->
-        <view class="section" wx:if="{{alternatives.length > 0}}">
+        <!-- ★ AI 智能推荐 - 小红书瀑布流 -->
+        <view class="recommend-section" wx:if="{{recommendCards.length > 0}}">
           <view class="section-header">
-            <text class="section-title">💡 或者试试</text>
+            <text class="section-title">为你推荐</text>
+            <text class="section-sub">AI 根据你的状态智能推荐</text>
           </view>
-          <scroll-view scroll-x class="alt-scroll">
-            <view class="alt-list">
+
+          <!-- 双列瀑布流 -->
+          <view class="waterfall">
+            <!-- 左列 -->
+            <view class="waterfall-col">
               <view
-                wx:for="{{alternatives}}"
+                wx:for="{{recommendCards}}"
                 wx:key="id"
-                class="alt-card"
+                wx:if="{{index % 2 === 0}}"
+                class="rec-card {{item.card_height === 'tall' ? 'rec-card-tall' : 'rec-card-short'}}"
                 data-id="{{item.id}}"
-                bindtap="onAltTap"
+                bindtap="onCardTap"
               >
-                <view class="alt-emoji-wrap" style="background: {{item.cover_gradient || 'linear-gradient(135deg, #7c6ff7, #4ecdc4)'}}">
-                  <text class="alt-emoji">{{item.emoji || '⚡'}}</text>
+                <!-- 封面区 -->
+                <view class="rec-cover" style="background: {{item.cover_gradient || 'linear-gradient(135deg, #7c6ff7, #4ecdc4)'}}">
+                  <text class="rec-cover-emoji">{{item.emoji}}</text>
                 </view>
-                <view class="alt-info">
-                  <text class="alt-title">{{item.title}}</text>
-                  <text class="alt-meta text-sm text-muted">⏱ {{item.duration_text}}</text>
+                <!-- 信息区 -->
+                <view class="rec-body">
+                  <text class="rec-title">{{item.title}}</text>
+                  <!-- AI 推荐理由 -->
+                  <view class="rec-reason" wx:if="{{item.reason}}">
+                    <text class="rec-reason-icon">{{item.reason.icon}}</text>
+                    <text class="rec-reason-text">{{item.reason.reason}}</text>
+                  </view>
+                  <view class="rec-footer">
+                    <text class="rec-duration">⏱ {{item.duration_text}}</text>
+                    <text class="rec-tag" wx:if="{{item.reason}}">{{item.reason.tag}}</text>
+                  </view>
                 </view>
               </view>
             </view>
-          </scroll-view>
-        </view>
-
-        <!-- 能力值快速展示 -->
-        <view class="section" wx:if="{{userStats}}">
-          <view class="section-header">
-            <text class="section-title">🔥 连续{{userStats.streak || 0}}天</text>
-          </view>
-          <view class="stat-bar-wrap">
-            <view class="stat-bar-bg">
-              <view class="stat-bar-fill" style="width: {{userStats.vitality || 0}}%;"></view>
+            <!-- 右列 -->
+            <view class="waterfall-col">
+              <view
+                wx:for="{{recommendCards}}"
+                wx:key="id"
+                wx:if="{{index % 2 === 1}}"
+                class="rec-card {{item.card_height === 'tall' ? 'rec-card-tall' : 'rec-card-short'}}"
+                data-id="{{item.id}}"
+                bindtap="onCardTap"
+              >
+                <view class="rec-cover" style="background: {{item.cover_gradient || 'linear-gradient(135deg, #7c6ff7, #4ecdc4)'}}">
+                  <text class="rec-cover-emoji">{{item.emoji}}</text>
+                </view>
+                <view class="rec-body">
+                  <text class="rec-title">{{item.title}}</text>
+                  <view class="rec-reason" wx:if="{{item.reason}}">
+                    <text class="rec-reason-icon">{{item.reason.icon}}</text>
+                    <text class="rec-reason-text">{{item.reason.reason}}</text>
+                  </view>
+                  <view class="rec-footer">
+                    <text class="rec-duration">⏱ {{item.duration_text}}</text>
+                    <text class="rec-tag" wx:if="{{item.reason}}">{{item.reason.tag}}</text>
+                  </view>
+                </view>
+              </view>
             </view>
           </view>
         </view>

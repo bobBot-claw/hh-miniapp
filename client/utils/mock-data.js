@@ -70,40 +70,90 @@ const mockUser = {
   avatar_url: ''
 }
 
+// ===== AI 智能推荐理由生成 =====
+const reasonTemplates = {
+  posture_neck: [
+    { reason: '你标记了肩颈痛，这个练习精准针对', icon: '🎯', tag: '精准匹配' },
+    { reason: '连续3天没活动肩颈了', icon: '📊', tag: '进度追踪' },
+  ],
+  sitting: [
+    { reason: '久坐超过2小时，身体在求救', icon: '⏰', tag: '久坐提醒' },
+    { reason: '坐久了髋部紧绷，需要释放', icon: '💡', tag: '痛点发现' },
+  ],
+  brain_fog: [
+    { reason: '下午2-4点最易脑雾，动一下清醒', icon: '🧠', tag: '时段优化' },
+    { reason: '运动后专注力提升40%', icon: '📈', tag: '科学依据' },
+  ],
+  morning: [
+    { reason: '晨起5分钟，全天精力更充沛', icon: '☀️', tag: '时段推荐' },
+    { reason: '早上运动的人坚持率更高', icon: '📊', tag: '习惯科学' },
+  ],
+  stress: [
+    { reason: '今天周三，压力高峰期', icon: '📉', tag: '压力指数' },
+    { reason: '抖动放松已被证实能快速减压', icon: '🔬', tag: '科学验证' },
+  ],
+  sleep: [
+    { reason: '睡前3小时轻度运动助眠', icon: '🌙', tag: '睡眠科学' },
+    { reason: '你的睡眠评分偏低，试试这个', icon: '📊', tag: '健康分析' },
+  ],
+  season_summer: [
+    { reason: '夏季空调房久坐更伤肩颈', icon: '🌡️', tag: '季节提醒' },
+    { reason: '夏天湿气重，拉伸排湿', icon: '🍃', tag: '季节养生' },
+  ],
+  core_weak: [
+    { reason: '你的核心稳定只有35，需要加强', icon: '📊', tag: '能力分析' },
+    { reason: '核心弱是腰痛的根源', icon: '💡', tag: '根因发现' },
+  ],
+}
+
+function pickReason(templateKey) {
+  const templates = reasonTemplates[templateKey] || reasonTemplates.sitting
+  return templates[Math.floor(Math.random() * templates.length)]
+}
+
 // ===== 导出函数 =====
 
 function getHomepageRecommendations() {
-  // 根据时段推荐
   const hour = new Date().getHours()
-  let primaryIdx = 5 // 默认肩颈拉伸
+  const month = new Date().getMonth() + 1
+  let primaryIdx = 5
   let dailyText = '动一下，比不动强 💪'
 
   if (hour >= 5 && hour < 9) {
-    primaryIdx = 12 // 晨间唤醒操
-    dailyText = '早安！新的一天，从动一下开始 ☀️'
+    primaryIdx = 12; dailyText = '早安！新的一天，从动一下开始 ☀️'
   } else if (hour >= 9 && hour < 12) {
-    primaryIdx = 5  // 肩颈拉伸4步
-    dailyText = '工作了一会儿了，肩颈还好吗？'
+    primaryIdx = 5; dailyText = '工作了一会儿了，肩颈还好吗？'
   } else if (hour >= 12 && hour < 14) {
-    primaryIdx = 13 // 办公室活力操
-    dailyText = '午休时间，活动一下下午更有精神'
+    primaryIdx = 13; dailyText = '午休时间，活动一下下午更有精神'
   } else if (hour >= 14 && hour < 18) {
-    primaryIdx = 0  // 站起来活动一下
-    dailyText = '下午了，动一下赶走困倦'
+    primaryIdx = 0; dailyText = '下午了，动一下赶走困倦'
   } else if (hour >= 18 && hour < 22) {
-    primaryIdx = 19 // 睡前拉伸
-    dailyText = '忙碌了一天，放松一下身体吧 🌙'
+    primaryIdx = 19; dailyText = '忙碌了一天，放松一下身体吧 🌙'
   } else {
-    primaryIdx = 20 // 呼吸放松
-    dailyText = '夜深了，做个简单的睡前放松'
+    primaryIdx = 20; dailyText = '夜深了，做个简单的睡前放松'
   }
+
+  // 生成 AI 推荐卡片列表（带推荐理由）
+  const recommendCards = [
+    { ...exercises[5], reason: pickReason('posture_neck'), card_height: 'tall' },    // 肩颈拉伸
+    { ...exercises[8], reason: pickReason('posture_neck'), card_height: 'short' },   // 圆肩矫正
+    { ...exercises[1], reason: pickReason('sitting'), card_height: 'short' },        // 转转脖子
+    { ...exercises[16], reason: pickReason('core_weak'), card_height: 'tall' },      // 核心激活
+    { ...exercises[6], reason: pickReason('sitting'), card_height: 'tall' },         // 腰背放松
+    { ...exercises[14], reason: pickReason('stress'), card_height: 'short' },        // 拍打放松
+    { ...exercises[19], reason: pickReason('sleep'), card_height: 'short' },         // 全身拉伸
+    { ...exercises[10], reason: pickReason('posture_neck'), card_height: 'tall' },   // 脖子前倾
+    { ...exercises[12], reason: pickReason('morning'), card_height: 'short' },       // 晨间唤醒
+    { ...exercises[0], reason: pickReason('brain_fog'), card_height: 'short' },      // 站起来活动
+  ]
 
   return {
     primary: exercises[primaryIdx],
     alternatives: [
-      exercises[2], // 伸个懒腰
-      exercises[4], // 深呼吸3次
+      exercises[2],
+      exercises[4],
     ],
+    recommend_cards: recommendCards,
     meditation: meditations[0],
     daily_text: dailyText,
     user_stats: {
