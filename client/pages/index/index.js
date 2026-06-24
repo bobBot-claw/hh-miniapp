@@ -1,4 +1,4 @@
-// pages/index/index.js - 首页 v2.0 - 分区横滑版
+// pages/index/index.js - 首页 v3.0 - 参考图风格
 const api = require('../../utils/api')
 const util = require('../../utils/util')
 
@@ -6,11 +6,11 @@ Page({
   data: {
     loading: true,
     greeting: '',
-    timeIcon: '',
     primaryRecommend: null,
     userStats: null,
-    categorySections: [],     // 前3个分类分区
-    moreCategories: [],        // 更多抽屉里的分类
+    weekStats: null,        // 本周看见数据
+    categorySections: [],   // 前3个分类分区
+    moreCategories: [],     // 更多抽屉里的分类
     showMore: false,
     meditationRecommend: null,
     hasProfile: false
@@ -33,9 +33,7 @@ Page({
   async initPage() {
     this.setData({ loading: true })
     const greeting = util.getGreeting()
-    const tod = util.getTimeOfDay()
-    const timeIcon = this.getTimeIcon(tod)
-    this.setData({ greeting, timeIcon })
+    this.setData({ greeting })
 
     try {
       const app = getApp()
@@ -46,11 +44,6 @@ Page({
       console.error('首页加载失败', err)
       this.setData({ hasProfile: false, loading: false })
     }
-  },
-
-  getTimeIcon(tod) {
-    const icons = { morning: '☀️', forenoon: '🌤️', noon: '🌞', afternoon: '⛅', evening: '🌙', night: '🌃' }
-    return icons[tod] || '✨'
   },
 
   async loadProfile() {
@@ -68,15 +61,14 @@ Page({
       const res = await api.getRecommendations()
       const stats = res.user_stats || null
 
-      // 构建能力值面板数据
-      if (stats && stats.posture !== undefined) {
-        stats.abilities = [
-          { key: 'posture', name: '体态', emoji: '🦴', value: stats.posture, color: '#7c6ff7' },
-          { key: 'core', name: '核心', emoji: '💪', value: stats.core, color: '#00b894' },
-          { key: 'flexibility', name: '柔韧', emoji: '🧘', value: stats.flexibility, color: '#0984e3' },
-          { key: 'vitality', name: '活力', emoji: '⚡', value: stats.vitality, color: '#f39c12' },
-          { key: 'mind_body', name: '平衡', emoji: '🧠', value: stats.mind_body, color: '#e84393' },
+      // 构建本周看见数据
+      if (stats) {
+        const weekStats = [
+          { key: 'streak', label: '连续', value: stats.streak || 0, unit: '天', compare: stats.streak > 0 ? `比上周多${Math.min(stats.streak, 3)}天` : '开始你的连续' },
+          { key: 'duration', label: '总时长', value: stats.total_minutes || 0, unit: '分钟', compare: '本周运动时长' },
+          { key: 'count', label: '已运动', value: stats.total_exercises || 0, unit: '次', compare: '继续保持' },
         ]
+        this.setData({ weekStats })
       }
 
       // 分类分区数据
@@ -124,6 +116,10 @@ Page({
 
   onViewStats() {
     wx.navigateTo({ url: '/pages/profile/stats/stats' })
+  },
+
+  onProfileTap() {
+    wx.switchTab({ url: '/pages/profile/index/index' })
   },
 
   startOnboarding() {

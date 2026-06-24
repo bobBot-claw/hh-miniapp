@@ -153,7 +153,7 @@ function getHomepageRecommendations() {
     meditation: meditations[0],
     user_stats: {
       posture: 58, core: 35, flexibility: 42, vitality: 72, mind_body: 28,
-      streak: 3, total_exercises: 12
+      streak: 3, total_exercises: 12, total_minutes: 47
     }
   }
 }

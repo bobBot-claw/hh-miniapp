@@ -1,4 +1,4 @@
-<!--pages/index/index.wxml - 首页 v2.0 - 分区横滑版-->
+<!--pages/index/index.wxml - 首页 v3.0 - 参考图风格-->
 <view class="page-index">
   <!-- 加载状态 -->
   <view wx:if="{{loading}}" class="loading-container">
@@ -22,57 +22,71 @@
     <block wx:if="{{hasProfile}}">
       <scroll-view scroll-y class="home-scroll" enhanced="{{true}}">
 
-        <!-- ═══ 第一屏：今日行动 + 进度 ═══ -->
+        <!-- ═══ 第一屏 ═══ -->
 
-        <!-- 问候 -->
-        <view class="greeting-bar">
-          <text class="greeting-icon">{{timeIcon}}</text>
-          <text class="greeting-text">{{greeting}}</text>
-        </view>
-
-        <!-- 今日行动主卡片 -->
-        <view class="hero-section" wx:if="{{primaryRecommend}}" bindtap="onPrimaryTap">
-          <view class="hero-card" style="background: {{primaryRecommend.cover_gradient || 'linear-gradient(160deg, #7c6ff7, #4ecdc4)'}}">
-            <text class="hero-emoji-bg">{{primaryRecommend.emoji || '💪'}}</text>
-            <view class="hero-tags">
-              <text class="hero-tag">{{primaryRecommend.category_label}}</text>
-              <text class="hero-tag" wx:if="{{primaryRecommend.difficulty}}">{{primaryRecommend.difficulty}}</text>
-            </view>
-            <view class="hero-content">
-              <text class="hero-title">{{primaryRecommend.title}}</text>
-              <text class="hero-subtitle">{{primaryRecommend.subtitle}}</text>
-            </view>
-            <view class="hero-footer">
-              <view class="hero-meta">
-                <text class="hero-meta-item">⏱ {{primaryRecommend.duration_text}}</text>
-              </view>
-              <view class="hero-start-btn">
-                <text>开始跟练</text>
-              </view>
+        <!-- 顶部状态条 -->
+        <view class="top-bar">
+          <view class="top-bar-left">
+            <text class="top-stat">🔥 连续{{userStats.streak || 0}}天</text>
+            <text class="top-stat-dot">·</text>
+            <text class="top-stat">今日{{userStats.total_minutes || 0}}分钟</text>
+          </view>
+          <view class="top-bar-right" bindtap="onProfileTap">
+            <view class="top-avatar">
+              <text class="top-avatar-text">我</text>
             </view>
           </view>
         </view>
 
-        <!-- 进度展示 -->
-        <view class="progress-section" wx:if="{{userStats}}">
-          <view class="progress-header">
-            <text class="progress-title">🔥 连续{{userStats.streak || 0}}天 · 已运动{{userStats.total_exercises || 0}}次</text>
-            <text class="progress-link" bindtap="onViewStats">详情 ›</text>
-          </view>
-          <view class="progress-bars">
-            <view class="progress-item" wx:for="{{userStats.abilities}}" wx:key="key">
-              <text class="progress-emoji">{{item.emoji}}</text>
-              <view class="progress-bar-bg">
-                <view class="progress-bar-fill" style="width: {{item.value}}%; background: {{item.color}};"></view>
-              </view>
-              <text class="progress-value">{{item.value}}</text>
+        <!-- 今日训练 -->
+        <view class="today-section">
+          <view class="section-title-row">
+            <text class="section-title-lg">今日训练</text>
+            <view class="section-more" bindtap="onViewStats">
+              <text class="section-more-icon">›</text>
             </view>
           </view>
+
+          <!-- 大卡片 -->
+          <view class="hero-card" wx:if="{{primaryRecommend}}" bindtap="onPrimaryTap">
+            <view class="hero-cover" style="background: {{primaryRecommend.cover_gradient || 'linear-gradient(160deg, #2d2d52, #7c6ff7, #4ecdc4)'}}">
+              <text class="hero-emoji-bg">{{primaryRecommend.emoji || '💪'}}</text>
+              <!-- 底部信息叠加 -->
+              <view class="hero-overlay">
+                <text class="hero-duration">{{primaryRecommend.duration_text}} · {{primaryRecommend.difficulty || '入门'}}</text>
+                <text class="hero-title">{{primaryRecommend.title}}</text>
+                <view class="hero-start-btn">
+                  <text>立即开始</text>
+                </view>
+              </view>
+            </view>
+          </view>
+        </view>
+
+        <!-- 本周看见 -->
+        <view class="week-section" wx:if="{{weekStats}}">
+          <view class="section-title-row">
+            <text class="section-title-md">本周看见</text>
+            <view class="section-more" bindtap="onViewStats">
+              <text class="section-more-icon">›</text>
+            </view>
+          </view>
+          <scroll-view scroll-x class="week-scroll" enhanced="{{true}}" show-scrollbar="{{false}}">
+            <view class="week-cards">
+              <view class="week-card" wx:for="{{weekStats}}" wx:key="key">
+                <text class="week-card-label">{{item.label}}</text>
+                <view class="week-card-value-row">
+                  <text class="week-card-value">{{item.value}}</text>
+                  <text class="week-card-unit">{{item.unit}}</text>
+                </view>
+                <text class="week-card-compare">{{item.compare}}</text>
+              </view>
+            </view>
+          </scroll-view>
         </view>
 
         <!-- ═══ 第二屏起：分类分区推荐 ═══ -->
 
-        <!-- 分页间隔：确保推荐从第二屏顶部开始 -->
         <view class="page-break"></view>
 
         <view class="category-sections">
@@ -176,8 +190,8 @@
 
         <!-- 静养入口 -->
         <view class="section" wx:if="{{meditationRecommend}}">
-          <view class="section-header">
-            <text class="section-title">🧘 静养</text>
+          <view class="section-title-row">
+            <text class="section-title-md">🧘 静养</text>
           </view>
           <view class="meditation-card" bindtap="onMeditationTap">
             <view class="meditation-cover" style="background: {{meditationRecommend.cover_gradient || 'linear-gradient(135deg, #7c6ff7, #9d93fa)'}}">
