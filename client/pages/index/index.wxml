@@ -72,6 +72,9 @@
 
         <!-- ═══ 第二屏起：分类分区推荐 ═══ -->
 
+        <!-- 分页间隔：确保推荐从第二屏顶部开始 -->
+        <view class="page-break"></view>
+
         <view class="category-sections">
           <!-- 每个分类分区 -->
           <view wx:for="{{categorySections}}" wx:key="key" class="category-section">

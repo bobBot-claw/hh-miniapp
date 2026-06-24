@@ -12,7 +12,7 @@
 .hero-section { padding: 8rpx 32rpx 20rpx; }
 
 .hero-card {
-  position: relative; border-radius: 32rpx; min-height: 480rpx;
+  position: relative; border-radius: 32rpx; min-height: 560rpx;
   padding: 36rpx 36rpx 32rpx; display: flex; flex-direction: column;
   justify-content: space-between; overflow: hidden;
 }
@@ -42,6 +42,7 @@
 .progress-value { font-size: 22rpx; color: var(--color-text-secondary); width: 40rpx; text-align: right; }
 
 /* ===== 分类分区 ===== */
+.page-break { height: 40rpx; }
 .category-sections { padding-top: 8rpx; }
 
 .category-section { margin-bottom: 28rpx; }
