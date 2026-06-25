@@ -203,19 +203,4 @@
     </block>
   </block>
 
-  <!-- ═══ 悬浮毛玻璃 TabBar ═══ -->
-  <view class="float-tabbar">
-    <view class="float-tabbar-inner">
-      <view
-        wx:for="{{tabList}}"
-        wx:key="key"
-        class="float-tabbar-item {{activeTab === item.key ? 'float-tab-active' : ''}}"
-        data-key="{{item.key}}"
-        bindtap="onTabTap"
-      >
-        <text class="float-tab-icon">{{item.icon}}</text>
-        <text class="float-tab-label">{{item.label}}</text>
-      </view>
-    </view>
-  </view>
 </view>

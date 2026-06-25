@@ -172,44 +172,6 @@
 .drawer-open { max-height: 5000rpx; }
 .drawer-closed { max-height: 0; }
 
-/* ===== 悬浮毛玻璃 TabBar ===== */
-.float-tabbar {
-  position: fixed; bottom: 0; left: 0; right: 0;
-  padding: 16rpx 40rpx calc(16rpx + env(safe-area-inset-bottom));
-  z-index: 999;
-}
-.float-tabbar-inner {
-  display: flex; justify-content: space-around; align-items: center;
-  background: rgba(255, 255, 255, 0.78);
-  backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
-  border-radius: 48rpx;
-  padding: 16rpx 8rpx;
-  border: 1rpx solid rgba(0,0,0,0.06);
-  box-shadow: 0 4rpx 24rpx rgba(0,0,0,0.08);
-}
-.float-tabbar-item {
-  display: flex; flex-direction: column; align-items: center; gap: 0;
-  padding: 8rpx 24rpx; border-radius: 32rpx;
-  transition: all 0.2s ease;
-}
-.float-tab-active {
-  background: rgba(124, 111, 247, 0.1);
-}
-.float-tab-icon {
-  font-size: 32rpx; color: var(--color-text-muted);
-  transition: color 0.2s ease;
-}
-.float-tab-active .float-tab-icon {
-  color: var(--color-primary);
-}
-.float-tab-label {
-  font-size: 18rpx; color: var(--color-text-muted); font-weight: 500;
-  transition: color 0.2s ease;
-}
-.float-tab-active .float-tab-label {
-  color: var(--color-primary); font-weight: 700;
-}
-
 /* ===== Onboarding ===== */
 .onboarding-prompt { display: flex; justify-content: center; align-items: center; min-height: 80vh; padding: 48rpx; }
 .onboarding-card {

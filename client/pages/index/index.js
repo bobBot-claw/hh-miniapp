@@ -13,14 +13,7 @@ Page({
     moreCategories: [],
     showMore: false,
     meditationRecommend: null,
-    hasProfile: false,
-    activeTab: 'home',
-    tabList: [
-      { key: 'home', label: '首页', icon: '⌂', page: '/pages/index/index' },
-      { key: 'exercise', label: '运动', icon: '◎', page: '/pages/exercise/list/list' },
-      { key: 'meditation', label: '静养', icon: '◑', page: '/pages/meditation/list/list' },
-      { key: 'profile', label: '我的', icon: '◦', page: '/pages/profile/index/index' },
-    ]
+    hasProfile: false
   },
 
   onLoad() {
@@ -28,7 +21,9 @@ Page({
   },
 
   onShow() {
-    this.setData({ activeTab: 'home' })
+    if (typeof this.getTabBar === 'function' && this.getTabBar()) {
+      this.getTabBar().setData({ selected: 0 })
+    }
   },
 
   onPullDownRefresh() {
@@ -115,13 +110,6 @@ Page({
 
   onProfileTap() {
     wx.switchTab({ url: '/pages/profile/index/index' })
-  },
-
-  onTabTap(e) {
-    const { key } = e.currentTarget.dataset
-    if (key === this.data.activeTab) return
-    const tab = this.data.tabList.find(t => t.key === key)
-    if (tab) wx.switchTab({ url: tab.page })
   },
 
   startOnboarding() {
