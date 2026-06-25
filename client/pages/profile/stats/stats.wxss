@@ -1,31 +1,29 @@
-/* pages/profile/stats/stats.wxss - 能力值详情 - 暗色质感 */
+/* pages/profile/stats/stats.wxss - 能力值详情 - 浅色 */
 .page-stats { min-height: 100vh; background: var(--color-bg); }
 .stats-scroll { height: 100vh; }
 
 .stats-header { padding: 40rpx 36rpx 20rpx; }
-.stats-title { font-size: 42rpx; font-weight: 800; color: var(--color-text); display: block; margin-bottom: 8rpx; letter-spacing: -0.5rpx; }
+.stats-title { font-size: 42rpx; font-weight: 800; color: var(--color-text); display: block; margin-bottom: 8rpx; }
 .stats-subtitle { display: block; }
 
-/* 能力值卡片 */
 .ability-list { padding: 0 36rpx; }
 .ability-card {
   background: var(--color-bg-card); border-radius: 24rpx;
   padding: 28rpx 32rpx; margin-bottom: 16rpx;
   border: 1rpx solid var(--color-border);
-  box-shadow: 0 4rpx 16rpx rgba(0,0,0,0.12);
+  box-shadow: 0 2rpx 12rpx rgba(0,0,0,0.04);
 }
 .ability-top { display: flex; align-items: center; margin-bottom: 16rpx; gap: 16rpx; }
 .ability-emoji { font-size: 36rpx; }
 .ability-info { flex: 1; }
 .ability-name { font-size: 28rpx; font-weight: 700; color: var(--color-text); display: block; }
 .ability-level { display: block; margin-top: 2rpx; }
-.ability-value { font-size: 36rpx; font-weight: 800; color: var(--color-primary-light); }
+.ability-value { font-size: 36rpx; font-weight: 800; color: var(--color-primary); }
 
-.ability-bar-bg { height: 14rpx; background: rgba(255,255,255,0.05); border-radius: 7rpx; overflow: hidden; }
-.ability-bar-fill { height: 100%; border-radius: 7rpx; transition: width 0.5s ease; box-shadow: 0 0 8rpx rgba(124, 111, 247, 0.3); }
+.ability-bar-bg { height: 14rpx; background: var(--color-bg-subtle); border-radius: 7rpx; overflow: hidden; }
+.ability-bar-fill { height: 100%; border-radius: 7rpx; transition: width 0.5s ease; }
 .ability-hint { display: block; margin-top: 8rpx; }
 
-/* 总体统计 */
 .summary-section {
   margin: 20rpx 36rpx 0; background: var(--color-bg-card);
   border-radius: 24rpx; padding: 28rpx 32rpx;
@@ -33,15 +31,10 @@
 }
 .summary-title { font-size: 30rpx; font-weight: 700; color: var(--color-text); margin-bottom: 20rpx; display: block; }
 .summary-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16rpx; }
-.summary-item {
-  text-align: center; padding: 20rpx;
-  background: var(--color-bg-subtle); border-radius: 16rpx;
-  border: 1rpx solid var(--color-border);
-}
-.summary-value { font-size: 40rpx; font-weight: 800; color: var(--color-primary-light); display: block; margin-bottom: 4rpx; }
+.summary-item { text-align: center; padding: 20rpx; background: var(--color-bg-subtle); border-radius: 16rpx; }
+.summary-value { font-size: 40rpx; font-weight: 800; color: var(--color-primary); display: block; margin-bottom: 4rpx; }
 .summary-label { display: block; }
 
-/* 通用 */
 .text-secondary { color: var(--color-text-secondary); }
 .text-muted { color: var(--color-text-muted); }
 .text-sm { font-size: 24rpx; }

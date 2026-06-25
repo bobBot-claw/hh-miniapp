@@ -11,18 +11,18 @@
     "pages/profile/stats/stats"
   ],
   "window": {
-    "navigationBarBackgroundColor": "#0f0f1a",
+    "navigationBarBackgroundColor": "#f5f6fa",
     "navigationBarTitleText": "HH",
-    "navigationBarTextStyle": "white",
-    "backgroundColor": "#0f0f1a",
-    "backgroundTextStyle": "light"
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#f5f6fa",
+    "backgroundTextStyle": "dark"
   },
   "tabBar": {
     "custom": true,
-    "color": "#555570",
-    "selectedColor": "#9d93fa",
-    "backgroundColor": "#0f0f1a",
-    "borderStyle": "black",
+    "color": "#a0a0b4",
+    "selectedColor": "#7c6ff7",
+    "backgroundColor": "#f5f6fa",
+    "borderStyle": "white",
     "list": [
       {
         "pagePath": "pages/index/index",

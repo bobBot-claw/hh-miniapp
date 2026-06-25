@@ -1,4 +1,4 @@
-/* pages/exercise/list/list.wxss - 运动列表 - 质感升级 */
+/* pages/exercise/list/list.wxss - 运动列表 - 浅色 */
 .page-exercise-list { min-height: 100vh; background: var(--color-bg); }
 
 .category-scroll { white-space: nowrap; padding: 20rpx 36rpx; }
@@ -12,7 +12,7 @@
 .category-active {
   background: var(--color-primary); color: white;
   border-color: var(--color-primary);
-  box-shadow: 0 4rpx 16rpx rgba(124, 111, 247, 0.3);
+  box-shadow: 0 4rpx 16rpx rgba(124, 111, 247, 0.2);
 }
 
 .exercise-scroll { height: calc(100vh - 100rpx); }
@@ -21,18 +21,16 @@
   width: calc(50% - 8rpx); background: var(--color-bg-card);
   border-radius: 24rpx; overflow: hidden;
   border: 1rpx solid var(--color-border);
-  box-shadow: 0 4rpx 16rpx rgba(0,0,0,0.12);
+  box-shadow: 0 2rpx 8rpx rgba(0,0,0,0.03);
 }
 .exercise-cover {
   height: 160rpx; display: flex; justify-content: center; align-items: center;
   position: relative;
 }
-.exercise-emoji { font-size: 56rpx; }
 .exercise-duration-badge {
   position: absolute; top: 12rpx; right: 12rpx; font-size: 20rpx;
-  background: rgba(0,0,0,0.45); color: rgba(255,255,255,0.85);
+  background: rgba(0,0,0,0.35); color: rgba(255,255,255,0.85);
   padding: 4rpx 14rpx; border-radius: 10rpx;
-  backdrop-filter: blur(8px);
 }
 .exercise-info { padding: 18rpx; display: flex; flex-direction: column; gap: 6rpx; }
 .exercise-title { font-size: var(--font-size-sm); font-weight: 700; color: var(--color-text); line-height: 1.4; }
