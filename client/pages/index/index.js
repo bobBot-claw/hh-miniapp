@@ -1,4 +1,4 @@
-// pages/index/index.js - 首页 v3.0 - 参考图风格
+// pages/index/index.js - 首页 v3.2 - 精简+悬浮TabBar
 const api = require('../../utils/api')
 const util = require('../../utils/util')
 
@@ -8,12 +8,19 @@ Page({
     greeting: '',
     primaryRecommend: null,
     userStats: null,
-    weekStats: null,        // 本周看见数据
-    categorySections: [],   // 前3个分类分区
-    moreCategories: [],     // 更多抽屉里的分类
+    weekStats: null,
+    categorySections: [],
+    moreCategories: [],
     showMore: false,
     meditationRecommend: null,
-    hasProfile: false
+    hasProfile: false,
+    activeTab: 'home',
+    tabList: [
+      { key: 'home', label: '首页', icon: '⌂', page: '/pages/index/index' },
+      { key: 'exercise', label: '运动', icon: '◎', page: '/pages/exercise/list/list' },
+      { key: 'meditation', label: '静养', icon: '◑', page: '/pages/meditation/list/list' },
+      { key: 'profile', label: '我的', icon: '◦', page: '/pages/profile/index/index' },
+    ]
   },
 
   onLoad() {
@@ -21,9 +28,7 @@ Page({
   },
 
   onShow() {
-    if (typeof this.getTabBar === 'function' && this.getTabBar()) {
-      this.getTabBar().setData({ selected: 0 })
-    }
+    this.setData({ activeTab: 'home' })
   },
 
   onPullDownRefresh() {
@@ -61,26 +66,21 @@ Page({
       const res = await api.getRecommendations()
       const stats = res.user_stats || null
 
-      // 构建本周看见数据
       if (stats) {
         const weekStats = [
-          { key: 'streak', label: '连续', value: stats.streak || 0, unit: '天', compare: stats.streak > 0 ? `比上周多${Math.min(stats.streak, 3)}天` : '开始你的连续' },
-          { key: 'duration', label: '总时长', value: stats.total_minutes || 0, unit: '分钟', compare: '本周运动时长' },
+          { key: 'streak', label: '连续', value: stats.streak || 0, unit: '天', compare: stats.streak > 0 ? `比上周+${Math.min(stats.streak, 3)}天` : '开始你的连续' },
+          { key: 'duration', label: '总时长', value: stats.total_minutes || 0, unit: 'min', compare: '本周运动' },
           { key: 'count', label: '已运动', value: stats.total_exercises || 0, unit: '次', compare: '继续保持' },
         ]
         this.setData({ weekStats })
       }
 
-      // 分类分区数据
       const sections = res.category_sections || []
-      const topSections = sections.slice(0, 3)
-      const moreSections = sections.slice(3)
-
       this.setData({
         primaryRecommend: res.primary || null,
         userStats: stats,
-        categorySections: topSections,
-        moreCategories: moreSections,
+        categorySections: sections.slice(0, 3),
+        moreCategories: sections.slice(3),
         meditationRecommend: res.meditation || null,
         loading: false
       })
@@ -98,16 +98,11 @@ Page({
 
   onCardTap(e) {
     const { id } = e.currentTarget.dataset
-    wx.navigateTo({ url: `/pages/exercise/detail/detail?id=${id}` })
+    wx.navigateTo({ url: `/pages/exercise/detail/detail?id=${id}` }) 
   },
 
   onMeditationTap() {
-    const item = this.data.meditationRecommend
-    if (!item) {
-      wx.switchTab({ url: '/pages/meditation/list/list' })
-      return
-    }
-    wx.navigateTo({ url: `/pages/meditation/player/player?id=${item.id}` })
+    wx.switchTab({ url: '/pages/meditation/list/list' })
   },
 
   onToggleDrawer() {
@@ -120,6 +115,13 @@ Page({
 
   onProfileTap() {
     wx.switchTab({ url: '/pages/profile/index/index' })
+  },
+
+  onTabTap(e) {
+    const { key } = e.currentTarget.dataset
+    if (key === this.data.activeTab) return
+    const tab = this.data.tabList.find(t => t.key === key)
+    if (tab) wx.switchTab({ url: tab.page })
   },
 
   startOnboarding() {

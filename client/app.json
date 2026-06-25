@@ -11,41 +11,34 @@
     "pages/profile/stats/stats"
   ],
   "window": {
-    "navigationBarBackgroundColor": "#1a1a2e",
+    "navigationBarBackgroundColor": "#0f0f1a",
     "navigationBarTitleText": "HH",
     "navigationBarTextStyle": "white",
-    "backgroundColor": "#1a1a2e",
+    "backgroundColor": "#0f0f1a",
     "backgroundTextStyle": "light"
   },
   "tabBar": {
-    "color": "#8e8ea0",
-    "selectedColor": "#7c6ff7",
-    "backgroundColor": "#1a1a2e",
+    "custom": true,
+    "color": "#555570",
+    "selectedColor": "#9d93fa",
+    "backgroundColor": "#0f0f1a",
     "borderStyle": "black",
     "list": [
       {
         "pagePath": "pages/index/index",
-        "text": "首页",
-        "iconPath": "assets/icons/home.png",
-        "selectedIconPath": "assets/icons/home-active.png"
+        "text": "首页"
       },
       {
         "pagePath": "pages/exercise/list/list",
-        "text": "运动",
-        "iconPath": "assets/icons/exercise.png",
-        "selectedIconPath": "assets/icons/exercise-active.png"
+        "text": "运动"
       },
       {
         "pagePath": "pages/meditation/list/list",
-        "text": "静养",
-        "iconPath": "assets/icons/discover.png",
-        "selectedIconPath": "assets/icons/discover-active.png"
+        "text": "静养"
       },
       {
         "pagePath": "pages/profile/index/index",
-        "text": "我的",
-        "iconPath": "assets/icons/profile.png",
-        "selectedIconPath": "assets/icons/profile-active.png"
+        "text": "我的"
       }
     ]
   },

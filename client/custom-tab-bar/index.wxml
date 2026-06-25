@@ -1,0 +1,14 @@
+<!--custom-tab-bar/index.wxml - 悬浮毛玻璃胶囊 TabBar-->
+<view class="float-tabbar">
+  <view class="float-tabbar-inner">
+    <view
+      wx:for="{{list}}"
+      wx:key="index"
+      class="float-tabbar-item {{selected === index ? 'float-tab-active' : ''}}"
+      data-index="{{index}}"
+      bindtap="switchTab"
+    >
+      <text class="float-tab-label">{{item.text}}</text>
+    </view>
+  </view>
+</view>

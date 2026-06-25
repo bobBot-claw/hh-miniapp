@@ -1,4 +1,4 @@
-<!--pages/exercise/list/list.wxml - 运动分类列表-->
+<!--pages/exercise/list/list.wxml - 运动分类列表 v2.1-->
 <view class="page-exercise-list">
   <!-- 分类标签 -->
   <scroll-view scroll-x class="category-scroll">
@@ -17,7 +17,7 @@
         bindtap="onCategoryTap"
         data-key="{{item.key}}"
       >
-        <text>{{item.emoji}} {{item.label}}</text>
+        <text>{{item.label}}</text>
       </view>
     </view>
   </scroll-view>
@@ -37,7 +37,6 @@
         bindtap="onExerciseTap"
       >
         <view class="exercise-cover" style="background: {{item.cover_gradient || 'linear-gradient(135deg, #7c6ff7, #4ecdc4)'}}">
-          <text class="exercise-emoji">{{item.emoji || '💪'}}</text>
           <text class="exercise-duration-badge">{{item.duration_text || '5min'}}</text>
         </view>
         <view class="exercise-info">
@@ -50,5 +49,6 @@
         </view>
       </view>
     </view>
+    <view style="height: 160rpx;"></view>
   </scroll-view>
 </view>

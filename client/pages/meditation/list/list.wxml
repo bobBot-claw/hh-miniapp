@@ -1,8 +1,8 @@
-<!--pages/meditation/list/list.wxml - 静养模块 v2.0-->
+<!--pages/meditation/list/list.wxml - 静养模块 v2.1-->
 <view class="page-meditation-list">
   <!-- 页面头部 -->
   <view class="page-header">
-    <text class="page-title">🧘 静养</text>
+    <text class="page-title">静养</text>
     <text class="page-subtitle text-secondary">让身心安静下来</text>
   </view>
 
@@ -29,7 +29,6 @@
 
     <block wx:else>
       <view wx:if="{{filteredList.length === 0}}" class="empty-state">
-        <text class="empty-icon">🧘</text>
         <text class="empty-text">暂无内容</text>
       </view>
 
@@ -42,7 +41,6 @@
           bindtap="onMeditationTap"
         >
           <view class="meditation-cover" style="background: {{item.cover_gradient || 'linear-gradient(135deg, #7c6ff7, #4ecdc4)'}}">
-            <text class="meditation-cover-emoji">{{item.emoji || '🧘'}}</text>
             <text class="meditation-duration-badge">{{item.duration_text || '3min'}}</text>
           </view>
           <view class="meditation-info">
@@ -56,6 +54,6 @@
       </view>
     </block>
 
-    <view style="height: 40rpx;"></view>
+    <view style="height: 160rpx;"></view>
   </scroll-view>
 </view>

@@ -1,4 +1,4 @@
-<!--pages/index/index.wxml - 首页 v3.0 - 参考图风格-->
+<!--pages/index/index.wxml - 首页 v3.2 - 精简+悬浮TabBar-->
 <view class="page-index">
   <!-- 加载状态 -->
   <view wx:if="{{loading}}" class="loading-container">
@@ -9,9 +9,8 @@
     <!-- 未完成 onboarding -->
     <view wx:if="{{!hasProfile}}" class="onboarding-prompt">
       <view class="onboarding-card">
-        <text class="onboarding-emoji">💪</text>
         <text class="onboarding-title">欢迎来到 HH</text>
-        <text class="onboarding-desc">回答几个问题，为你定制专属运动计划</text>
+        <text class="onboarding-desc">回答几个问题，定制专属运动计划</text>
         <view class="btn-primary" bindtap="startOnboarding">
           <text>开始设置</text>
         </view>
@@ -27,9 +26,8 @@
         <!-- 顶部状态条 -->
         <view class="top-bar">
           <view class="top-bar-left">
-            <text class="top-stat">🔥 连续{{userStats.streak || 0}}天</text>
-            <text class="top-stat-dot">·</text>
-            <text class="top-stat">今日{{userStats.total_minutes || 0}}分钟</text>
+            <text class="top-stat">连续{{userStats.streak || 0}}天</text>
+            <text class="top-stat">今日{{userStats.total_minutes || 0}}min</text>
           </view>
           <view class="top-bar-right" bindtap="onProfileTap">
             <view class="top-avatar">
@@ -50,11 +48,12 @@
           <!-- 大卡片 -->
           <view class="hero-card" wx:if="{{primaryRecommend}}" bindtap="onPrimaryTap">
             <view class="hero-cover" style="background: {{primaryRecommend.cover_gradient || 'linear-gradient(160deg, #2d2d52, #7c6ff7, #4ecdc4)'}}">
-              <text class="hero-emoji-bg">{{primaryRecommend.emoji || '💪'}}</text>
-              <!-- 底部信息叠加 -->
+              <!-- 底部信息叠加 - 左标题右按钮 -->
               <view class="hero-overlay">
-                <text class="hero-duration">{{primaryRecommend.duration_text}} · {{primaryRecommend.difficulty || '入门'}}</text>
-                <text class="hero-title">{{primaryRecommend.title}}</text>
+                <view class="hero-info-left">
+                  <text class="hero-duration">{{primaryRecommend.duration_text}} · {{primaryRecommend.difficulty || '入门'}}</text>
+                  <text class="hero-title">{{primaryRecommend.title}}</text>
+                </view>
                 <view class="hero-start-btn">
                   <text>立即开始</text>
                 </view>
@@ -95,11 +94,9 @@
             <!-- 分区头部 -->
             <view class="cat-header">
               <view class="cat-title-wrap">
-                <text class="cat-emoji">{{item.emoji}}</text>
                 <text class="cat-title">{{item.label}}</text>
               </view>
               <view class="cat-reason" wx:if="{{item.section_reason}}">
-                <text class="cat-reason-icon">{{item.section_reason.icon}}</text>
                 <text class="cat-reason-text">{{item.section_reason.text}}</text>
               </view>
             </view>
@@ -116,16 +113,15 @@
                   bindtap="onCardTap"
                 >
                   <view class="cat-card-cover" style="background: {{ex.cover_gradient || 'linear-gradient(135deg, #7c6ff7, #4ecdc4)'}}">
-                    <text class="cat-card-emoji">{{ex.emoji}}</text>
                   </view>
                   <view class="cat-card-body">
                     <text class="cat-card-title">{{ex.title}}</text>
                     <text class="cat-card-sub">{{ex.subtitle}}</text>
                     <view class="cat-card-reason" wx:if="{{ex.reason}}">
-                      <text class="cat-card-reason-text">{{ex.reason.icon}} {{ex.reason.reason}}</text>
+                      <text class="cat-card-reason-text">{{ex.reason.reason}}</text>
                     </view>
                     <view class="cat-card-footer">
-                      <text class="cat-card-duration">⏱ {{ex.duration_text}}</text>
+                      <text class="cat-card-duration">{{ex.duration_text}}</text>
                       <text class="cat-card-tag" wx:if="{{ex.reason}}">{{ex.reason.tag}}</text>
                     </view>
                   </view>
@@ -148,11 +144,9 @@
               >
                 <view class="cat-header">
                   <view class="cat-title-wrap">
-                    <text class="cat-emoji">{{item.emoji}}</text>
                     <text class="cat-title">{{item.label}}</text>
                   </view>
                   <view class="cat-reason" wx:if="{{item.section_reason}}">
-                    <text class="cat-reason-icon">{{item.section_reason.icon}}</text>
                     <text class="cat-reason-text">{{item.section_reason.text}}</text>
                   </view>
                 </view>
@@ -167,16 +161,15 @@
                       bindtap="onCardTap"
                     >
                       <view class="cat-card-cover" style="background: {{ex.cover_gradient || 'linear-gradient(135deg, #7c6ff7, #4ecdc4)'}}">
-                        <text class="cat-card-emoji">{{ex.emoji}}</text>
                       </view>
                       <view class="cat-card-body">
                         <text class="cat-card-title">{{ex.title}}</text>
                         <text class="cat-card-sub">{{ex.subtitle}}</text>
                         <view class="cat-card-reason" wx:if="{{ex.reason}}">
-                          <text class="cat-card-reason-text">{{ex.reason.icon}} {{ex.reason.reason}}</text>
+                          <text class="cat-card-reason-text">{{ex.reason.reason}}</text>
                         </view>
                         <view class="cat-card-footer">
-                          <text class="cat-card-duration">⏱ {{ex.duration_text}}</text>
+                          <text class="cat-card-duration">{{ex.duration_text}}</text>
                           <text class="cat-card-tag" wx:if="{{ex.reason}}">{{ex.reason.tag}}</text>
                         </view>
                       </view>
@@ -191,22 +184,38 @@
         <!-- 静养入口 -->
         <view class="section" wx:if="{{meditationRecommend}}">
           <view class="section-title-row">
-            <text class="section-title-md">🧘 静养</text>
+            <text class="section-title-md">静养</text>
           </view>
           <view class="meditation-card" bindtap="onMeditationTap">
             <view class="meditation-cover" style="background: {{meditationRecommend.cover_gradient || 'linear-gradient(135deg, #7c6ff7, #9d93fa)'}}">
-              <text class="meditation-emoji">{{meditationRecommend.emoji || '🧘'}}</text>
             </view>
             <view class="meditation-info">
               <text class="meditation-title">{{meditationRecommend.title}}</text>
               <text class="text-sm text-secondary">{{meditationRecommend.subtitle}}</text>
-              <text class="text-sm text-muted">⏱ {{meditationRecommend.duration_text}}</text>
+              <text class="text-sm text-muted">{{meditationRecommend.duration_text}}</text>
             </view>
           </view>
         </view>
 
-        <view style="height: 60rpx;"></view>
+        <!-- 底部留白给悬浮TabBar -->
+        <view style="height: 160rpx;"></view>
       </scroll-view>
     </block>
   </block>
+
+  <!-- ═══ 悬浮毛玻璃 TabBar ═══ -->
+  <view class="float-tabbar">
+    <view class="float-tabbar-inner">
+      <view
+        wx:for="{{tabList}}"
+        wx:key="key"
+        class="float-tabbar-item {{activeTab === item.key ? 'float-tab-active' : ''}}"
+        data-key="{{item.key}}"
+        bindtap="onTabTap"
+      >
+        <text class="float-tab-icon">{{item.icon}}</text>
+        <text class="float-tab-label">{{item.label}}</text>
+      </view>
+    </view>
+  </view>
 </view>
