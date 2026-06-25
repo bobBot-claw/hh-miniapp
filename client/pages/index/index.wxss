@@ -5,8 +5,8 @@
 
 /* ===== 顶部状态条 ===== */
 .top-bar {
-  display: flex; justify-content: space-between; align-items: center;
-  padding: 48rpx 36rpx 8rpx;
+  display: flex; justify-content: flex-start; align-items: center;
+  padding: 16rpx 36rpx 4rpx;
 }
 .top-bar-left { display: flex; align-items: center; gap: 12rpx; }
 .top-stat {
@@ -45,7 +45,7 @@
 .section-more-icon { font-size: 24rpx; color: var(--color-text-secondary); }
 
 /* ===== 今日训练（无计划时） ===== */
-.today-section { margin-top: 12rpx; }
+.today-section { margin-top: 4rpx; }
 
 .hero-card { padding: 0 36rpx; }
 .hero-cover {

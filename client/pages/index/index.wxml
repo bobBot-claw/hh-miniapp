@@ -29,11 +29,6 @@
             <text class="top-stat">连续{{userStats.streak || 0}}天</text>
             <text class="top-stat">今日{{userStats.total_minutes || 0}}min</text>
           </view>
-          <view class="top-bar-right" bindtap="onProfileTap">
-            <view class="top-avatar">
-              <text class="top-avatar-text">我</text>
-            </view>
-          </view>
         </view>
 
         <!-- ═══ 第一屏核心区：活跃计划 OR 今日训练 ═══ -->
