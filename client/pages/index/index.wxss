@@ -1,10 +1,11 @@
-/* pages/index/index.wxss - 首页 v5.0 - 3A游戏级沉浸式主界面 */
+/* pages/index/index.wxss - 首页 v5.1 - 沉浸式主界面修复 */
 
 .page-index { min-height: 100vh; background: var(--color-bg); position: relative; }
 .home-scroll { height: 100vh; position: relative; z-index: 2; }
 
 /* ═══════════════════════════════════════════════
    沉浸式第一屏 — 3A游戏主界面
+   pointer-events: none 让触摸穿透到 scroll-view
    ═══════════════════════════════════════════════ */
 
 .immersive-hero {
@@ -13,12 +14,12 @@
   height: 100vh;
   z-index: 10;
   overflow: hidden;
+  pointer-events: none;  /* 关键：让触摸穿透 */
   transition: opacity 0.6s ease, transform 0.6s ease;
 }
 .immersive-hero.hero-collapsed {
   opacity: 0;
   transform: scale(1.05);
-  pointer-events: none;
 }
 
 /* 深色背景 */
@@ -88,17 +89,18 @@
 /* ═══ 教练全息投影层 ═══ */
 .coach-layer {
   position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -55%);
+  width: 520rpx;
+  height: 900rpx;
 }
 
 .coach-hologram {
   position: absolute;
-  width: 75%;
-  height: 75%;
-  transition: opacity 1s ease-in-out;
+  top: 0; left: 0;
+  width: 520rpx;
+  transition: opacity 1.2s ease-in-out;
   filter: drop-shadow(0 0 30rpx rgba(78,205,196,0.4)) drop-shadow(0 0 60rpx rgba(124,111,247,0.2));
 }
 .coach-visible {
@@ -108,26 +110,10 @@
   opacity: 0;
 }
 
-/* 全息扫描线 */
-.holo-scanline {
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 4rpx;
-  background: linear-gradient(90deg, transparent, rgba(78,205,196,0.6), rgba(124,111,247,0.4), transparent);
-  animation: scanline-move 4s linear infinite;
-  box-shadow: 0 0 20rpx rgba(78,205,196,0.3);
-}
-@keyframes scanline-move {
-  0%   { top: 15%; opacity: 0; }
-  10%  { opacity: 1; }
-  90%  { opacity: 1; }
-  100% { top: 75%; opacity: 0; }
-}
-
 /* 地面光圈 */
 .holo-ground {
   position: absolute;
-  bottom: 18%;
+  bottom: -20rpx;
   left: 50%;
   transform: translateX(-50%);
   width: 500rpx;
@@ -160,7 +146,7 @@
   -webkit-backdrop-filter: blur(12px);
 }
 
-/* ═══ 底部信息面板 ═══ */
+/* ═══ 底部信息面板 — 恢复点击 ═══ */
 .hero-bottom-panel {
   position: absolute;
   bottom: 0; left: 0; right: 0;
@@ -170,6 +156,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  pointer-events: auto;  /* 底部面板可点击 */
 }
 
 .hero-info {
