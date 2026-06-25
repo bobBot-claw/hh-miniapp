@@ -1,4 +1,4 @@
-// pages/index/index.js - 首页 v4.3.1 - 能力值雷达图修复
+// pages/index/index.js - 首页 v5.0 - 3A游戏级沉浸式主界面
 const api = require('../../utils/api')
 const util = require('../../utils/util')
 const { getRecommendedPlans, getPlanDetail } = require('../../utils/plans')
@@ -19,10 +19,19 @@ Page({
     meditationRecommend: null,
     hasProfile: false,
     planList: [],
+    // 沉浸式首屏
+    heroCollapsed: false,
+    heroTitle: '',
+    heroSub: '',
+    coachPoseIdx: 0,
   },
+
+  _coachTimer: null,
+  _radarReady: false,
 
   onLoad() {
     this.initPage()
+    this._startCoachAnimation()
   },
 
   onShow() {
@@ -37,12 +46,52 @@ Page({
   },
 
   onReady() {
-    // 页面初次渲染完成后再画雷达图
     this._radarReady = true
     if (this.data.abilities.length) {
       this.drawRadarChart()
     }
   },
+
+  onHide() {
+    this._stopCoachAnimation()
+  },
+
+  onUnload() {
+    this._stopCoachAnimation()
+  },
+
+  // ═══════════════════════════════════════════════
+  // 教练动作循环动画
+  // ═══════════════════════════════════════════════
+
+  _startCoachAnimation() {
+    this._coachTimer = setInterval(() => {
+      const next = this.data.coachPoseIdx === 0 ? 1 : 0
+      this.setData({ coachPoseIdx: next })
+    }, 3000)
+  },
+
+  _stopCoachAnimation() {
+    if (this._coachTimer) {
+      clearInterval(this._coachTimer)
+      this._coachTimer = null
+    }
+  },
+
+  // ═══════════════════════════════════════════════
+  // 滚动处理 — 第一屏淡出
+  // ═══════════════════════════════════════════════
+
+  onHomeScroll(e) {
+    const scrollTop = e.detail.scrollTop
+    const threshold = 100
+    const collapsed = scrollTop > threshold
+    if (collapsed !== this.data.heroCollapsed) {
+      this.setData({ heroCollapsed: collapsed })
+    }
+  },
+
+  // ═══════════════════════════════════════════════
 
   async initPage() {
     this.setData({ loading: true })
@@ -83,12 +132,14 @@ Page({
 
     if (!activePlan || !activePlan.planId) {
       this.setData({ activePlan: null, todayInfo: null })
+      this._updateHeroInfo()
       return
     }
 
     const planDetail = getPlanDetail(activePlan.planId)
     if (!planDetail) {
       this.setData({ activePlan: null, todayInfo: null })
+      this._updateHeroInfo()
       return
     }
 
@@ -137,6 +188,7 @@ Page({
         },
         todayInfo: null,
       })
+      this._updateHeroInfo()
       return
     }
 
@@ -152,6 +204,37 @@ Page({
       },
       todayInfo,
     })
+    this._updateHeroInfo()
+  },
+
+  // ═══════════════════════════════════════════════
+  // 更新沉浸式首屏信息
+  // ═══════════════════════════════════════════════
+
+  _updateHeroInfo() {
+    const { activePlan, todayInfo, primaryRecommend } = this.data
+
+    if (activePlan && !activePlan.isCompleted && todayInfo) {
+      this.setData({
+        heroTitle: todayInfo.title,
+        heroSub: `DAY ${todayInfo.dayNum} · ${todayInfo.durationText}`,
+      })
+    } else if (activePlan && activePlan.isCompleted) {
+      this.setData({
+        heroTitle: '今日已完成',
+        heroSub: `${activePlan.planTitle} 全部完成`,
+      })
+    } else if (primaryRecommend) {
+      this.setData({
+        heroTitle: primaryRecommend.title,
+        heroSub: primaryRecommend.duration_text,
+      })
+    } else {
+      this.setData({
+        heroTitle: '准备开始',
+        heroSub: '找到适合你的训练',
+      })
+    }
   },
 
   async loadProfile() {
@@ -181,9 +264,11 @@ Page({
         meditationRecommend: res.meditation || null,
         loading: false
       })
+      this._updateHeroInfo()
     } catch (err) {
       console.error('加载推荐失败', err)
       this.setData({ primaryRecommend: null, categorySections: [], loading: false })
+      this._updateHeroInfo()
     }
   },
 
@@ -203,7 +288,6 @@ Page({
         ]
       })
     }
-    // setData 后等 DOM 更新再画图
     setTimeout(() => { this.drawRadarChart() }, 300)
   },
 
@@ -228,7 +312,6 @@ Page({
         const canvas = res[0].node
         const ctx = canvas.getContext('2d')
 
-        // 获取 DPR
         let dpr = 2
         try { dpr = wx.getWindowInfo().pixelRatio || 2 } catch(e) {
           try { dpr = wx.getSystemInfoSync().pixelRatio || 2 } catch(e2) {}
@@ -241,7 +324,6 @@ Page({
         canvas.height = height * dpr
         ctx.scale(dpr, dpr)
 
-        console.log('Radar canvas:', width, height, 'dpr:', dpr)
         this._renderRadar(ctx, width, height, abilities)
       })
   },
@@ -252,12 +334,11 @@ Page({
     const maxR = Math.min(cx, cy) - 30
     const n = abilities.length
     const angleStep = (Math.PI * 2) / n
-    const startAngle = -Math.PI / 2  // 从正上方开始
+    const startAngle = -Math.PI / 2
 
-    // 清空
     ctx.clearRect(0, 0, w, h)
 
-    // ─── 1. 网格层（4圈） ───
+    // 网格层
     const gridLevels = [0.25, 0.5, 0.75, 1.0]
     gridLevels.forEach((level, li) => {
       const r = maxR * level
@@ -275,27 +356,23 @@ Page({
       ctx.stroke()
     })
 
-    // ─── 2. 轴线 ───
+    // 轴线
     for (let i = 0; i < n; i++) {
       const angle = startAngle + i * angleStep
-      const ex = cx + maxR * Math.cos(angle)
-      const ey = cy + maxR * Math.sin(angle)
       ctx.beginPath()
       ctx.moveTo(cx, cy)
-      ctx.lineTo(ex, ey)
+      ctx.lineTo(cx + maxR * Math.cos(angle), cy + maxR * Math.sin(angle))
       ctx.strokeStyle = 'rgba(0,0,0,0.06)'
       ctx.lineWidth = 1
       ctx.stroke()
     }
 
-    // ─── 3. 数据多边形 ───
-    // 确保至少有一点半径（0值时给 0.05 的最小半径，避免缩成一个点）
+    // 数据多边形
     const values = abilities.map(a => {
       const v = Math.min(a.value / 100, 1)
       return v < 0.05 ? 0.05 : v
     })
 
-    // 填充
     ctx.beginPath()
     for (let i = 0; i <= n; i++) {
       const idx = i % n
@@ -308,7 +385,6 @@ Page({
     }
     ctx.closePath()
 
-    // 径向渐变
     const gradient = ctx.createRadialGradient(cx, cy, 0, cx, cy, maxR)
     gradient.addColorStop(0, 'rgba(124, 111, 247, 0.06)')
     gradient.addColorStop(0.6, 'rgba(124, 111, 247, 0.15)')
@@ -316,7 +392,6 @@ Page({
     ctx.fillStyle = gradient
     ctx.fill()
 
-    // 描边
     ctx.beginPath()
     for (let i = 0; i <= n; i++) {
       const idx = i % n
@@ -332,7 +407,7 @@ Page({
     ctx.lineWidth = 2
     ctx.stroke()
 
-    // ─── 4. 顶点圆点（带颜色） ───
+    // 顶点圆点
     for (let i = 0; i < n; i++) {
       const angle = startAngle + i * angleStep
       const r = maxR * values[i]
@@ -340,26 +415,23 @@ Page({
       const y = cy + r * Math.sin(angle)
       const color = abilities[i].color
 
-      // 光晕
       ctx.beginPath()
       ctx.arc(x, y, 7, 0, Math.PI * 2)
       ctx.fillStyle = color + '30'
       ctx.fill()
 
-      // 实心
       ctx.beginPath()
       ctx.arc(x, y, 4.5, 0, Math.PI * 2)
       ctx.fillStyle = color
       ctx.fill()
 
-      // 白心
       ctx.beginPath()
       ctx.arc(x, y, 1.8, 0, Math.PI * 2)
       ctx.fillStyle = '#ffffff'
       ctx.fill()
     }
 
-    // ─── 5. 维度标签 + 数值 ───
+    // 维度标签
     ctx.textAlign = 'center'
     ctx.textBaseline = 'middle'
     for (let i = 0; i < n; i++) {
@@ -368,40 +440,44 @@ Page({
       const lx = cx + labelR * Math.cos(angle)
       const ly = cy + labelR * Math.sin(angle)
 
-      // 名称
       ctx.font = '500 10px sans-serif'
       ctx.fillStyle = '#6b6b82'
       ctx.fillText(abilities[i].name, lx, ly - 6)
 
-      // 数值
       ctx.font = 'bold 12px sans-serif'
       ctx.fillStyle = abilities[i].color
       ctx.fillText(String(abilities[i].value), lx, ly + 7)
     }
 
-    // ─── 6. 中心综合分 ───
+    // 中心综合分
     const avg = Math.round(abilities.reduce((s, a) => s + a.value, 0) / n)
 
-    // 中心圆底
     ctx.beginPath()
     ctx.arc(cx, cy, 22, 0, Math.PI * 2)
     ctx.fillStyle = 'rgba(124, 111, 247, 0.06)'
     ctx.fill()
 
-    // 分数
     ctx.textAlign = 'center'
     ctx.textBaseline = 'middle'
     ctx.font = 'bold 18px sans-serif'
     ctx.fillStyle = '#7c6ff7'
     ctx.fillText(String(avg), cx, cy - 2)
 
-    // "综合"标签
     ctx.font = '500 8px sans-serif'
     ctx.fillStyle = '#a0a0b4'
     ctx.fillText('综合', cx, cy + 11)
   },
 
   // === 事件处理 ===
+
+  onHeroStart() {
+    const { activePlan, todayInfo, primaryRecommend } = this.data
+    if (activePlan && !activePlan.isCompleted) {
+      wx.navigateTo({ url: `/pages/plan/detail/detail?id=${activePlan.planId}` })
+    } else if (primaryRecommend) {
+      wx.navigateTo({ url: `/pages/exercise/detail/detail?id=${primaryRecommend.id}` })
+    }
+  },
 
   onPrimaryTap() {
     const item = this.data.primaryRecommend

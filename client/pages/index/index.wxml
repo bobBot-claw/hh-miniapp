@@ -1,4 +1,5 @@
-<!--pages/index/index.wxml - 首页 v4.3.1 - 能力值雷达图修复-->
+<!--pages/index/index.wxml - 首页 v5.0 - 3A游戏级沉浸式主界面-->
+
 <view class="page-index">
   <view wx:if="{{loading}}" class="loading-container">
     <text class="text-secondary">加载中...</text>
@@ -16,15 +17,80 @@
     </view>
 
     <block wx:if="{{hasProfile}}">
-      <scroll-view scroll-y class="home-scroll" enhanced="{{true}}">
+      <!-- ═══════════════════════════════════════════
+           沉浸式第一屏 — 3A游戏主界面
+           ═══════════════════════════════════════════ -->
+      <view class="immersive-hero {{heroCollapsed ? 'hero-collapsed' : ''}}">
+        <!-- 深色背景层 -->
+        <view class="hero-bg-dark"></view>
 
-        <!-- 顶部状态条 -->
-        <view class="top-bar">
-          <view class="top-bar-left">
-            <text class="top-stat">连续{{userStats.streak || 0}}天</text>
-            <text class="top-stat">今日{{userStats.total_minutes || 0}}min</text>
+        <!-- 呼吸光斑层 -->
+        <view class="bokeh-layer">
+          <view class="bokeh bokeh-1"></view>
+          <view class="bokeh bokeh-2"></view>
+          <view class="bokeh bokeh-3"></view>
+          <view class="bokeh bokeh-4"></view>
+          <view class="bokeh bokeh-5"></view>
+        </view>
+
+        <!-- 教练全息投影层 -->
+        <view class="coach-layer">
+          <image 
+            class="coach-hologram {{coachPoseIdx === 0 ? 'coach-visible' : 'coach-hidden'}}"
+            src="https://prd-tc-intl-cdn.codebanana.com/cb-user-uploads/192f18df-2385-4543-bf65-96d46e1b2425/assets/coach/coach_hologram_0.jpeg"
+            mode="aspectFit"
+          />
+          <image 
+            class="coach-hologram {{coachPoseIdx === 1 ? 'coach-visible' : 'coach-hidden'}}"
+            src="https://prd-tc-intl-cdn.codebanana.com/cb-user-uploads/192f18df-2385-4543-bf65-96d46e1b2425/assets/coach/coach_hologram_standing_0.jpeg"
+            mode="aspectFit"
+          />
+          <!-- 全息扫描线 -->
+          <view class="holo-scanline"></view>
+          <!-- 地面光圈 -->
+          <view class="holo-ground"></view>
+        </view>
+
+        <!-- 顶部状态条（毛玻璃） -->
+        <view class="hero-top-bar">
+          <view class="hero-top-left">
+            <text class="hero-stat-chip">🔥 连续{{userStats.streak || 0}}天</text>
+            <text class="hero-stat-chip">⚡ 今日{{userStats.total_minutes || 0}}min</text>
           </view>
         </view>
+
+        <!-- 底部信息+操作区 -->
+        <view class="hero-bottom-panel">
+          <!-- 今日训练信息 -->
+          <view class="hero-info">
+            <text class="hero-today-label">今日训练</text>
+            <text class="hero-today-title">{{heroTitle}}</text>
+            <text class="hero-today-sub">{{heroSub}}</text>
+          </view>
+          <!-- CTA按钮 -->
+          <view class="hero-cta-wrap">
+            <view class="hero-cta-btn" bindtap="onHeroStart">
+              <view class="cta-glow"></view>
+              <text class="cta-text">开始训练</text>
+            </view>
+          </view>
+          <!-- 下滑提示 -->
+          <view class="hero-scroll-hint {{heroCollapsed ? 'hint-hidden' : ''}}">
+            <view class="scroll-arrow"></view>
+            <text class="scroll-hint-text">上滑查看更多</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- 滚动内容区 -->
+      <scroll-view 
+        scroll-y 
+        class="home-scroll" 
+        enhanced="{{true}}"
+        bindscroll="onHomeScroll"
+      >
+        <!-- 占位撑开第一屏高度 -->
+        <view class="scroll-spacer"></view>
 
         <!-- ═══ 活跃计划 OR 今日训练 ═══ -->
 
@@ -114,7 +180,7 @@
         </view>
 
         <!-- 无活跃计划 -->
-        <view class="today-section" wx:else>
+        <view class="today-section" wx:elif="{{!activePlan}}">
           <view class="section-title-row">
             <text class="section-title-lg">今日训练</text>
             <view class="section-more" bindtap="onViewStats">
