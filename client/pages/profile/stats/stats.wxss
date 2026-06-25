@@ -1,144 +1,49 @@
-/* pages/profile/stats/stats.wxss - 能力值详情样式 */
-.page-stats {
-  min-height: 100vh;
-  background: #f5f5f7;
-}
+/* pages/profile/stats/stats.wxss - 能力值详情 - 暗色质感 */
+.page-stats { min-height: 100vh; background: var(--color-bg); }
+.stats-scroll { height: 100vh; }
 
-.stats-scroll {
-  height: 100vh;
-}
-
-.stats-header {
-  padding: 40rpx 32rpx 20rpx;
-}
-
-.stats-title {
-  font-size: 40rpx;
-  font-weight: 700;
-  color: #1a1a2e;
-  display: block;
-  margin-bottom: 8rpx;
-}
-
-.stats-subtitle {
-  display: block;
-}
+.stats-header { padding: 40rpx 36rpx 20rpx; }
+.stats-title { font-size: 42rpx; font-weight: 800; color: var(--color-text); display: block; margin-bottom: 8rpx; letter-spacing: -0.5rpx; }
+.stats-subtitle { display: block; }
 
 /* 能力值卡片 */
-.ability-list {
-  padding: 0 32rpx;
-}
-
+.ability-list { padding: 0 36rpx; }
 .ability-card {
-  background: #fff;
-  border-radius: 20rpx;
-  padding: 28rpx 32rpx;
-  margin-bottom: 20rpx;
-  box-shadow: 0 2rpx 12rpx rgba(0,0,0,0.04);
+  background: var(--color-bg-card); border-radius: 24rpx;
+  padding: 28rpx 32rpx; margin-bottom: 16rpx;
+  border: 1rpx solid var(--color-border);
+  box-shadow: 0 4rpx 16rpx rgba(0,0,0,0.12);
 }
+.ability-top { display: flex; align-items: center; margin-bottom: 16rpx; gap: 16rpx; }
+.ability-emoji { font-size: 36rpx; }
+.ability-info { flex: 1; }
+.ability-name { font-size: 28rpx; font-weight: 700; color: var(--color-text); display: block; }
+.ability-level { display: block; margin-top: 2rpx; }
+.ability-value { font-size: 36rpx; font-weight: 800; color: var(--color-primary-light); }
 
-.ability-top {
-  display: flex;
-  align-items: center;
-  margin-bottom: 16rpx;
-  gap: 16rpx;
-}
-
-.ability-emoji {
-  font-size: 36rpx;
-}
-
-.ability-info {
-  flex: 1;
-}
-
-.ability-name {
-  font-size: 28rpx;
-  font-weight: 600;
-  color: #1a1a2e;
-  display: block;
-}
-
-.ability-level {
-  display: block;
-  margin-top: 2rpx;
-}
-
-.ability-value {
-  font-size: 36rpx;
-  font-weight: 700;
-  color: #7c6ff7;
-}
-
-.ability-bar-bg {
-  height: 16rpx;
-  background: #f0f0f0;
-  border-radius: 8rpx;
-  overflow: hidden;
-}
-
-.ability-bar-fill {
-  height: 100%;
-  border-radius: 8rpx;
-  transition: width 0.5s ease;
-}
-
-.ability-hint {
-  display: block;
-  margin-top: 8rpx;
-}
+.ability-bar-bg { height: 14rpx; background: rgba(255,255,255,0.05); border-radius: 7rpx; overflow: hidden; }
+.ability-bar-fill { height: 100%; border-radius: 7rpx; transition: width 0.5s ease; box-shadow: 0 0 8rpx rgba(124, 111, 247, 0.3); }
+.ability-hint { display: block; margin-top: 8rpx; }
 
 /* 总体统计 */
 .summary-section {
-  margin: 20rpx 32rpx 0;
-  background: #fff;
-  border-radius: 20rpx;
-  padding: 28rpx 32rpx;
-  box-shadow: 0 2rpx 12rpx rgba(0,0,0,0.04);
+  margin: 20rpx 36rpx 0; background: var(--color-bg-card);
+  border-radius: 24rpx; padding: 28rpx 32rpx;
+  border: 1rpx solid var(--color-border);
 }
-
-.summary-title {
-  font-size: 30rpx;
-  font-weight: 600;
-  color: #1a1a2e;
-  margin-bottom: 20rpx;
-  display: block;
-}
-
-.summary-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20rpx;
-}
-
+.summary-title { font-size: 30rpx; font-weight: 700; color: var(--color-text); margin-bottom: 20rpx; display: block; }
+.summary-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16rpx; }
 .summary-item {
-  text-align: center;
-  padding: 16rpx;
-  background: #f8f8fc;
-  border-radius: 16rpx;
+  text-align: center; padding: 20rpx;
+  background: var(--color-bg-subtle); border-radius: 16rpx;
+  border: 1rpx solid var(--color-border);
 }
-
-.summary-value {
-  font-size: 40rpx;
-  font-weight: 700;
-  color: #7c6ff7;
-  display: block;
-  margin-bottom: 4rpx;
-}
-
-.summary-label {
-  display: block;
-}
+.summary-value { font-size: 40rpx; font-weight: 800; color: var(--color-primary-light); display: block; margin-bottom: 4rpx; }
+.summary-label { display: block; }
 
 /* 通用 */
-.text-secondary { color: #666; }
-.text-muted { color: #999; }
+.text-secondary { color: var(--color-text-secondary); }
+.text-muted { color: var(--color-text-muted); }
 .text-sm { font-size: 24rpx; }
 .text-xs { font-size: 22rpx; }
-
-.loading-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 60vh;
-}
+.loading-container { display: flex; justify-content: center; align-items: center; height: 60vh; }
