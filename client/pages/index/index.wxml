@@ -1,4 +1,4 @@
-<!--pages/index/index.wxml - 首页 v4.0 - 活跃计划卡片-->
+<!--pages/index/index.wxml - 首页 v4.1 - 放大计划卡片 + 能力值模块-->
 <view class="page-index">
   <!-- 加载状态 -->
   <view wx:if="{{loading}}" class="loading-container">
@@ -38,7 +38,7 @@
 
         <!-- ═══ 第一屏核心区：活跃计划 OR 今日训练 ═══ -->
 
-        <!-- 情况1：有活跃计划 → 显示计划进度卡片 -->
+        <!-- 情况1：有活跃计划 → 显示计划进度卡片（大卡片） -->
         <view class="today-section" wx:if="{{activePlan && !activePlan.isCompleted}}">
           <view class="section-title-row">
             <text class="section-title-lg">今日计划</text>
@@ -55,7 +55,7 @@
                 <text class="plan-hero-phase">{{todayInfo.phaseTitle}}</text>
               </view>
 
-              <!-- 中部：当天信息 -->
+              <!-- 中部：大号 Day + 信息 + 按钮 -->
               <view class="plan-hero-day">
                 <view class="plan-hero-daynum">
                   <text class="plan-hero-daynum-label">DAY</text>
@@ -70,31 +70,38 @@
                 </view>
               </view>
 
-              <!-- 底部：进度条 -->
-              <view class="plan-hero-progress">
-                <view class="progress-bar-bg">
-                  <view class="progress-bar-fill" style="width: {{activePlan.progressPercent}}%"></view>
+              <!-- 练习预览标签 -->
+              <view class="plan-hero-chips">
+                <view class="plan-chip" wx:for="{{todayInfo.exerciseNames}}" wx:key="*this">
+                  <text>{{item}}</text>
                 </view>
-                <view class="progress-info">
-                  <text class="progress-label">{{activePlan.completedDays.length}}/{{activePlan.totalDays}}天</text>
-                  <text class="progress-percent">{{activePlan.progressPercent}}%</text>
+                <view class="plan-chip plan-chip-meditation" wx:if="{{todayInfo.meditationName}}">
+                  <text>{{todayInfo.meditationName}}</text>
                 </view>
               </view>
             </view>
 
-            <!-- 练习预览（卡片下方） -->
-            <view class="plan-hero-exercises">
-              <view class="plan-exercise-chip" wx:for="{{todayInfo.exerciseNames}}" wx:key="*this">
-                <text>{{item}}</text>
+            <!-- 底部进度区域 -->
+            <view class="plan-hero-footer">
+              <view class="plan-progress-visual">
+                <!-- 天数点阵 -->
+                <view class="plan-dots">
+                  <view 
+                    wx:for="{{activePlan.totalDays}}" 
+                    wx:key="*this" 
+                    class="plan-dot {{index < activePlan.completedDays.length ? 'plan-dot-done' : ''}} {{index === activePlan.completedDays.length ? 'plan-dot-current' : ''}}"
+                  ></view>
+                </view>
               </view>
-              <view class="plan-exercise-chip plan-meditation-chip" wx:if="{{todayInfo.meditationName}}">
-                <text>{{todayInfo.meditationName}}</text>
+              <view class="plan-progress-info">
+                <text class="plan-progress-text">{{activePlan.completedDays.length}}/{{activePlan.totalDays}}天</text>
+                <text class="plan-progress-pct">{{activePlan.progressPercent}}%</text>
               </view>
             </view>
           </view>
         </view>
 
-        <!-- 情况2：计划已完成 → 显示完成庆祝卡片 -->
+        <!-- 情况2：计划已完成 -->
         <view class="today-section" wx:elif="{{activePlan && activePlan.isCompleted}}">
           <view class="section-title-row">
             <text class="section-title-lg">今日训练</text>
@@ -108,11 +115,9 @@
             </view>
             <view class="plan-complete-info">
               <text class="plan-complete-title">{{activePlan.planTitle}} 已完成！</text>
-              <text class="plan-complete-sub">太棒了，{{activePlan.totalDays}}天全部坚持下来了</text>
+              <text class="plan-complete-sub">{{activePlan.totalDays}}天全部坚持下来了</text>
             </view>
           </view>
-
-          <!-- 完成后也显示原来的今日训练推荐 -->
           <view class="hero-card" wx:if="{{primaryRecommend}}" bindtap="onPrimaryTap" style="margin-top: 20rpx;">
             <view class="hero-cover" style="background: {{primaryRecommend.cover_gradient || 'linear-gradient(160deg, #2d2d52, #7c6ff7, #4ecdc4)'}}">
               <view class="hero-overlay">
@@ -128,7 +133,7 @@
           </view>
         </view>
 
-        <!-- 情况3：无活跃计划 → 显示原来的今日训练 -->
+        <!-- 情况3：无活跃计划 → 原来的今日训练 -->
         <view class="today-section" wx:else>
           <view class="section-title-row">
             <text class="section-title-lg">今日训练</text>
@@ -151,23 +156,26 @@
           </view>
         </view>
 
-        <!-- 本周看见 -->
-        <view class="week-section" wx:if="{{weekStats}}">
+        <!-- ═══ 能力值 ═══ -->
+        <view class="abilities-section" wx:if="{{abilities.length}}">
           <view class="section-title-row">
-            <text class="section-title-md">本周看见</text>
+            <text class="section-title-md">能力值</text>
             <view class="section-more" bindtap="onViewStats">
+              <text class="section-more-text">详情</text>
               <text class="section-more-icon">›</text>
             </view>
           </view>
-          <scroll-view scroll-x class="week-scroll" enhanced="{{true}}" show-scrollbar="{{false}}">
-            <view class="week-cards">
-              <view class="week-card" wx:for="{{weekStats}}" wx:key="key">
-                <text class="week-card-label">{{item.label}}</text>
-                <view class="week-card-value-row">
-                  <text class="week-card-value">{{item.value}}</text>
-                  <text class="week-card-unit">{{item.unit}}</text>
+          <scroll-view scroll-x class="abilities-scroll" enhanced="{{true}}" show-scrollbar="{{false}}">
+            <view class="abilities-row">
+              <view class="ability-card" wx:for="{{abilities}}" wx:key="key">
+                <view class="ability-header">
+                  <text class="ability-name">{{item.name}}</text>
+                  <text class="ability-level">Lv.{{item.level}}</text>
                 </view>
-                <text class="week-card-compare">{{item.compare}}</text>
+                <view class="ability-bar-bg">
+                  <view class="ability-bar-fill" style="width: {{item.value}}%; background: {{item.color}};"></view>
+                </view>
+                <text class="ability-value">{{item.value}}</text>
               </view>
             </view>
           </scroll-view>
@@ -195,7 +203,6 @@
                 <view class="plan-mini-cover" style="background: {{item.cover_gradient}}">
                   <text class="plan-mini-title">{{item.title}}</text>
                   <text class="plan-mini-sub">{{item.duration_days}}天 · {{item.difficulty}}</text>
-                  <!-- 进行中标识 -->
                   <view class="plan-mini-badge" wx:if="{{activePlan && activePlan.planId === item.id}}">
                     <text>进行中</text>
                   </view>
@@ -222,7 +229,6 @@
                 <text class="cat-reason-text">{{item.section_reason.text}}</text>
               </view>
             </view>
-
             <scroll-view scroll-x class="cat-scroll" enhanced="{{true}}" show-scrollbar="{{false}}">
               <view class="cat-card-list">
                 <view
@@ -233,8 +239,7 @@
                   data-id="{{ex.id}}"
                   bindtap="onCardTap"
                 >
-                  <view class="cat-card-cover" style="background: {{ex.cover_gradient || 'linear-gradient(135deg, #7c6ff7, #4ecdc4)'}}">
-                  </view>
+                  <view class="cat-card-cover" style="background: {{ex.cover_gradient || 'linear-gradient(135deg, #7c6ff7, #4ecdc4)'}}"></view>
                   <view class="cat-card-body">
                     <text class="cat-card-title">{{ex.title}}</text>
                     <text class="cat-card-sub">{{ex.subtitle}}</text>
@@ -257,11 +262,7 @@
               <text class="drawer-toggle-icon">{{showMore ? '▲' : '▼'}}</text>
             </view>
             <view class="drawer-content {{showMore ? 'drawer-open' : 'drawer-closed'}}">
-              <view
-                wx:for="{{moreCategories}}"
-                wx:key="key"
-                class="category-section"
-              >
+              <view wx:for="{{moreCategories}}" wx:key="key" class="category-section">
                 <view class="cat-header">
                   <view class="cat-title-wrap">
                     <text class="cat-title">{{item.label}}</text>
@@ -272,16 +273,8 @@
                 </view>
                 <scroll-view scroll-x class="cat-scroll" enhanced="{{true}}" show-scrollbar="{{false}}">
                   <view class="cat-card-list">
-                    <view
-                      wx:for="{{item.exercises}}"
-                      wx:for-item="ex"
-                      wx:key="id"
-                      class="cat-card"
-                      data-id="{{ex.id}}"
-                      bindtap="onCardTap"
-                    >
-                      <view class="cat-card-cover" style="background: {{ex.cover_gradient || 'linear-gradient(135deg, #7c6ff7, #4ecdc4)'}}">
-                      </view>
+                    <view wx:for="{{item.exercises}}" wx:for-item="ex" wx:key="id" class="cat-card" data-id="{{ex.id}}" bindtap="onCardTap">
+                      <view class="cat-card-cover" style="background: {{ex.cover_gradient || 'linear-gradient(135deg, #7c6ff7, #4ecdc4)'}}"></view>
                       <view class="cat-card-body">
                         <text class="cat-card-title">{{ex.title}}</text>
                         <text class="cat-card-sub">{{ex.subtitle}}</text>
@@ -307,8 +300,7 @@
             <text class="section-title-md">静养</text>
           </view>
           <view class="meditation-card" bindtap="onMeditationTap">
-            <view class="meditation-cover" style="background: {{meditationRecommend.cover_gradient || 'linear-gradient(135deg, #7c6ff7, #9d93fa)'}}">
-            </view>
+            <view class="meditation-cover" style="background: {{meditationRecommend.cover_gradient || 'linear-gradient(135deg, #7c6ff7, #9d93fa)'}}"></view>
             <view class="meditation-info">
               <text class="meditation-title">{{meditationRecommend.title}}</text>
               <text class="text-sm text-secondary">{{meditationRecommend.subtitle}}</text>

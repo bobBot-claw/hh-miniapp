@@ -1,4 +1,4 @@
-// pages/index/index.js - 首页 v4.0 - 活跃计划替换今日训练
+// pages/index/index.js - 首页 v4.1 - 计划卡片放大 + 能力值模块
 const api = require('../../utils/api')
 const util = require('../../utils/util')
 const { getRecommendedPlans, getPlanDetail } = require('../../utils/plans')
@@ -8,14 +8,11 @@ Page({
   data: {
     loading: true,
     greeting: '',
-    // 原始今日训练（无活跃计划时显示）
     primaryRecommend: null,
-    // 活跃计划（有计划时替换今日训练）
     activePlan: null,
-    todayInfo: null, // 当天训练的富化信息
-    // 其他
+    todayInfo: null,
     userStats: null,
-    weekStats: null,
+    abilities: [],
     categorySections: [],
     moreCategories: [],
     showMore: false,
@@ -32,7 +29,6 @@ Page({
     if (typeof this.getTabBar === 'function' && this.getTabBar()) {
       this.getTabBar().setData({ selected: 0 })
     }
-    // 每次显示都刷新活跃计划（从详情页回来可能已完成一天）
     this.loadActivePlan()
   },
 
@@ -93,14 +89,12 @@ Page({
     const progressPercent = Math.round((completedDays.length / totalDays) * 100)
     const currentDayNum = completedDays.length + 1
 
-    // 找到当天信息
     let todayInfo = null
     let currentPhaseTitle = ''
     for (const phase of planDetail.phases) {
       for (const day of phase.daily) {
         if (day.day === currentDayNum) {
           currentPhaseTitle = phase.title
-          // 富化练习名称
           const exerciseNames = day.exercises.map(eid => {
             const ex = exercises.find(e => e.id === eid)
             return ex ? ex.title : eid
@@ -122,7 +116,6 @@ Page({
       if (todayInfo) break
     }
 
-    // 计划已完成
     if (currentDayNum > totalDays) {
       this.setData({
         activePlan: {
@@ -168,20 +161,14 @@ Page({
     try {
       const res = await api.getRecommendations()
       const stats = res.user_stats || null
+      this.setData({ userStats: stats })
 
-      if (stats) {
-        const weekStats = [
-          { key: 'streak', label: '连续', value: stats.streak || 0, unit: '天', compare: stats.streak > 0 ? `比上周+${Math.min(stats.streak, 3)}天` : '开始你的连续' },
-          { key: 'duration', label: '总时长', value: stats.total_minutes || 0, unit: 'min', compare: '本周运动' },
-          { key: 'count', label: '已运动', value: stats.total_exercises || 0, unit: '次', compare: '继续保持' },
-        ]
-        this.setData({ weekStats })
-      }
+      // 加载能力值
+      await this.loadAbilities()
 
       const sections = res.category_sections || []
       this.setData({
         primaryRecommend: res.primary || null,
-        userStats: stats,
         categorySections: sections.slice(0, 3),
         moreCategories: sections.slice(3),
         meditationRecommend: res.meditation || null,
@@ -190,6 +177,25 @@ Page({
     } catch (err) {
       console.error('加载推荐失败', err)
       this.setData({ primaryRecommend: null, categorySections: [], loading: false })
+    }
+  },
+
+  async loadAbilities() {
+    try {
+      const res = await api.getStats()
+      const abilities = (res.stats && res.stats.abilities) || []
+      this.setData({ abilities })
+    } catch (err) {
+      // 默认能力值
+      this.setData({
+        abilities: [
+          { key: 'posture', name: '体态健康', value: 0, color: '#7c6ff7', level: 0 },
+          { key: 'core', name: '核心稳定', value: 0, color: '#00b894', level: 0 },
+          { key: 'flexibility', name: '柔韧性', value: 0, color: '#0984e3', level: 0 },
+          { key: 'vitality', name: '活力值', value: 0, color: '#f39c12', level: 0 },
+          { key: 'mind_body', name: '身心平衡', value: 0, color: '#e84393', level: 0 },
+        ]
+      })
     }
   },
 
@@ -208,7 +214,6 @@ Page({
   },
 
   onPlanCompleteTap() {
-    // 查看完成的计划
     const activePlan = this.data.activePlan
     if (!activePlan) return
     wx.navigateTo({ url: `/pages/plan/detail/detail?id=${activePlan.planId}` })
