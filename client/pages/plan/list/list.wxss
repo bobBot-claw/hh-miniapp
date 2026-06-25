@@ -47,7 +47,7 @@
 }
 
 .plan-cover-content {
-  margin-bottom: 16rpx;
+  /* 简化后只保留标题+天数难度 */
 }
 
 .plan-title {
@@ -64,22 +64,6 @@
   color: rgba(255, 255, 255, 0.85);
 }
 
-.plan-meta-row {
-  display: flex;
-  align-items: center;
-}
-
-.plan-meta {
-  font-size: 24rpx;
-  color: rgba(255, 255, 255, 0.75);
-}
-
-.plan-meta-dot {
-  margin: 0 8rpx;
-  color: rgba(255, 255, 255, 0.5);
-  font-size: 24rpx;
-}
-
 /* 信息区 */
 .plan-info {
   padding: 28rpx 32rpx;
@@ -91,21 +75,6 @@
   color: var(--text-secondary);
   line-height: 1.6;
   margin-bottom: 20rpx;
-}
-
-.plan-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12rpx;
-  margin-bottom: 20rpx;
-}
-
-.plan-tag {
-  padding: 6rpx 16rpx;
-  border-radius: 8rpx;
-  font-size: 22rpx;
-  color: var(--color-primary);
-  background: rgba(124, 111, 247, 0.08);
 }
 
 /* 能力值收益 */

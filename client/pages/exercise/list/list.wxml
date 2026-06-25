@@ -1,4 +1,4 @@
-<!--pages/exercise/list/list.wxml - 运动分类列表 v2.2 - 加入训练计划入口-->
+<!--pages/exercise/list/list.wxml - 运动分类列表 v2.3 - 卡片精简-->
 <view class="page-exercise-list">
   <!-- 训练计划入口 -->
   <view class="plan-entry" bindtap="onViewPlans">
@@ -55,11 +55,6 @@
         </view>
         <view class="exercise-info">
           <text class="exercise-title">{{item.title}}</text>
-          <text class="exercise-sub text-secondary text-sm">{{item.subtitle}}</text>
-          <view class="exercise-meta">
-            <text class="text-xs text-muted">{{item.category_label || ''}}</text>
-            <text wx:if="{{item.difficulty}}" class="tag tag-sm">{{item.difficulty}}</text>
-          </view>
         </view>
       </view>
     </view>

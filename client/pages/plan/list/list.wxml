@@ -23,21 +23,13 @@
       <view class="plan-cover" style="background: {{item.cover_gradient}}">
         <view class="plan-cover-content">
           <text class="plan-title">{{item.title}}</text>
-          <text class="plan-subtitle">{{item.subtitle}}</text>
-        </view>
-        <view class="plan-meta-row">
-          <text class="plan-meta">{{item.duration_days}}天</text>
-          <text class="plan-meta-dot">·</text>
-          <text class="plan-meta">{{item.difficulty}}</text>
+          <text class="plan-subtitle">{{item.duration_days}}天 · {{item.difficulty}}</text>
         </view>
       </view>
 
       <!-- 信息区 -->
       <view class="plan-info">
         <text class="plan-desc">{{item.description}}</text>
-        <view class="plan-tags">
-          <text wx:for="{{item.problem_tags}}" wx:for-item="tag" wx:key="*this" class="plan-tag">{{tag}}</text>
-        </view>
         <!-- 能力值收益 -->
         <view class="plan-gains">
           <text wx:if="{{item.abilities_gain.posture}}" class="gain-badge gain-posture">体态 +{{item.abilities_gain.posture}}</text>

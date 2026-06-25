@@ -3,7 +3,6 @@
   <view class="detail-hero" style="background: {{plan.cover_gradient}}">
     <view class="hero-top">
       <text class="hero-title">{{plan.title}}</text>
-      <text class="hero-subtitle">{{plan.subtitle}}</text>
     </view>
     <view class="hero-stats">
       <view class="hero-stat">
@@ -54,7 +53,6 @@
       bindtap="onPhaseTap"
     >
       <text class="phase-tab-title">{{item.title}}</text>
-      <text class="phase-tab-sub">{{item.subtitle}}</text>
     </view>
   </view>
 

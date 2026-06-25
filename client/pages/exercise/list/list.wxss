@@ -1,4 +1,4 @@
-/* pages/exercise/list/list.wxss - 运动列表 v2.2 - 加入计划入口 */
+/* pages/exercise/list/list.wxss - 运动列表 v2.3 - 卡片精简 */
 .page-exercise-list { min-height: 100vh; background: var(--color-bg); }
 
 /* 训练计划入口 */
@@ -56,7 +56,10 @@
   background: rgba(0,0,0,0.35); color: rgba(255,255,255,0.85);
   padding: 4rpx 14rpx; border-radius: 10rpx;
 }
-.exercise-info { padding: 18rpx; display: flex; flex-direction: column; gap: 6rpx; }
-.exercise-title { font-size: var(--font-size-sm); font-weight: 700; color: var(--color-text); line-height: 1.4; }
-.exercise-sub { line-height: 1.4; color: var(--color-text-secondary); }
-.exercise-meta { display: flex; gap: 8rpx; align-items: center; margin-top: 4rpx; }
+.exercise-info { padding: 14rpx 18rpx 16rpx; }
+.exercise-title {
+  font-size: var(--font-size-sm); font-weight: 700; color: var(--color-text);
+  line-height: 1.4;
+  overflow: hidden; white-space: normal;
+  display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical;
+}

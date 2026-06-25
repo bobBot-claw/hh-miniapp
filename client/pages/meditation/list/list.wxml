@@ -1,4 +1,4 @@
-<!--pages/meditation/list/list.wxml - 静养模块 v2.1-->
+<!--pages/meditation/list/list.wxml - 静养模块 v2.2 - 卡片精简-->
 <view class="page-meditation-list">
   <!-- 页面头部 -->
   <view class="page-header">
@@ -45,10 +45,6 @@
           </view>
           <view class="meditation-info">
             <text class="meditation-title">{{item.title}}</text>
-            <text class="meditation-subtitle text-secondary">{{item.subtitle}}</text>
-            <view class="meditation-meta">
-              <text class="text-xs text-muted">{{item.category_label || ''}}</text>
-            </view>
           </view>
         </view>
       </view>

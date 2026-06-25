@@ -1,4 +1,4 @@
-/* pages/meditation/list/list.wxss - 静养模块 - 浅色 */
+/* pages/meditation/list/list.wxss - 静养模块 v2.2 - 卡片精简 */
 
 .page-meditation-list { min-height: 100vh; background: var(--color-bg); }
 
@@ -30,7 +30,7 @@
   box-shadow: 0 2rpx 8rpx rgba(0,0,0,0.03);
 }
 .meditation-cover {
-  width: 180rpx; min-height: 180rpx;
+  width: 140rpx; min-height: 140rpx;
   display: flex; flex-direction: column; justify-content: center; align-items: center;
   flex-shrink: 0; position: relative;
 }
@@ -41,11 +41,9 @@
 
 .meditation-info {
   flex: 1; padding: 20rpx 24rpx;
-  display: flex; flex-direction: column; justify-content: center; gap: 6rpx;
+  display: flex; flex-direction: column; justify-content: center;
 }
 .meditation-title { font-size: var(--font-size-base); font-weight: 700; color: var(--color-text); }
-.meditation-subtitle { font-size: var(--font-size-sm); line-height: 1.5; color: var(--color-text-secondary); }
-.meditation-meta { margin-top: 4rpx; }
 
 /* 空状态 */
 .empty-state { display: flex; flex-direction: column; align-items: center; padding: 120rpx 60rpx; }
