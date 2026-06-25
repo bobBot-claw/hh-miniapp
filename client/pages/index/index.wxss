@@ -1,4 +1,4 @@
-/* pages/index/index.wxss - 首页 v4.2 - 练习卡片精简 */
+/* pages/index/index.wxss - 首页 v4.3 - 能力值雷达图 */
 
 .page-index { min-height: 100vh; background: var(--color-bg); }
 .home-scroll { height: 100vh; }
@@ -235,49 +235,57 @@
 }
 
 /* ═══════════════════════════════════════════════
-   能力值模块
+   能力值 — 雷达图卡片
    ═══════════════════════════════════════════════ */
 
 .abilities-section { margin-top: 28rpx; }
 
-.abilities-scroll { white-space: nowrap; padding-left: 36rpx; }
-.abilities-row { display: inline-flex; gap: 12rpx; padding-right: 36rpx; }
-
-.ability-card {
-  display: inline-flex; flex-direction: column;
-  width: 180rpx;
+.radar-card {
+  margin: 0 36rpx;
   background: var(--color-bg-card);
-  border-radius: 20rpx;
-  padding: 20rpx;
-  flex-shrink: 0;
+  border-radius: 24rpx;
+  padding: 32rpx 24rpx 24rpx;
   border: 1rpx solid var(--color-border);
-  box-shadow: 0 2rpx 8rpx rgba(0,0,0,0.03);
+  box-shadow: 0 4rpx 24rpx rgba(0,0,0,0.05);
 }
-.ability-header {
-  display: flex; justify-content: space-between; align-items: center;
-  margin-bottom: 12rpx;
+
+.radar-canvas {
+  width: 100%;
+  height: 480rpx;
+  display: block;
 }
-.ability-name {
-  font-size: 22rpx; font-weight: 600; color: var(--color-text);
+
+.radar-legend {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8rpx 24rpx;
+  padding-top: 8rpx;
 }
-.ability-level {
-  font-size: 18rpx; font-weight: 700; color: var(--color-primary);
-  background: rgba(124, 111, 247, 0.08);
-  padding: 2rpx 8rpx; border-radius: 6rpx;
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
 }
-.ability-bar-bg {
-  height: 8rpx; border-radius: 4rpx;
-  background: rgba(0, 0, 0, 0.05);
-  overflow: hidden;
-  margin-bottom: 8rpx;
+
+.legend-dot {
+  width: 14rpx;
+  height: 14rpx;
+  border-radius: 50%;
+  flex-shrink: 0;
 }
-.ability-bar-fill {
-  height: 100%; border-radius: 4rpx;
-  transition: width 0.6s ease;
+
+.legend-name {
+  font-size: 22rpx;
+  color: var(--color-text-secondary);
+  font-weight: 500;
 }
-.ability-value {
-  font-size: 32rpx; font-weight: 800; color: var(--color-text);
-  letter-spacing: -1rpx; line-height: 1;
+
+.legend-value {
+  font-size: 22rpx;
+  color: var(--color-text);
+  font-weight: 700;
 }
 
 /* ===== 训练计划 ===== */
@@ -328,7 +336,6 @@
 .cat-scroll { white-space: nowrap; padding-left: 36rpx; }
 .cat-card-list { display: inline-flex; gap: 14rpx; padding-right: 36rpx; }
 
-/* 精简卡片 — 只保留封面+时长+标题 */
 .cat-card {
   display: inline-flex; flex-direction: column; width: 220rpx;
   background: var(--color-bg-card); border-radius: 20rpx; overflow: hidden;

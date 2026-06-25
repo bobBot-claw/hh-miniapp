@@ -1,4 +1,4 @@
-<!--pages/index/index.wxml - 首页 v4.2 - 练习卡片精简-->
+<!--pages/index/index.wxml - 首页 v4.3 - 能力值雷达图-->
 <view class="page-index">
   <view wx:if="{{loading}}" class="loading-container">
     <text class="text-secondary">加载中...</text>
@@ -134,7 +134,7 @@
           </view>
         </view>
 
-        <!-- ═══ 能力值 ═══ -->
+        <!-- ═══ 能力值雷达图 ═══ -->
         <view class="abilities-section" wx:if="{{abilities.length}}">
           <view class="section-title-row">
             <text class="section-title-md">能力值</text>
@@ -143,20 +143,20 @@
               <text class="section-more-icon">›</text>
             </view>
           </view>
-          <scroll-view scroll-x class="abilities-scroll" enhanced="{{true}}" show-scrollbar="{{false}}">
-            <view class="abilities-row">
-              <view class="ability-card" wx:for="{{abilities}}" wx:key="key">
-                <view class="ability-header">
-                  <text class="ability-name">{{item.name}}</text>
-                  <text class="ability-level">Lv.{{item.level}}</text>
-                </view>
-                <view class="ability-bar-bg">
-                  <view class="ability-bar-fill" style="width: {{item.value}}%; background: {{item.color}};"></view>
-                </view>
-                <text class="ability-value">{{item.value}}</text>
+          <view class="radar-card">
+            <canvas 
+              type="2d" 
+              id="abilityRadar" 
+              class="radar-canvas"
+            ></canvas>
+            <view class="radar-legend">
+              <view class="legend-item" wx:for="{{abilities}}" wx:key="key">
+                <view class="legend-dot" style="background: {{item.color}};"></view>
+                <text class="legend-name">{{item.name}}</text>
+                <text class="legend-value">{{item.value}}</text>
               </view>
             </view>
-          </scroll-view>
+          </view>
         </view>
 
         <!-- ═══ 训练计划 ═══ -->
