@@ -1,5 +1,29 @@
-/* pages/exercise/list/list.wxss - 运动列表 - 浅色 */
+/* pages/exercise/list/list.wxss - 运动列表 v2.2 - 加入计划入口 */
 .page-exercise-list { min-height: 100vh; background: var(--color-bg); }
+
+/* 训练计划入口 */
+.plan-entry {
+  display: flex; align-items: center; justify-content: space-between;
+  margin: 20rpx 36rpx 8rpx; padding: 24rpx 28rpx;
+  background: linear-gradient(135deg, rgba(124, 111, 247, 0.08), rgba(78, 205, 196, 0.06));
+  border-radius: 20rpx; border: 1rpx solid rgba(124, 111, 247, 0.12);
+}
+.plan-entry-left { display: flex; align-items: center; gap: 20rpx; }
+.plan-entry-icon {
+  width: 64rpx; height: 64rpx; border-radius: 16rpx;
+  background: var(--color-primary);
+  display: flex; align-items: center; justify-content: center;
+}
+.plan-entry-icon-text { font-size: 22rpx; font-weight: 700; color: #fff; }
+.plan-entry-text { display: flex; flex-direction: column; gap: 4rpx; }
+.plan-entry-title { font-size: 28rpx; font-weight: 700; color: var(--color-text); }
+.plan-entry-sub { font-size: 22rpx; color: var(--color-text-secondary); }
+.plan-entry-go {
+  width: 16rpx; height: 16rpx;
+  border-right: 3rpx solid var(--color-text-tertiary);
+  border-top: 3rpx solid var(--color-text-tertiary);
+  transform: rotate(45deg);
+}
 
 .category-scroll { white-space: nowrap; padding: 20rpx 36rpx; }
 .category-list { display: inline-flex; gap: 12rpx; }
@@ -15,7 +39,7 @@
   box-shadow: 0 4rpx 16rpx rgba(124, 111, 247, 0.2);
 }
 
-.exercise-scroll { height: calc(100vh - 100rpx); }
+.exercise-scroll { height: calc(100vh - 200rpx); }
 .exercise-grid { display: flex; flex-wrap: wrap; gap: 16rpx; padding: 0 36rpx 40rpx; }
 .exercise-card {
   width: calc(50% - 8rpx); background: var(--color-bg-card);

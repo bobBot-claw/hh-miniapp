@@ -1,4 +1,4 @@
-// pages/exercise/list/list.js - 运动分类列表 v2.0
+// pages/exercise/list/list.js - 运动分类列表 v2.2 - 加入训练计划入口
 const api = require('../../../utils/api')
 
 Page({
@@ -57,5 +57,9 @@ Page({
   onExerciseTap(e) {
     const { id } = e.currentTarget.dataset
     wx.navigateTo({ url: `/pages/exercise/detail/detail?id=${id}` })
+  },
+
+  onViewPlans() {
+    wx.navigateTo({ url: '/pages/plan/list/list' })
   }
 })

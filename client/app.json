@@ -8,7 +8,9 @@
     "pages/meditation/player/player",
     "pages/profile/index/index",
     "pages/profile/onboarding/onboarding",
-    "pages/profile/stats/stats"
+    "pages/profile/stats/stats",
+    "pages/plan/list/list",
+    "pages/plan/detail/detail"
   ],
   "window": {
     "navigationBarBackgroundColor": "#f5f6fa",

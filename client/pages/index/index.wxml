@@ -84,6 +84,37 @@
           </scroll-view>
         </view>
 
+        <!-- ═══ 训练计划 ═══ -->
+
+        <view class="plan-section">
+          <view class="section-title-row">
+            <text class="section-title-md">训练计划</text>
+            <view class="section-more" bindtap="onViewAllPlans">
+              <text class="section-more-text">全部</text>
+              <text class="section-more-icon">›</text>
+            </view>
+          </view>
+          <scroll-view scroll-x class="plan-scroll" enhanced="{{true}}" show-scrollbar="{{false}}">
+            <view class="plan-cards-row">
+              <view 
+                wx:for="{{planList}}" 
+                wx:key="id"
+                class="plan-card-mini"
+                data-id="{{item.id}}"
+                bindtap="onPlanTap"
+              >
+                <view class="plan-mini-cover" style="background: {{item.cover_gradient}}">
+                  <text class="plan-mini-title">{{item.title}}</text>
+                  <text class="plan-mini-sub">{{item.duration_days}}天 · {{item.difficulty}}</text>
+                </view>
+                <view class="plan-mini-tags">
+                  <text wx:for="{{item.problem_tags}}" wx:for-item="tag" wx:key="*this" class="plan-mini-tag">{{tag}}</text>
+                </view>
+              </view>
+            </view>
+          </scroll-view>
+        </view>
+
         <!-- ═══ 第二屏起：分类分区推荐 ═══ -->
 
         <view class="page-break"></view>

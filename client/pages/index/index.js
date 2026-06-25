@@ -1,6 +1,7 @@
-// pages/index/index.js - 首页 v3.2 - 精简+悬浮TabBar
+// pages/index/index.js - 首页 v3.3 - 加入训练计划
 const api = require('../../utils/api')
 const util = require('../../utils/util')
+const { getRecommendedPlans } = require('../../utils/plans')
 
 Page({
   data: {
@@ -13,7 +14,8 @@ Page({
     moreCategories: [],
     showMore: false,
     meditationRecommend: null,
-    hasProfile: false
+    hasProfile: false,
+    planList: [],
   },
 
   onLoad() {
@@ -35,6 +37,9 @@ Page({
     const greeting = util.getGreeting()
     this.setData({ greeting })
 
+    // 加载训练计划（不需要API，本地数据）
+    this.loadPlans()
+
     try {
       const app = getApp()
       if (!app.globalData.token) await app.login()
@@ -46,11 +51,20 @@ Page({
     }
   },
 
+  loadPlans() {
+    const profile = getApp().globalData.userProfile
+    const problemTags = profile ? (profile.problem_tags || []) : []
+    const planList = getRecommendedPlans(problemTags)
+    this.setData({ planList })
+  },
+
   async loadProfile() {
     try {
       const profile = await api.getProfile()
       getApp().globalData.userProfile = profile
       this.setData({ hasProfile: !!profile })
+      // 重新加载计划（基于用户画像）
+      this.loadPlans()
     } catch (err) {
       this.setData({ hasProfile: false })
     }
@@ -94,6 +108,15 @@ Page({
   onCardTap(e) {
     const { id } = e.currentTarget.dataset
     wx.navigateTo({ url: `/pages/exercise/detail/detail?id=${id}` }) 
+  },
+
+  onPlanTap(e) {
+    const { id } = e.currentTarget.dataset
+    wx.navigateTo({ url: `/pages/plan/detail/detail?id=${id}` })
+  },
+
+  onViewAllPlans() {
+    wx.navigateTo({ url: '/pages/plan/list/list' })
   },
 
   onMeditationTap() {
