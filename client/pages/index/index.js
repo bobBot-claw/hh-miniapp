@@ -1,13 +1,19 @@
-// pages/index/index.js - 首页 v3.3 - 加入训练计划
+// pages/index/index.js - 首页 v4.0 - 活跃计划替换今日训练
 const api = require('../../utils/api')
 const util = require('../../utils/util')
-const { getRecommendedPlans } = require('../../utils/plans')
+const { getRecommendedPlans, getPlanDetail } = require('../../utils/plans')
+const { exercises, meditations } = require('../../utils/mock-data')
 
 Page({
   data: {
     loading: true,
     greeting: '',
+    // 原始今日训练（无活跃计划时显示）
     primaryRecommend: null,
+    // 活跃计划（有计划时替换今日训练）
+    activePlan: null,
+    todayInfo: null, // 当天训练的富化信息
+    // 其他
     userStats: null,
     weekStats: null,
     categorySections: [],
@@ -26,6 +32,8 @@ Page({
     if (typeof this.getTabBar === 'function' && this.getTabBar()) {
       this.getTabBar().setData({ selected: 0 })
     }
+    // 每次显示都刷新活跃计划（从详情页回来可能已完成一天）
+    this.loadActivePlan()
   },
 
   onPullDownRefresh() {
@@ -37,8 +45,8 @@ Page({
     const greeting = util.getGreeting()
     this.setData({ greeting })
 
-    // 加载训练计划（不需要API，本地数据）
     this.loadPlans()
+    this.loadActivePlan()
 
     try {
       const app = getApp()
@@ -58,12 +66,98 @@ Page({
     this.setData({ planList })
   },
 
+  loadActivePlan() {
+    const app = getApp()
+    let activePlan = app.globalData.activePlan
+
+    if (!activePlan) {
+      try {
+        activePlan = wx.getStorageSync('activePlan') || null
+        if (activePlan) app.globalData.activePlan = activePlan
+      } catch (e) {}
+    }
+
+    if (!activePlan || !activePlan.planId) {
+      this.setData({ activePlan: null, todayInfo: null })
+      return
+    }
+
+    const planDetail = getPlanDetail(activePlan.planId)
+    if (!planDetail) {
+      this.setData({ activePlan: null, todayInfo: null })
+      return
+    }
+
+    const completedDays = activePlan.completedDays || []
+    const totalDays = planDetail.duration_days
+    const progressPercent = Math.round((completedDays.length / totalDays) * 100)
+    const currentDayNum = completedDays.length + 1
+
+    // 找到当天信息
+    let todayInfo = null
+    let currentPhaseTitle = ''
+    for (const phase of planDetail.phases) {
+      for (const day of phase.daily) {
+        if (day.day === currentDayNum) {
+          currentPhaseTitle = phase.title
+          // 富化练习名称
+          const exerciseNames = day.exercises.map(eid => {
+            const ex = exercises.find(e => e.id === eid)
+            return ex ? ex.title : eid
+          })
+          const meditationName = day.meditation
+            ? (meditations.find(m => m.id === day.meditation) || {}).title || null
+            : null
+          todayInfo = {
+            dayNum: currentDayNum,
+            title: day.title,
+            durationText: day.duration_text,
+            exerciseNames,
+            meditationName,
+            phaseTitle: currentPhaseTitle,
+          }
+          break
+        }
+      }
+      if (todayInfo) break
+    }
+
+    // 计划已完成
+    if (currentDayNum > totalDays) {
+      this.setData({
+        activePlan: {
+          ...activePlan,
+          planTitle: planDetail.title,
+          planGradient: planDetail.cover_gradient,
+          totalDays,
+          completedDays,
+          progressPercent: 100,
+          isCompleted: true,
+        },
+        todayInfo: null,
+      })
+      return
+    }
+
+    this.setData({
+      activePlan: {
+        ...activePlan,
+        planTitle: planDetail.title,
+        planGradient: planDetail.cover_gradient,
+        totalDays,
+        completedDays,
+        progressPercent,
+        isCompleted: false,
+      },
+      todayInfo,
+    })
+  },
+
   async loadProfile() {
     try {
       const profile = await api.getProfile()
       getApp().globalData.userProfile = profile
       this.setData({ hasProfile: !!profile })
-      // 重新加载计划（基于用户画像）
       this.loadPlans()
     } catch (err) {
       this.setData({ hasProfile: false })
@@ -99,15 +193,30 @@ Page({
     }
   },
 
+  // === 事件处理 ===
+
   onPrimaryTap() {
     const item = this.data.primaryRecommend
     if (!item) return
     wx.navigateTo({ url: `/pages/exercise/detail/detail?id=${item.id}` })
   },
 
+  onPlanContinue() {
+    const activePlan = this.data.activePlan
+    if (!activePlan) return
+    wx.navigateTo({ url: `/pages/plan/detail/detail?id=${activePlan.planId}` })
+  },
+
+  onPlanCompleteTap() {
+    // 查看完成的计划
+    const activePlan = this.data.activePlan
+    if (!activePlan) return
+    wx.navigateTo({ url: `/pages/plan/detail/detail?id=${activePlan.planId}` })
+  },
+
   onCardTap(e) {
     const { id } = e.currentTarget.dataset
-    wx.navigateTo({ url: `/pages/exercise/detail/detail?id=${id}` }) 
+    wx.navigateTo({ url: `/pages/exercise/detail/detail?id=${id}` })
   },
 
   onPlanTap(e) {

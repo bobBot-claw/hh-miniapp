@@ -17,9 +17,13 @@
       </view>
       <view class="hero-stat-divider"></view>
       <view class="hero-stat">
-        <text class="stat-value">{{plan.problem_tags.length}}</text>
-        <text class="stat-label">问题</text>
+        <text class="stat-value">{{totalProgress}}%</text>
+        <text class="stat-label">进度</text>
       </view>
+    </view>
+    <!-- 进度条 -->
+    <view class="hero-progress-bar" wx:if="{{started}}">
+      <view class="hero-progress-fill" style="width: {{totalProgress}}%"></view>
     </view>
   </view>
 
@@ -59,14 +63,17 @@
     <view 
       wx:for="{{enrichedPhases[currentPhaseIndex].daily}}" 
       wx:key="day"
-      class="day-card {{currentDayIndex === index ? 'expanded' : ''}}"
+      class="day-card {{currentDayIndex === index ? 'expanded' : ''}} {{completedDays.indexOf(item.day) >= 0 ? 'day-completed' : ''}}"
       data-index="{{index}}"
       bindtap="onDayTap"
     >
       <view class="day-header">
         <view class="day-left">
-          <view class="day-number">Day {{item.day}}</view>
-          <text class="day-title">{{item.title}}</text>
+          <view class="day-number {{completedDays.indexOf(item.day) >= 0 ? 'day-number-done' : ''}}">
+            <text wx:if="{{completedDays.indexOf(item.day) >= 0}}" class="day-check">✓</text>
+            <text wx:else>Day {{item.day}}</text>
+          </view>
+          <text class="day-title {{completedDays.indexOf(item.day) >= 0 ? 'day-title-done' : ''}}">{{item.title}}</text>
         </view>
         <view class="day-right">
           <text class="day-duration">{{item.duration_text}}</text>

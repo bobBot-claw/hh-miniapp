@@ -1,4 +1,4 @@
-<!--pages/index/index.wxml - 首页 v3.2 - 精简+悬浮TabBar-->
+<!--pages/index/index.wxml - 首页 v4.0 - 活跃计划卡片-->
 <view class="page-index">
   <!-- 加载状态 -->
   <view wx:if="{{loading}}" class="loading-container">
@@ -36,19 +36,108 @@
           </view>
         </view>
 
-        <!-- 今日训练 -->
-        <view class="today-section">
+        <!-- ═══ 第一屏核心区：活跃计划 OR 今日训练 ═══ -->
+
+        <!-- 情况1：有活跃计划 → 显示计划进度卡片 -->
+        <view class="today-section" wx:if="{{activePlan && !activePlan.isCompleted}}">
+          <view class="section-title-row">
+            <text class="section-title-lg">今日计划</text>
+            <view class="section-more" bindtap="onPlanContinue">
+              <text class="section-more-icon">›</text>
+            </view>
+          </view>
+
+          <view class="plan-hero-card" bindtap="onPlanContinue">
+            <view class="plan-hero-cover" style="background: {{activePlan.planGradient}}">
+              <!-- 顶部：计划名 + 阶段 -->
+              <view class="plan-hero-top">
+                <text class="plan-hero-name">{{activePlan.planTitle}}</text>
+                <text class="plan-hero-phase">{{todayInfo.phaseTitle}}</text>
+              </view>
+
+              <!-- 中部：当天信息 -->
+              <view class="plan-hero-day">
+                <view class="plan-hero-daynum">
+                  <text class="plan-hero-daynum-label">DAY</text>
+                  <text class="plan-hero-daynum-value">{{todayInfo.dayNum}}</text>
+                </view>
+                <view class="plan-hero-day-info">
+                  <text class="plan-hero-day-title">{{todayInfo.title}}</text>
+                  <text class="plan-hero-day-duration">{{todayInfo.durationText}}</text>
+                </view>
+                <view class="plan-hero-start-btn">
+                  <text>继续训练</text>
+                </view>
+              </view>
+
+              <!-- 底部：进度条 -->
+              <view class="plan-hero-progress">
+                <view class="progress-bar-bg">
+                  <view class="progress-bar-fill" style="width: {{activePlan.progressPercent}}%"></view>
+                </view>
+                <view class="progress-info">
+                  <text class="progress-label">{{activePlan.completedDays.length}}/{{activePlan.totalDays}}天</text>
+                  <text class="progress-percent">{{activePlan.progressPercent}}%</text>
+                </view>
+              </view>
+            </view>
+
+            <!-- 练习预览（卡片下方） -->
+            <view class="plan-hero-exercises">
+              <view class="plan-exercise-chip" wx:for="{{todayInfo.exerciseNames}}" wx:key="*this">
+                <text>{{item}}</text>
+              </view>
+              <view class="plan-exercise-chip plan-meditation-chip" wx:if="{{todayInfo.meditationName}}">
+                <text>{{todayInfo.meditationName}}</text>
+              </view>
+            </view>
+          </view>
+        </view>
+
+        <!-- 情况2：计划已完成 → 显示完成庆祝卡片 -->
+        <view class="today-section" wx:elif="{{activePlan && activePlan.isCompleted}}">
           <view class="section-title-row">
             <text class="section-title-lg">今日训练</text>
             <view class="section-more" bindtap="onViewStats">
               <text class="section-more-icon">›</text>
             </view>
           </view>
+          <view class="plan-complete-card" bindtap="onPlanCompleteTap">
+            <view class="plan-complete-icon">
+              <text class="plan-complete-icon-text">✓</text>
+            </view>
+            <view class="plan-complete-info">
+              <text class="plan-complete-title">{{activePlan.planTitle}} 已完成！</text>
+              <text class="plan-complete-sub">太棒了，{{activePlan.totalDays}}天全部坚持下来了</text>
+            </view>
+          </view>
 
-          <!-- 大卡片 -->
+          <!-- 完成后也显示原来的今日训练推荐 -->
+          <view class="hero-card" wx:if="{{primaryRecommend}}" bindtap="onPrimaryTap" style="margin-top: 20rpx;">
+            <view class="hero-cover" style="background: {{primaryRecommend.cover_gradient || 'linear-gradient(160deg, #2d2d52, #7c6ff7, #4ecdc4)'}}">
+              <view class="hero-overlay">
+                <view class="hero-info-left">
+                  <text class="hero-duration">{{primaryRecommend.duration_text}} · {{primaryRecommend.difficulty || '入门'}}</text>
+                  <text class="hero-title">{{primaryRecommend.title}}</text>
+                </view>
+                <view class="hero-start-btn">
+                  <text>立即开始</text>
+                </view>
+              </view>
+            </view>
+          </view>
+        </view>
+
+        <!-- 情况3：无活跃计划 → 显示原来的今日训练 -->
+        <view class="today-section" wx:else>
+          <view class="section-title-row">
+            <text class="section-title-lg">今日训练</text>
+            <view class="section-more" bindtap="onViewStats">
+              <text class="section-more-icon">›</text>
+            </view>
+          </view>
           <view class="hero-card" wx:if="{{primaryRecommend}}" bindtap="onPrimaryTap">
             <view class="hero-cover" style="background: {{primaryRecommend.cover_gradient || 'linear-gradient(160deg, #2d2d52, #7c6ff7, #4ecdc4)'}}">
-              <!-- 底部信息叠加 - 左标题右按钮 -->
               <view class="hero-overlay">
                 <view class="hero-info-left">
                   <text class="hero-duration">{{primaryRecommend.duration_text}} · {{primaryRecommend.difficulty || '入门'}}</text>
@@ -99,13 +188,17 @@
               <view 
                 wx:for="{{planList}}" 
                 wx:key="id"
-                class="plan-card-mini"
+                class="plan-card-mini {{activePlan && activePlan.planId === item.id ? 'plan-active' : ''}}"
                 data-id="{{item.id}}"
                 bindtap="onPlanTap"
               >
                 <view class="plan-mini-cover" style="background: {{item.cover_gradient}}">
                   <text class="plan-mini-title">{{item.title}}</text>
                   <text class="plan-mini-sub">{{item.duration_days}}天 · {{item.difficulty}}</text>
+                  <!-- 进行中标识 -->
+                  <view class="plan-mini-badge" wx:if="{{activePlan && activePlan.planId === item.id}}">
+                    <text>进行中</text>
+                  </view>
                 </view>
                 <view class="plan-mini-tags">
                   <text wx:for="{{item.problem_tags}}" wx:for-item="tag" wx:key="*this" class="plan-mini-tag">{{tag}}</text>
@@ -120,9 +213,7 @@
         <view class="page-break"></view>
 
         <view class="category-sections">
-          <!-- 每个分类分区 -->
           <view wx:for="{{categorySections}}" wx:key="key" class="category-section">
-            <!-- 分区头部 -->
             <view class="cat-header">
               <view class="cat-title-wrap">
                 <text class="cat-title">{{item.label}}</text>
@@ -132,7 +223,6 @@
               </view>
             </view>
 
-            <!-- 横滑卡片 -->
             <scroll-view scroll-x class="cat-scroll" enhanced="{{true}}" show-scrollbar="{{false}}">
               <view class="cat-card-list">
                 <view
@@ -161,7 +251,6 @@
             </scroll-view>
           </view>
 
-          <!-- 更多抽屉 -->
           <view class="drawer-section">
             <view class="drawer-toggle" bindtap="onToggleDrawer">
               <text class="drawer-toggle-text">{{showMore ? '收起' : '更多推荐'}}</text>
@@ -228,7 +317,6 @@
           </view>
         </view>
 
-        <!-- 底部留白给悬浮TabBar -->
         <view style="height: 160rpx;"></view>
       </scroll-view>
     </block>

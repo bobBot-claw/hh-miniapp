@@ -8,6 +8,10 @@ App({
     this.globalData.token = 'mock-token'
     this.globalData.userInfo = mockData.mockUser
     this.globalData.userProfile = mockData.defaultProfile
+    // 恢复活跃计划
+    try {
+      this.globalData.activePlan = wx.getStorageSync('activePlan') || null
+    } catch (e) {}
   },
 
   globalData: {
@@ -16,7 +20,8 @@ App({
     systemInfo: null,
     apiBase: 'https://api.hh-miniapp.com',
     token: null,
-    useMock: true  // 设为 false 连接真实后端
+    useMock: true,  // 设为 false 连接真实后端
+    activePlan: null, // 当前进行中的训练计划
   },
 
   getSystemInfo() {

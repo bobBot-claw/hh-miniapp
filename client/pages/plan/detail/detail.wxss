@@ -35,6 +35,7 @@
   display: flex;
   align-items: center;
   gap: 32rpx;
+  margin-bottom: 16rpx;
 }
 
 .hero-stat {
@@ -58,6 +59,21 @@
   width: 2rpx;
   height: 28rpx;
   background: rgba(255, 255, 255, 0.3);
+}
+
+/* 头部进度条 */
+.hero-progress-bar {
+  height: 6rpx;
+  border-radius: 3rpx;
+  background: rgba(255, 255, 255, 0.2);
+  overflow: hidden;
+  margin-top: 8rpx;
+}
+.hero-progress-fill {
+  height: 100%;
+  border-radius: 3rpx;
+  background: #fff;
+  transition: width 0.4s ease;
 }
 
 /* 描述 */
@@ -152,6 +168,10 @@
   box-shadow: 0 1rpx 8rpx rgba(0, 0, 0, 0.03);
 }
 
+.day-card.day-completed {
+  opacity: 0.65;
+}
+
 .day-header {
   display: flex;
   align-items: center;
@@ -178,10 +198,25 @@
   color: var(--color-primary);
 }
 
+.day-number-done {
+  background: #00b894 !important;
+  color: #fff !important;
+}
+
+.day-check {
+  font-size: 28rpx;
+  font-weight: 900;
+}
+
 .day-title {
   font-size: 28rpx;
   font-weight: 600;
   color: var(--text-primary);
+}
+
+.day-title-done {
+  text-decoration: line-through;
+  color: var(--text-tertiary);
 }
 
 .day-right {
