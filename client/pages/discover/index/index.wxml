@@ -1,5 +1,5 @@
-<!--pages/discover/index/index.wxml - 发现页（知识+冥想）-->
-<view class="page-discover">
+<!--pages/discover/index/index.wxml - 发现页 v3.0 — 深空沉浸-->
+<view class="page-discover deep-bg">
   <view wx:if="{{loading}}" class="loading-container">
     <text class="text-secondary">加载中...</text>
   </view>
@@ -12,18 +12,16 @@
       </view>
       <view class="knowledge-list">
         <view
-          wx:for="{{knowledge}}"
-          wx:key="id"
-          class="knowledge-card"
-          data-id="{{item.id}}"
-          bindtap="onKnowledgeTap"
+          wx:for="{{knowledge}}" wx:key="id"
+          class="knowledge-card glow-card"
+          data-id="{{item.id}}" bindtap="onKnowledgeTap"
         >
           <view class="knowledge-tag-wrap">
-            <text class="knowledge-category-tag">{{item.category_label || item.category}}</text>
+            <text class="holo-tag">{{item.category_label || item.category}}</text>
           </view>
           <text class="knowledge-title">{{item.title}}</text>
-          <text class="knowledge-content text-secondary text-sm">{{item.content}}</text>
-          <text class="knowledge-read text-muted text-xs">{{item.read_count}} 人读过</text>
+          <text class="knowledge-content">{{item.content}}</text>
+          <text class="knowledge-read">{{item.read_count}} 人读过</text>
         </view>
       </view>
     </view>
@@ -32,23 +30,22 @@
     <view class="section">
       <view class="section-header flex-between">
         <text class="section-title">🧘 冥想</text>
-        <text class="section-more text-secondary text-sm" bindtap="onMeditationMore">更多 ›</text>
+        <text class="section-link" bindtap="onMeditationMore">更多 ›</text>
       </view>
       <scroll-view scroll-x class="meditation-scroll">
         <view class="meditation-list">
           <view
-            wx:for="{{meditations}}"
-            wx:key="id"
-            class="meditation-card"
-            data-id="{{item.id}}"
-            bindtap="onMeditationTap"
+            wx:for="{{meditations}}" wx:key="id"
+            class="meditation-card glow-card"
+            data-id="{{item.id}}" bindtap="onMeditationTap"
           >
             <view class="meditation-cover" style="background: {{item.cover_gradient || 'linear-gradient(135deg, #7c6ff7, #9d93fa)'}}">
               <text class="meditation-emoji">{{item.emoji || '🧘'}}</text>
+              <view class="med-cover-glow"></view>
             </view>
             <view class="meditation-info">
               <text class="meditation-title">{{item.title}}</text>
-              <text class="meditation-sub text-secondary text-xs">{{item.subtitle}}</text>
+              <text class="meditation-sub">{{item.subtitle}}</text>
               <text class="text-muted text-xs">⏱ {{item.duration_text}}</text>
             </view>
           </view>

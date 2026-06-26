@@ -1,56 +1,59 @@
-/* pages/meditation/list/list.wxss - 静养模块 v2.2 - 卡片精简 */
+/* pages/meditation/list/list.wxss - 静养模块 v3.0 — 深空沉浸 */
+.page-meditation-list { min-height: 100vh; }
 
-.page-meditation-list { min-height: 100vh; background: var(--color-bg); }
-
-.page-header { padding: 48rpx 36rpx 12rpx; }
-.page-title { font-size: 44rpx; font-weight: 800; display: block; margin-bottom: 8rpx; color: var(--color-text); }
-.page-subtitle { font-size: var(--font-size-base); display: block; color: var(--color-text-secondary); }
+.page-header {
+  position: relative; padding: 48rpx 36rpx 12rpx; overflow: hidden;
+}
+.header-glow {
+  position: absolute; top: -20%; left: 30%;
+  width: 300rpx; height: 300rpx;
+  background: radial-gradient(circle, rgba(9,132,227,0.12) 0%, transparent 70%);
+  pointer-events: none;
+}
+.page-title {
+  font-size: 44rpx; font-weight: 800; display: block; margin-bottom: 8rpx;
+  color: var(--color-text);
+  text-shadow: 0 0 30rpx rgba(124,111,247,0.3);
+}
+.page-subtitle {
+  font-size: var(--font-size-base); display: block;
+  color: var(--color-text-secondary);
+}
 
 .tag-scroll { white-space: nowrap; padding: 16rpx 36rpx 20rpx; }
 .tag-list { display: inline-flex; gap: 12rpx; }
-.tag-item {
-  display: inline-flex; padding: 12rpx 28rpx; border-radius: 24rpx;
-  background: var(--color-bg-card); color: var(--color-text-secondary);
-  font-size: var(--font-size-sm); font-weight: 500;
-  border: 1rpx solid var(--color-border);
-}
-.tag-item.tag-active {
-  background: var(--color-primary); color: white;
-  border-color: var(--color-primary);
-  box-shadow: 0 4rpx 16rpx rgba(124, 111, 247, 0.2);
-}
 
 .meditation-scroll { height: calc(100vh - 240rpx); padding: 0 36rpx; }
-.meditation-grid { display: flex; flex-direction: column; gap: 16rpx; }
+.meditation-list { display: flex; flex-direction: column; gap: 16rpx; }
 
-.meditation-card {
-  display: flex; flex-direction: row; background: var(--color-bg-card);
-  border-radius: 24rpx; overflow: hidden;
-  border: 1rpx solid var(--color-border);
-  box-shadow: 0 2rpx 8rpx rgba(0,0,0,0.03);
+/* 冥想卡片 — 水平布局 */
+.med-card {
+  display: flex; flex-direction: row; overflow: hidden;
 }
-.meditation-cover {
+.med-card-cover {
   width: 140rpx; min-height: 140rpx;
-  display: flex; flex-direction: column; justify-content: center; align-items: center;
+  display: flex; justify-content: center; align-items: center;
   flex-shrink: 0; position: relative;
 }
-.meditation-duration-badge {
+.med-card-badge {
   font-size: 20rpx; color: rgba(255,255,255,0.8);
-  background: rgba(0,0,0,0.2); padding: 2rpx 12rpx; border-radius: 12rpx;
+  background: rgba(0,0,0,0.25); padding: 2rpx 12rpx; border-radius: 12rpx;
 }
-
-.meditation-info {
+.med-card-ripple {
+  position: absolute; inset: 0;
+  background: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.08) 0%, transparent 70%);
+  animation: glow-pulse 4s ease-in-out infinite;
+  pointer-events: none;
+}
+.med-card-info {
   flex: 1; padding: 20rpx 24rpx;
   display: flex; flex-direction: column; justify-content: center;
 }
-.meditation-title { font-size: var(--font-size-base); font-weight: 700; color: var(--color-text); }
+.med-card-title { font-size: var(--font-size-base); font-weight: 700; color: var(--color-text); }
 
 /* 空状态 */
 .empty-state { display: flex; flex-direction: column; align-items: center; padding: 120rpx 60rpx; }
-.empty-state .empty-text { font-size: var(--font-size-base); color: var(--color-text-secondary); }
+.empty-state .empty-text { font-size: var(--font-size-base); color: var(--color-text-muted); }
 
 .text-secondary { color: var(--color-text-secondary); }
-.text-muted { color: var(--color-text-muted); }
-.text-xs { font-size: var(--font-size-xs); }
-.text-sm { font-size: var(--font-size-sm); }
 .loading-container { display: flex; justify-content: center; align-items: center; height: 40vh; }

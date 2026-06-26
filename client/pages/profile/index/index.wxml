@@ -1,77 +1,84 @@
-<!--pages/profile/index/index.wxml - 我的 v2.1-->
-<view class="page-profile">
+<!--pages/profile/index/index.wxml - 我的 v3.0 — 深空沉浸-->
+<view class="page-profile deep-bg">
   <view wx:if="{{loading}}" class="loading-container">
     <text class="text-secondary">加载中...</text>
   </view>
 
   <scroll-view wx:else scroll-y class="profile-scroll">
     <!-- 新用户引导 -->
-    <view wx:if="{{showOnboarding}}" class="onboarding-banner">
-      <view class="onboarding-content">
-        <text class="onboarding-title">欢迎来到 HH</text>
-        <text class="onboarding-desc">完成问卷，获取个性化运动计划</text>
-        <view class="btn-primary" bindtap="onStartOnboarding">
-          <text>开始评估</text>
-        </view>
+    <view wx:if="{{showOnboarding}}" class="onboarding-card glow-card">
+      <view class="onboard-glow"></view>
+      <text class="onboard-emoji">🚀</text>
+      <text class="onboard-title">欢迎来到 HH</text>
+      <text class="onboard-desc">完成问卷，获取个性化运动计划</text>
+      <view class="cta-holo" bindtap="onStartOnboarding">
+        <text class="cta-holo-text">开始评估</text>
       </view>
     </view>
 
-    <!-- 用户信息 -->
+    <!-- 用户信息 — 全息名片 -->
     <view class="profile-header" wx:if="{{profile}}">
-      <view class="avatar-wrap">
+      <view class="avatar-orb">
+        <view class="avatar-halo"></view>
         <text class="avatar-emoji">🏃</text>
       </view>
       <view class="user-info">
         <text class="user-name">{{profile.nickname || '健康探索者'}}</text>
-        <text class="user-level text-secondary text-sm">Lv.{{stats.level || 1}} · 已运动 {{stats.total_exercises || 0}} 次</text>
+        <text class="user-level">Lv.{{stats.level || 1}} · 已运动 {{stats.total_exercises || 0}} 次</text>
       </view>
     </view>
 
-    <!-- 能力值面板 -->
-    <view class="stats-panel" wx:if="{{stats}}" bindtap="onViewStats">
-      <view class="stats-header flex-between">
+    <!-- 能力值面板 — 迷你能量球 -->
+    <view class="stats-panel glow-card" wx:if="{{stats}}" bindtap="onViewStats">
+      <view class="stats-header">
         <text class="stats-title">能力值</text>
-        <text class="stats-more text-secondary text-xs">详情 ›</text>
+        <text class="stats-link">详情 ›</text>
       </view>
-      <view class="stats-bars">
-        <view wx:for="{{stats.abilities}}" wx:key="key" class="stat-row">
-          <text class="stat-emoji">{{item.emoji}}</text>
-          <text class="stat-name">{{item.name}}</text>
-          <view class="stat-bar-bg">
-            <view class="stat-bar-fill" style="width: {{item.value}}%; background: {{item.color}};"></view>
-          </view>
-          <text class="stat-value">{{item.value}}</text>
+      <view class="mini-orbs">
+        <view wx:for="{{stats.abilities}}" wx:key="key" class="mini-orb">
+          <view class="mini-orb-sphere" style="
+            background: radial-gradient(circle at 35% 30%, #fff 0%, {{item.color}} 45%, {{item.color}}88 100%);
+            box-shadow: 0 0 16rpx {{item.color}}66, inset 0 0 6rpx rgba(255,255,255,0.3);
+          "></view>
+          <text class="mini-orb-val" style="color: {{item.color}};">{{item.value}}</text>
+          <text class="mini-orb-name">{{item.emoji}}</text>
         </view>
       </view>
     </view>
 
-    <!-- 成就展示 -->
-    <view class="achievements-section" wx:if="{{achievements.length > 0}}" bindtap="onViewAchievements">
-      <view class="section-header flex-between">
-        <text class="section-title">成就</text>
-        <text class="text-secondary text-xs">{{achievements.length}} 个 ›</text>
+    <!-- 成就展示 — 全息徽章 -->
+    <view class="ach-section glow-card" wx:if="{{achievements.length > 0}}" bindtap="onViewAchievements">
+      <view class="ach-header">
+        <text class="ach-title">成就</text>
+        <text class="ach-count">{{achievements.length}} 个 ›</text>
       </view>
-      <scroll-view scroll-x class="achievement-scroll">
-        <view class="achievement-list">
-          <view wx:for="{{achievements}}" wx:key="id" class="achievement-badge">
-            <text class="achievement-emoji">{{item.emoji}}</text>
-            <text class="achievement-name text-xs">{{item.name}}</text>
+      <scroll-view scroll-x class="ach-scroll">
+        <view class="ach-list">
+          <view wx:for="{{achievements}}" wx:key="id" class="ach-badge">
+            <view class="ach-badge-glow"></view>
+            <text class="ach-badge-emoji">{{item.emoji}}</text>
+            <text class="ach-badge-name">{{item.name}}</text>
           </view>
         </view>
       </scroll-view>
     </view>
 
-    <!-- 功能菜单 -->
-    <view class="menu-section">
+    <!-- 功能菜单 — 全息列表 -->
+    <view class="menu-section glow-card">
       <view class="menu-item" bindtap="onViewWeeklyReport">
+        <view class="menu-icon">📊</view>
         <text class="menu-label">每周报告</text>
         <text class="menu-arrow">›</text>
       </view>
+      <view class="menu-divider"></view>
       <view class="menu-item" bindtap="onStartOnboarding">
+        <view class="menu-icon">🔄</view>
         <text class="menu-label">重新评估</text>
         <text class="menu-arrow">›</text>
       </view>
+      <view class="menu-divider"></view>
       <view class="menu-item" bindtap="onSettings">
+        <view class="menu-icon">⚙️</view>
         <text class="menu-label">设置</text>
         <text class="menu-arrow">›</text>
       </view>

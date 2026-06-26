@@ -1,5 +1,6 @@
-<!--custom-tab-bar/index.wxml - 悬浮毛玻璃胶囊 TabBar-->
+<!--custom-tab-bar/index.wxml - 深空悬浮 TabBar v2.0-->
 <view class="float-tabbar">
+  <view class="tabbar-glow"></view>
   <view class="float-tabbar-inner">
     <view
       wx:for="{{list}}"
@@ -8,6 +9,7 @@
       data-index="{{index}}"
       bindtap="switchTab"
     >
+      <view wx:if="{{selected === index}}" class="tab-indicator"></view>
       <text class="float-tab-label">{{item.text}}</text>
     </view>
   </view>

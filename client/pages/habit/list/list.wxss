@@ -1,13 +1,12 @@
-/* pages/habit/list/list.wxss */
-.page-habit-list { min-height: 100vh; background: var(--color-bg); padding: 32rpx; }
+/* pages/habit/list/list.wxss — 深空沉浸版 */
+.page-habit-list { min-height: 100vh; padding: 32rpx; }
 .header { margin-bottom: 32rpx; }
+.page-title { font-size: 36rpx; font-weight: 700; color: var(--color-text); }
 .habit-cards { display: flex; flex-direction: column; gap: 16rpx; }
-.habit-checked { opacity: 0.6; }
+.habit-checked { opacity: 0.5; }
 .checkin-btn {
-  background: var(--color-primary);
-  color: white;
-  padding: 8rpx 24rpx;
-  border-radius: var(--radius-sm);
-  font-size: var(--font-size-sm);
-  font-weight: 600;
+  background: linear-gradient(135deg, #7c6ff7, #4ecdc4);
+  color: white; padding: 8rpx 24rpx; border-radius: var(--radius-sm);
+  font-size: var(--font-size-sm); font-weight: 600;
+  box-shadow: 0 0 12rpx rgba(124,111,247,0.2);
 }

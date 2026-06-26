@@ -1,42 +1,37 @@
-<view class="plan-list">
-  <!-- 顶部筛选 -->
+<!--pages/plan/list/list.wxml - 训练计划列表 v3.0 — 深空沉浸-->
+<view class="plan-list deep-bg">
+  <!-- 顶部筛选 — 全息标签 -->
   <scroll-view class="filter-bar" scroll-x enable-flex>
     <view 
-      wx:for="{{filterTags}}" 
-      wx:key="index"
-      class="filter-tag {{activeFilter === index ? 'active' : ''}}"
-      data-index="{{index}}"
-      bindtap="onFilterTap"
+      wx:for="{{filterTags}}" wx:key="index"
+      class="holo-tag {{activeFilter === index ? 'holo-tag-active' : ''}}"
+      data-index="{{index}}" bindtap="onFilterTap"
     >{{item}}</view>
   </scroll-view>
 
   <!-- 计划卡片 -->
   <view class="plan-cards">
     <view 
-      wx:for="{{plans}}" 
-      wx:key="id"
-      class="plan-card"
-      data-id="{{item.id}}"
-      bindtap="onPlanTap"
+      wx:for="{{plans}}" wx:key="id"
+      class="plan-card glow-card"
+      data-id="{{item.id}}" bindtap="onPlanTap"
     >
       <!-- 封面区 -->
       <view class="plan-cover" style="background: {{item.cover_gradient}}">
-        <view class="plan-cover-content">
-          <text class="plan-title">{{item.title}}</text>
-          <text class="plan-subtitle">{{item.duration_days}}天 · {{item.difficulty}}</text>
-        </view>
+        <view class="plan-cover-glow"></view>
+        <text class="plan-title">{{item.title}}</text>
+        <text class="plan-subtitle">{{item.duration_days}}天 · {{item.difficulty}}</text>
       </view>
 
       <!-- 信息区 -->
       <view class="plan-info">
         <text class="plan-desc">{{item.description}}</text>
-        <!-- 能力值收益 -->
         <view class="plan-gains">
-          <text wx:if="{{item.abilities_gain.posture}}" class="gain-badge gain-posture">体态 +{{item.abilities_gain.posture}}</text>
-          <text wx:if="{{item.abilities_gain.core}}" class="gain-badge gain-core">核心 +{{item.abilities_gain.core}}</text>
-          <text wx:if="{{item.abilities_gain.flexibility}}" class="gain-badge gain-flex">柔韧 +{{item.abilities_gain.flexibility}}</text>
-          <text wx:if="{{item.abilities_gain.vitality}}" class="gain-badge gain-vitality">活力 +{{item.abilities_gain.vitality}}</text>
-          <text wx:if="{{item.abilities_gain.mind_body}}" class="gain-badge gain-mind">身心 +{{item.abilities_gain.mind_body}}</text>
+          <text wx:if="{{item.abilities_gain.posture}}" class="holo-tag">🦴 体态 +{{item.abilities_gain.posture}}</text>
+          <text wx:if="{{item.abilities_gain.core}}" class="holo-tag">💪 核心 +{{item.abilities_gain.core}}</text>
+          <text wx:if="{{item.abilities_gain.flexibility}}" class="holo-tag">🧘 柔韧 +{{item.abilities_gain.flexibility}}</text>
+          <text wx:if="{{item.abilities_gain.vitality}}" class="holo-tag">⚡ 活力 +{{item.abilities_gain.vitality}}</text>
+          <text wx:if="{{item.abilities_gain.mind_body}}" class="holo-tag">🧠 身心 +{{item.abilities_gain.mind_body}}</text>
         </view>
       </view>
     </view>

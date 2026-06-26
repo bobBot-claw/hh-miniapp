@@ -1,3 +1,4 @@
-<view style="padding:32rpx;min-height:100vh;background:var(--color-bg);">
-  <text class="text-md" style="font-weight:700;">Mixer 页面开发中...</text>
+<!--pages/soundscape/mixer/mixer.wxml - 占位深空版-->
+<view class="deep-bg" style="padding:32rpx;min-height:100vh;">
+  <text style="font-weight:700;color:var(--color-text);">Mixer 页面开发中...</text>
 </view>

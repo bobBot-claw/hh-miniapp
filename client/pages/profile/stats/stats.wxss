@@ -1,39 +1,66 @@
-/* pages/profile/stats/stats.wxss - 能力值详情 - 浅色 */
-.page-stats { min-height: 100vh; background: var(--color-bg); }
+/* pages/profile/stats/stats.wxss - 能力值详情 v3.0 — 深空沉浸 */
+.page-stats { min-height: 100vh; }
 .stats-scroll { height: 100vh; }
 
 .stats-header { padding: 40rpx 36rpx 20rpx; }
-.stats-title { font-size: 42rpx; font-weight: 800; color: var(--color-text); display: block; margin-bottom: 8rpx; }
-.stats-subtitle { display: block; }
-
-.ability-list { padding: 0 36rpx; }
-.ability-card {
-  background: var(--color-bg-card); border-radius: 24rpx;
-  padding: 28rpx 32rpx; margin-bottom: 16rpx;
-  border: 1rpx solid var(--color-border);
-  box-shadow: 0 2rpx 12rpx rgba(0,0,0,0.04);
+.stats-title {
+  font-size: 42rpx; font-weight: 800; color: var(--color-text);
+  display: block; margin-bottom: 8rpx;
+  text-shadow: 0 0 30rpx rgba(124,111,247,0.2);
 }
-.ability-top { display: flex; align-items: center; margin-bottom: 16rpx; gap: 16rpx; }
-.ability-emoji { font-size: 36rpx; }
-.ability-info { flex: 1; }
-.ability-name { font-size: 28rpx; font-weight: 700; color: var(--color-text); display: block; }
-.ability-level { display: block; margin-top: 2rpx; }
-.ability-value { font-size: 36rpx; font-weight: 800; color: var(--color-primary); }
+.stats-subtitle { display: block; color: var(--color-text-secondary); font-size: 24rpx; }
 
-.ability-bar-bg { height: 14rpx; background: var(--color-bg-subtle); border-radius: 7rpx; overflow: hidden; }
-.ability-bar-fill { height: 100%; border-radius: 7rpx; transition: width 0.5s ease; }
-.ability-hint { display: block; margin-top: 8rpx; }
+/* 能力值大球 */
+.ability-orbs { padding: 0 36rpx; }
+.ability-orb-card { padding: 28rpx 32rpx; margin-bottom: 16rpx; }
 
-.summary-section {
-  margin: 20rpx 36rpx 0; background: var(--color-bg-card);
-  border-radius: 24rpx; padding: 28rpx 32rpx;
-  border: 1rpx solid var(--color-border);
+.aoc-top { display: flex; align-items: center; margin-bottom: 16rpx; gap: 16rpx; }
+
+/* 能量球包裹 */
+.aoc-orb-wrap {
+  position: relative; width: 100rpx; height: 100rpx;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
 }
+.aoc-halo {
+  position: absolute; inset: -20rpx; border-radius: 50%;
+  filter: blur(10rpx);
+}
+.aoc-sphere { border-radius: 50%; position: relative; z-index: 2; }
+.aoc-ring {
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80rpx; height: 80rpx; border-radius: 50%;
+  border: 2rpx solid; animation: orb-pulse 3s ease-out infinite;
+}
+@keyframes orb-pulse { 0%{transform:translate(-50%,-50%) scale(0.8);opacity:.6}100%{transform:translate(-50%,-50%) scale(1.8);opacity:0} }
+
+.aoc-info { flex: 1; }
+.aoc-name { font-size: 28rpx; font-weight: 700; color: var(--color-text); display: block; }
+.aoc-level { font-size: 22rpx; color: var(--color-text-secondary); display: block; margin-top: 2rpx; }
+.aoc-value { font-size: 40rpx; font-weight: 900; }
+
+/* 进度条 */
+.aoc-bar-bg { height: 6rpx; background: rgba(255,255,255,0.06); border-radius: 3rpx; overflow: hidden; }
+.aoc-bar-fill { height: 100%; border-radius: 3rpx; transition: width 0.5s ease; box-shadow: 0 0 8rpx rgba(124,111,247,0.2); }
+.aoc-hint { display: block; margin-top: 8rpx; font-size: 22rpx; color: var(--color-text-muted); }
+
+/* 总体统计 */
+.summary-section { margin: 20rpx 36rpx 0; padding: 28rpx 32rpx; }
 .summary-title { font-size: 30rpx; font-weight: 700; color: var(--color-text); margin-bottom: 20rpx; display: block; }
 .summary-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16rpx; }
-.summary-item { text-align: center; padding: 20rpx; background: var(--color-bg-subtle); border-radius: 16rpx; }
-.summary-value { font-size: 40rpx; font-weight: 800; color: var(--color-primary); display: block; margin-bottom: 4rpx; }
-.summary-label { display: block; }
+.summary-item {
+  text-align: center; padding: 20rpx;
+  background: rgba(255,255,255,0.03); border-radius: 16rpx;
+  border: 1rpx solid var(--color-border);
+}
+.summary-value {
+  font-size: 40rpx; font-weight: 800;
+  background: linear-gradient(135deg, #7c6ff7, #4ecdc4);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  display: block; margin-bottom: 4rpx;
+}
+.summary-label { display: block; font-size: 22rpx; color: var(--color-text-secondary); }
 
 .text-secondary { color: var(--color-text-secondary); }
 .text-muted { color: var(--color-text-muted); }
