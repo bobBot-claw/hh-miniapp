@@ -1,8 +1,17 @@
-// pages/index/index.js - 首页 v5.0 - 3A游戏级沉浸式主界面
+// pages/index/index.js - 首页 v6.0 — 五力能量球+超级沉浸背景
 const api = require('../../utils/api')
 const util = require('../../utils/util')
 const { getRecommendedPlans, getPlanDetail } = require('../../utils/plans')
 const { exercises, meditations } = require('../../utils/mock-data')
+
+// 能力值默认配置
+const ABILITY_CONFIG = [
+  { key: 'posture',     name: '体态健康', emoji: '🦴', color: '#7c6ff7' },
+  { key: 'core',        name: '核心稳定', emoji: '💪', color: '#00b894' },
+  { key: 'flexibility', name: '柔韧性',   emoji: '🧘', color: '#0984e3' },
+  { key: 'vitality',    name: '活力值',   emoji: '⚡', color: '#f39c12' },
+  { key: 'mind_body',   name: '身心平衡', emoji: '🧠', color: '#e84393' },
+]
 
 Page({
   data: {
@@ -19,7 +28,6 @@ Page({
     meditationRecommend: null,
     hasProfile: false,
     planList: [],
-    // 沉浸式首屏
     heroCollapsed: false,
     heroTitle: '',
     heroSub: '',
@@ -27,7 +35,6 @@ Page({
   },
 
   _coachTimer: null,
-  _radarReady: false,
 
   onLoad() {
     this.initPage()
@@ -45,13 +52,6 @@ Page({
     this.initPage().then(() => wx.stopPullDownRefresh())
   },
 
-  onReady() {
-    this._radarReady = true
-    if (this.data.abilities.length) {
-      this.drawRadarChart()
-    }
-  },
-
   onHide() {
     this._stopCoachAnimation()
   },
@@ -59,10 +59,6 @@ Page({
   onUnload() {
     this._stopCoachAnimation()
   },
-
-  // ═══════════════════════════════════════════════
-  // 教练动作循环动画
-  // ═══════════════════════════════════════════════
 
   _startCoachAnimation() {
     this._coachTimer = setInterval(() => {
@@ -78,20 +74,13 @@ Page({
     }
   },
 
-  // ═══════════════════════════════════════════════
-  // 滚动处理 — 第一屏淡出
-  // ═══════════════════════════════════════════════
-
   onHomeScroll(e) {
     const scrollTop = e.detail.scrollTop
-    const threshold = 100
-    const collapsed = scrollTop > threshold
+    const collapsed = scrollTop > 100
     if (collapsed !== this.data.heroCollapsed) {
       this.setData({ heroCollapsed: collapsed })
     }
   },
-
-  // ═══════════════════════════════════════════════
 
   async initPage() {
     this.setData({ loading: true })
@@ -178,13 +167,9 @@ Page({
     if (currentDayNum > totalDays) {
       this.setData({
         activePlan: {
-          ...activePlan,
-          planTitle: planDetail.title,
+          ...activePlan, planTitle: planDetail.title,
           planGradient: planDetail.cover_gradient,
-          totalDays,
-          completedDays,
-          progressPercent: 100,
-          isCompleted: true,
+          totalDays, completedDays, progressPercent: 100, isCompleted: true,
         },
         todayInfo: null,
       })
@@ -194,22 +179,14 @@ Page({
 
     this.setData({
       activePlan: {
-        ...activePlan,
-        planTitle: planDetail.title,
+        ...activePlan, planTitle: planDetail.title,
         planGradient: planDetail.cover_gradient,
-        totalDays,
-        completedDays,
-        progressPercent,
-        isCompleted: false,
+        totalDays, completedDays, progressPercent, isCompleted: false,
       },
       todayInfo,
     })
     this._updateHeroInfo()
   },
-
-  // ═══════════════════════════════════════════════
-  // 更新沉浸式首屏信息
-  // ═══════════════════════════════════════════════
 
   _updateHeroInfo() {
     const { activePlan, todayInfo, primaryRecommend } = this.data
@@ -220,20 +197,11 @@ Page({
         heroSub: `DAY ${todayInfo.dayNum} · ${todayInfo.durationText}`,
       })
     } else if (activePlan && activePlan.isCompleted) {
-      this.setData({
-        heroTitle: '今日已完成',
-        heroSub: `${activePlan.planTitle} 全部完成`,
-      })
+      this.setData({ heroTitle: '今日已完成', heroSub: `${activePlan.planTitle} 全部完成` })
     } else if (primaryRecommend) {
-      this.setData({
-        heroTitle: primaryRecommend.title,
-        heroSub: primaryRecommend.duration_text,
-      })
+      this.setData({ heroTitle: primaryRecommend.title, heroSub: primaryRecommend.duration_text })
     } else {
-      this.setData({
-        heroTitle: '准备开始',
-        heroSub: '找到适合你的训练',
-      })
+      this.setData({ heroTitle: '准备开始', heroSub: '找到适合你的训练' })
     }
   },
 
@@ -262,7 +230,7 @@ Page({
         categorySections: sections.slice(0, 3),
         moreCategories: sections.slice(3),
         meditationRecommend: res.meditation || null,
-        loading: false
+        loading: false,
       })
       this._updateHeroInfo()
     } catch (err) {
@@ -272,206 +240,49 @@ Page({
     }
   },
 
+  // ═══════════════════════════════════════════════
+  // 能力值 → 能量球数据
+  // ═══════════════════════════════════════════════
+
   async loadAbilities() {
+    let rawData = []
     try {
       const res = await api.getStats()
-      const abilities = (res.stats && res.stats.abilities) || []
-      this.setData({ abilities })
+      rawData = (res.stats && res.stats.abilities) || []
     } catch (err) {
-      this.setData({
-        abilities: [
-          { key: 'posture', name: '体态健康', value: 0, color: '#7c6ff7', level: 0 },
-          { key: 'core', name: '核心稳定', value: 0, color: '#00b894', level: 0 },
-          { key: 'flexibility', name: '柔韧性', value: 0, color: '#0984e3', level: 0 },
-          { key: 'vitality', name: '活力值', value: 0, color: '#f39c12', level: 0 },
-          { key: 'mind_body', name: '身心平衡', value: 0, color: '#e84393', level: 0 },
-        ]
-      })
+      rawData = []
     }
-    setTimeout(() => { this.drawRadarChart() }, 300)
-  },
 
-  // ═══════════════════════════════════════════════
-  // 雷达图绘制
-  // ═══════════════════════════════════════════════
+    // 合并配置 + 计算能量球参数
+    const abilities = ABILITY_CONFIG.map((cfg, i) => {
+      const serverData = rawData.find(a => a.key === cfg.key) || rawData[i] || {}
+      const value = serverData.value || 0
+      const ratio = Math.min(value / 100, 1) // 0~1
 
-  drawRadarChart() {
-    if (!this._radarReady) return
-    const abilities = this.data.abilities
-    if (!abilities || !abilities.length) return
+      // 球体大小：最小60rpx，最大120rpx，按值比例
+      const orbSize = Math.round(60 + ratio * 60)
+      // 光晕大小：与球体成正比
+      const glowSize = Math.round(15 + ratio * 30)
+      // 脉冲速度：值越高越快（越有活力）
+      const pulseSpeed = (4 - ratio * 2).toFixed(1) // 4s~2s
 
-    const query = wx.createSelectorQuery().in(this)
-    query.select('#abilityRadar')
-      .fields({ node: true, size: true })
-      .exec((res) => {
-        if (!res || !res[0] || !res[0].node) {
-          console.warn('Canvas node not found, retrying...')
-          setTimeout(() => { this.drawRadarChart() }, 500)
-          return
-        }
-        const canvas = res[0].node
-        const ctx = canvas.getContext('2d')
-
-        let dpr = 2
-        try { dpr = wx.getWindowInfo().pixelRatio || 2 } catch(e) {
-          try { dpr = wx.getSystemInfoSync().pixelRatio || 2 } catch(e2) {}
-        }
-
-        const width = res[0].width
-        const height = res[0].height
-
-        canvas.width = width * dpr
-        canvas.height = height * dpr
-        ctx.scale(dpr, dpr)
-
-        this._renderRadar(ctx, width, height, abilities)
-      })
-  },
-
-  _renderRadar(ctx, w, h, abilities) {
-    const cx = w / 2
-    const cy = h / 2
-    const maxR = Math.min(cx, cy) - 30
-    const n = abilities.length
-    const angleStep = (Math.PI * 2) / n
-    const startAngle = -Math.PI / 2
-
-    ctx.clearRect(0, 0, w, h)
-
-    // 网格层
-    const gridLevels = [0.25, 0.5, 0.75, 1.0]
-    gridLevels.forEach((level, li) => {
-      const r = maxR * level
-      ctx.beginPath()
-      for (let i = 0; i <= n; i++) {
-        const angle = startAngle + (i % n) * angleStep
-        const x = cx + r * Math.cos(angle)
-        const y = cy + r * Math.sin(angle)
-        if (i === 0) ctx.moveTo(x, y)
-        else ctx.lineTo(x, y)
+      return {
+        ...cfg,
+        value,
+        level: serverData.level || 0,
+        orbSize,
+        glowSize,
+        pulseSpeed,
       }
-      ctx.closePath()
-      ctx.strokeStyle = li === 3 ? 'rgba(0,0,0,0.10)' : 'rgba(0,0,0,0.05)'
-      ctx.lineWidth = 1
-      ctx.stroke()
     })
 
-    // 轴线
-    for (let i = 0; i < n; i++) {
-      const angle = startAngle + i * angleStep
-      ctx.beginPath()
-      ctx.moveTo(cx, cy)
-      ctx.lineTo(cx + maxR * Math.cos(angle), cy + maxR * Math.sin(angle))
-      ctx.strokeStyle = 'rgba(0,0,0,0.06)'
-      ctx.lineWidth = 1
-      ctx.stroke()
-    }
-
-    // 数据多边形
-    const values = abilities.map(a => {
-      const v = Math.min(a.value / 100, 1)
-      return v < 0.05 ? 0.05 : v
-    })
-
-    ctx.beginPath()
-    for (let i = 0; i <= n; i++) {
-      const idx = i % n
-      const angle = startAngle + idx * angleStep
-      const r = maxR * values[idx]
-      const x = cx + r * Math.cos(angle)
-      const y = cy + r * Math.sin(angle)
-      if (i === 0) ctx.moveTo(x, y)
-      else ctx.lineTo(x, y)
-    }
-    ctx.closePath()
-
-    const gradient = ctx.createRadialGradient(cx, cy, 0, cx, cy, maxR)
-    gradient.addColorStop(0, 'rgba(124, 111, 247, 0.06)')
-    gradient.addColorStop(0.6, 'rgba(124, 111, 247, 0.15)')
-    gradient.addColorStop(1, 'rgba(124, 111, 247, 0.28)')
-    ctx.fillStyle = gradient
-    ctx.fill()
-
-    ctx.beginPath()
-    for (let i = 0; i <= n; i++) {
-      const idx = i % n
-      const angle = startAngle + idx * angleStep
-      const r = maxR * values[idx]
-      const x = cx + r * Math.cos(angle)
-      const y = cy + r * Math.sin(angle)
-      if (i === 0) ctx.moveTo(x, y)
-      else ctx.lineTo(x, y)
-    }
-    ctx.closePath()
-    ctx.strokeStyle = 'rgba(124, 111, 247, 0.55)'
-    ctx.lineWidth = 2
-    ctx.stroke()
-
-    // 顶点圆点
-    for (let i = 0; i < n; i++) {
-      const angle = startAngle + i * angleStep
-      const r = maxR * values[i]
-      const x = cx + r * Math.cos(angle)
-      const y = cy + r * Math.sin(angle)
-      const color = abilities[i].color
-
-      ctx.beginPath()
-      ctx.arc(x, y, 7, 0, Math.PI * 2)
-      ctx.fillStyle = color + '30'
-      ctx.fill()
-
-      ctx.beginPath()
-      ctx.arc(x, y, 4.5, 0, Math.PI * 2)
-      ctx.fillStyle = color
-      ctx.fill()
-
-      ctx.beginPath()
-      ctx.arc(x, y, 1.8, 0, Math.PI * 2)
-      ctx.fillStyle = '#ffffff'
-      ctx.fill()
-    }
-
-    // 维度标签
-    ctx.textAlign = 'center'
-    ctx.textBaseline = 'middle'
-    for (let i = 0; i < n; i++) {
-      const angle = startAngle + i * angleStep
-      const labelR = maxR + 20
-      const lx = cx + labelR * Math.cos(angle)
-      const ly = cy + labelR * Math.sin(angle)
-
-      ctx.font = '500 10px sans-serif'
-      ctx.fillStyle = '#6b6b82'
-      ctx.fillText(abilities[i].name, lx, ly - 6)
-
-      ctx.font = 'bold 12px sans-serif'
-      ctx.fillStyle = abilities[i].color
-      ctx.fillText(String(abilities[i].value), lx, ly + 7)
-    }
-
-    // 中心综合分
-    const avg = Math.round(abilities.reduce((s, a) => s + a.value, 0) / n)
-
-    ctx.beginPath()
-    ctx.arc(cx, cy, 22, 0, Math.PI * 2)
-    ctx.fillStyle = 'rgba(124, 111, 247, 0.06)'
-    ctx.fill()
-
-    ctx.textAlign = 'center'
-    ctx.textBaseline = 'middle'
-    ctx.font = 'bold 18px sans-serif'
-    ctx.fillStyle = '#7c6ff7'
-    ctx.fillText(String(avg), cx, cy - 2)
-
-    ctx.font = '500 8px sans-serif'
-    ctx.fillStyle = '#a0a0b4'
-    ctx.fillText('综合', cx, cy + 11)
+    this.setData({ abilities })
   },
 
-  // === 事件处理 ===
+  // === 事件 ===
 
   onHeroStart() {
-    const { activePlan, todayInfo, primaryRecommend } = this.data
+    const { activePlan, primaryRecommend } = this.data
     if (activePlan && !activePlan.isCompleted) {
       wx.navigateTo({ url: `/pages/plan/detail/detail?id=${activePlan.planId}` })
     } else if (primaryRecommend) {
@@ -486,25 +297,23 @@ Page({
   },
 
   onPlanContinue() {
-    const activePlan = this.data.activePlan
-    if (!activePlan) return
-    wx.navigateTo({ url: `/pages/plan/detail/detail?id=${activePlan.planId}` })
+    const p = this.data.activePlan
+    if (!p) return
+    wx.navigateTo({ url: `/pages/plan/detail/detail?id=${p.planId}` })
   },
 
   onPlanCompleteTap() {
-    const activePlan = this.data.activePlan
-    if (!activePlan) return
-    wx.navigateTo({ url: `/pages/plan/detail/detail?id=${activePlan.planId}` })
+    const p = this.data.activePlan
+    if (!p) return
+    wx.navigateTo({ url: `/pages/plan/detail/detail?id=${p.planId}` })
   },
 
   onCardTap(e) {
-    const { id } = e.currentTarget.dataset
-    wx.navigateTo({ url: `/pages/exercise/detail/detail?id=${id}` })
+    wx.navigateTo({ url: `/pages/exercise/detail/detail?id=${e.currentTarget.dataset.id}` })
   },
 
   onPlanTap(e) {
-    const { id } = e.currentTarget.dataset
-    wx.navigateTo({ url: `/pages/plan/detail/detail?id=${id}` })
+    wx.navigateTo({ url: `/pages/plan/detail/detail?id=${e.currentTarget.dataset.id}` })
   },
 
   onViewAllPlans() {
@@ -521,10 +330,6 @@ Page({
 
   onViewStats() {
     wx.navigateTo({ url: '/pages/profile/stats/stats' })
-  },
-
-  onProfileTap() {
-    wx.switchTab({ url: '/pages/profile/index/index' })
   },
 
   startOnboarding() {
