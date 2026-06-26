@@ -1,4 +1,4 @@
-<!--pages/index/index.wxml - 首页 v5.1 - 沉浸式主界面修复-->
+<!--pages/index/index.wxml - 首页 v5.2 - 教练图片显示修复-->
 
 <view class="page-index">
   <view wx:if="{{loading}}" class="loading-container">
@@ -34,21 +34,22 @@
           <view class="bokeh bokeh-5"></view>
         </view>
 
-        <!-- 教练全息投影层 -->
+        <!-- 教练全息投影层 — 简单flex居中 -->
         <view class="coach-layer">
           <image 
-            class="coach-hologram {{coachPoseIdx === 0 ? 'coach-visible' : 'coach-hidden'}}"
-            src="https://prd-tc-intl-cdn.codebanana.com/cb-user-uploads/192f18df-2385-4543-bf65-96d46e1b2425/assets/coach/coach_hologram_0.jpeg"
-            mode="widthFix"
+            class="coach-img {{coachPoseIdx === 0 ? 'coach-visible' : 'coach-hidden'}}"
+            src="/assets/coach_hologram_0.jpeg"
+            mode="aspectFit"
           />
           <image 
-            class="coach-hologram {{coachPoseIdx === 1 ? 'coach-visible' : 'coach-hidden'}}"
-            src="https://prd-tc-intl-cdn.codebanana.com/cb-user-uploads/192f18df-2385-4543-bf65-96d46e1b2425/assets/coach/coach_hologram_standing_0.jpeg"
-            mode="widthFix"
+            class="coach-img {{coachPoseIdx === 1 ? 'coach-visible' : 'coach-hidden'}}"
+            src="/assets/coach_hologram_standing_0.jpeg"
+            mode="aspectFit"
           />
-          <!-- 地面光圈 -->
-          <view class="holo-ground"></view>
         </view>
+
+        <!-- 地面光圈（独立于教练层） -->
+        <view class="holo-ground"></view>
 
         <!-- 顶部状态条（毛玻璃） -->
         <view class="hero-top-bar">
@@ -60,20 +61,17 @@
 
         <!-- 底部信息+操作区（可点击） -->
         <view class="hero-bottom-panel">
-          <!-- 今日训练信息 -->
           <view class="hero-info">
             <text class="hero-today-label">今日训练</text>
             <text class="hero-today-title">{{heroTitle}}</text>
             <text class="hero-today-sub">{{heroSub}}</text>
           </view>
-          <!-- CTA按钮 -->
           <view class="hero-cta-wrap" bindtap="onHeroStart">
             <view class="hero-cta-btn">
               <view class="cta-glow"></view>
               <text class="cta-text">开始训练</text>
             </view>
           </view>
-          <!-- 下滑提示 -->
           <view class="hero-scroll-hint {{heroCollapsed ? 'hint-hidden' : ''}}">
             <view class="scroll-arrow"></view>
             <text class="scroll-hint-text">上滑查看更多</text>
@@ -81,19 +79,17 @@
         </view>
       </view>
 
-      <!-- 滚动内容区 — 整页滚动 -->
+      <!-- 滚动内容区 -->
       <scroll-view 
         scroll-y 
         class="home-scroll" 
         enhanced="{{true}}"
         bindscroll="onHomeScroll"
       >
-        <!-- 占位撑开第一屏高度 -->
         <view class="scroll-spacer"></view>
 
         <!-- ═══ 活跃计划 OR 今日训练 ═══ -->
 
-        <!-- 有活跃计划 -->
         <view class="today-section" wx:if="{{activePlan && !activePlan.isCompleted}}">
           <view class="section-title-row">
             <text class="section-title-lg">今日计划</text>
@@ -101,7 +97,6 @@
               <text class="section-more-icon">›</text>
             </view>
           </view>
-
           <view class="plan-hero-card" bindtap="onPlanContinue">
             <view class="plan-hero-cover" style="background: {{activePlan.planGradient}}">
               <view class="plan-hero-top">
@@ -148,7 +143,6 @@
           </view>
         </view>
 
-        <!-- 计划已完成 -->
         <view class="today-section" wx:elif="{{activePlan && activePlan.isCompleted}}">
           <view class="section-title-row">
             <text class="section-title-lg">今日训练</text>
@@ -178,7 +172,6 @@
           </view>
         </view>
 
-        <!-- 无活跃计划 -->
         <view class="today-section" wx:elif="{{!activePlan}}">
           <view class="section-title-row">
             <text class="section-title-lg">今日训练</text>
