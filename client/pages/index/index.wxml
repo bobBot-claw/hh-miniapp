@@ -1,289 +1,82 @@
-<!--pages/index/index.wxml - 首页 v6.0 — 五力能量球+超级沉浸背景-->
+<!--pages/index/index.wxml - 首页 v7.0 — 极简·沉浸·行动-->
 
-<view class="page-index">
-  <view wx:if="{{loading}}" class="loading-container">
-    <text class="text-secondary">加载中...</text>
+<view class="page">
+  <!-- 新用户 -->
+  <view wx:if="{{!hasProfile}}" class="full-center">
+    <text class="emoji-xl">🏃</text>
+    <text class="title-lg">开始你的行动</text>
+    <text class="sub">回答几个问题，定制专属计划</text>
+    <view class="cta" bindtap="startOnboarding"><text>开始</text></view>
   </view>
 
-  <block wx:else>
-    <view wx:if="{{!hasProfile}}" class="onboarding-prompt">
-      <view class="onboarding-card">
-        <text class="onboarding-title">欢迎来到 HH</text>
-        <text class="onboarding-desc">回答几个问题，定制专属运动计划</text>
-        <view class="btn-primary" bindtap="startOnboarding">
-          <text>开始设置</text>
+  <!-- 老用户 -->
+  <block wx:if="{{hasProfile}}">
+    <!-- 全屏沉浸 — 呼吸光 + 行动 -->
+    <view class="hero {{heroCollapsed ? 'hero-hide' : ''}}">
+      <view class="breath-light"></view>
+
+      <!-- 能力值 — 极简横条 -->
+      <view class="ability-row">
+        <view wx:for="{{abilities}}" wx:key="key" class="ab">
+          <view class="ab-dot" style="background: {{item.color}}; opacity: {{0.3 + item.value / 150}};"></view>
         </view>
+      </view>
+
+      <!-- 核心行动 -->
+      <view class="action-zone" bindtap="onHeroStart">
+        <text class="action-label">今日训练</text>
+        <text class="action-title">{{heroTitle}}</text>
+        <text class="action-sub">{{heroSub}}</text>
+      </view>
+
+      <!-- CTA -->
+      <view class="cta hero-cta" bindtap="onHeroStart">
+        <text>开始</text>
+      </view>
+
+      <!-- 滑动提示 -->
+      <view class="scroll-hint {{heroCollapsed ? 'hint-hide' : ''}}">
+        <view class="scroll-dot"></view>
       </view>
     </view>
 
-    <block wx:if="{{hasProfile}}">
-      <!-- ═══════════════════════════════════════════
-           全屏沉浸层 — 能量球 + 深空背景
-           pointer-events: none 让触摸穿透
-           ═══════════════════════════════════════════ -->
-      <view class="immersive-hero {{heroCollapsed ? 'hero-collapsed' : ''}}">
+    <!-- 下方 — 最少信息 -->
+    <scroll-view scroll-y class="scroll" bindscroll="onHomeScroll">
+      <view class="scroll-gap"></view>
 
-        <!-- L1: 深空渐变底 -->
-        <view class="space-bg"></view>
-
-        <!-- L2: 网格地面（透视空间感） -->
-        <view class="grid-floor"></view>
-
-        <!-- L3: 呼吸星尘 -->
-        <view class="stardust">
-          <view class="star star-1"></view>
-          <view class="star star-2"></view>
-          <view class="star star-3"></view>
-          <view class="star star-4"></view>
-          <view class="star star-5"></view>
-          <view class="star star-6"></view>
-          <view class="star star-7"></view>
-          <view class="star star-8"></view>
+      <!-- 活跃计划摘要 -->
+      <view wx:if="{{activePlan && !activePlan.isCompleted && todayInfo}}" class="plan-row" bindtap="onPlanContinue">
+        <view class="plan-left">
+          <text class="plan-day">DAY {{todayInfo.dayNum}}</text>
+          <text class="plan-title">{{activePlan.planTitle}}</text>
         </view>
-
-        <!-- L4: 大范围呼吸光晕 -->
-        <view class="ambient-glow ambient-1"></view>
-        <view class="ambient-glow ambient-2"></view>
-
-        <!-- L5: 五力能量球 -->
-        <view class="orbs-field">
-          <view 
-            wx:for="{{abilities}}" 
-            wx:key="key"
-            class="orb orb-pos-{{item.key}}"
-          >
-            <!-- 外光晕 -->
-            <view class="orb-halo" style="background: radial-gradient(circle, {{item.color}}55 0%, {{item.color}}00 70%);"></view>
-            <!-- 球体 -->
-            <view class="orb-sphere" style="
-              background: radial-gradient(circle at 35% 30%, #fff 0%, {{item.color}} 45%, {{item.color}}88 100%);
-              box-shadow: 0 0 {{item.glowSize || 20}}rpx {{item.color}}88, 0 0 {{item.glowSize * 2 || 40}}rpx {{item.color}}44, inset 0 0 10rpx rgba(255,255,255,0.3);
-              width: {{item.orbSize || 80}}rpx; height: {{item.orbSize || 80}}rpx;
-            "></view>
-            <!-- 脉冲环 -->
-            <view class="orb-ring" style="border-color: {{item.color}}66; animation-duration: {{item.pulseSpeed || 3}}s;"></view>
-            <!-- 数值 -->
-            <text class="orb-value" style="color: {{item.color}};">{{item.value}}</text>
-            <!-- 名称 -->
-            <text class="orb-name">{{item.emoji}} {{item.name}}</text>
-          </view>
-        </view>
-
-        <!-- L6: 教练全息投影 -->
-        <view class="coach-layer">
-          <image 
-            class="coach-img {{coachPoseIdx === 0 ? 'coach-visible' : 'coach-hidden'}}"
-            src="/assets/coach_hologram_0.jpeg"
-            mode="aspectFit"
-          />
-          <image 
-            class="coach-img {{coachPoseIdx === 1 ? 'coach-visible' : 'coach-hidden'}}"
-            src="/assets/coach_hologram_standing_0.jpeg"
-            mode="aspectFit"
-          />
-        </view>
-        <view class="holo-ground"></view>
-
-        <!-- 顶部状态条 -->
-        <view class="hero-top-bar">
-          <view class="hero-top-left">
-            <text class="hero-stat-chip">🔥 连续{{userStats.streak || 0}}天</text>
-            <text class="hero-stat-chip">⚡ 今日{{userStats.total_minutes || 0}}min</text>
-          </view>
-        </view>
-
-        <!-- 底部面板 -->
-        <view class="hero-bottom-panel">
-          <view class="hero-info">
-            <text class="hero-today-label">今日训练</text>
-            <text class="hero-today-title">{{heroTitle}}</text>
-            <text class="hero-today-sub">{{heroSub}}</text>
-          </view>
-          <view class="hero-cta-wrap" bindtap="onHeroStart">
-            <view class="hero-cta-btn">
-              <view class="cta-glow"></view>
-              <text class="cta-text">开始训练</text>
-            </view>
-          </view>
-          <view class="hero-scroll-hint {{heroCollapsed ? 'hint-hidden' : ''}}">
-            <view class="scroll-arrow"></view>
-            <text class="scroll-hint-text">上滑查看更多</text>
-          </view>
-        </view>
+        <text class="plan-go">›</text>
       </view>
 
-      <!-- 滚动内容区 -->
-      <scroll-view 
-        scroll-y 
-        class="home-scroll" 
-        enhanced="{{true}}"
-        bindscroll="onHomeScroll"
-      >
-        <view class="scroll-spacer"></view>
+      <view wx:elif="{{activePlan && activePlan.isCompleted}}" class="plan-row" bindtap="onPlanCompleteTap">
+        <text class="plan-title">✓ {{activePlan.planTitle}} 已完成</text>
+      </view>
 
-        <!-- ═══ 活跃计划 ═══ -->
-        <view class="today-section" wx:if="{{activePlan && !activePlan.isCompleted}}">
-          <view class="section-title-row">
-            <text class="section-title-lg">今日计划</text>
-            <view class="section-more" bindtap="onPlanContinue">
-              <text class="section-more-icon">›</text>
-            </view>
-          </view>
-          <view class="plan-hero-card" bindtap="onPlanContinue">
-            <view class="plan-hero-cover" style="background: {{activePlan.planGradient}}">
-              <view class="plan-hero-top">
-                <text class="plan-hero-name">{{activePlan.planTitle}}</text>
-                <text class="plan-hero-phase">{{todayInfo.phaseTitle}}</text>
-              </view>
-              <view class="plan-hero-day">
-                <view class="plan-hero-daynum">
-                  <text class="plan-hero-daynum-label">DAY</text>
-                  <text class="plan-hero-daynum-value">{{todayInfo.dayNum}}</text>
-                </view>
-                <view class="plan-hero-day-info">
-                  <text class="plan-hero-day-title">{{todayInfo.title}}</text>
-                  <text class="plan-hero-day-duration">{{todayInfo.durationText}}</text>
-                </view>
-                <view class="plan-hero-start-btn">
-                  <text>继续训练</text>
-                </view>
-              </view>
-              <view class="plan-hero-chips">
-                <view class="plan-chip" wx:for="{{todayInfo.exerciseNames}}" wx:key="*this">
-                  <text>{{item}}</text>
-                </view>
-                <view class="plan-chip plan-chip-meditation" wx:if="{{todayInfo.meditationName}}">
-                  <text>{{todayInfo.meditationName}}</text>
-                </view>
-              </view>
-            </view>
-            <view class="plan-hero-footer">
-              <view class="plan-progress-visual">
-                <view class="plan-dots">
-                  <view 
-                    wx:for="{{activePlan.totalDays}}" 
-                    wx:key="*this" 
-                    class="plan-dot {{index < activePlan.completedDays.length ? 'plan-dot-done' : ''}} {{index === activePlan.completedDays.length ? 'plan-dot-current' : ''}}"
-                  ></view>
-                </view>
-              </view>
-              <view class="plan-progress-info">
-                <text class="plan-progress-text">{{activePlan.completedDays.length}}/{{activePlan.totalDays}}天</text>
-                <text class="plan-progress-pct">{{activePlan.progressPercent}}%</text>
-              </view>
-            </view>
-          </view>
-        </view>
+      <!-- 推荐运动 — 单条 -->
+      <view wx:if="{{primaryRecommend && !activePlan}}" class="rec-row" bindtap="onPrimaryTap">
+        <text class="rec-title">{{primaryRecommend.title}}</text>
+        <text class="rec-dur">{{primaryRecommend.duration_text}}</text>
+        <text class="rec-go">›</text>
+      </view>
 
-        <view class="today-section" wx:elif="{{activePlan && activePlan.isCompleted}}">
-          <view class="section-title-row">
-            <text class="section-title-lg">今日训练</text>
-          </view>
-          <view class="plan-complete-card" bindtap="onPlanCompleteTap">
-            <view class="plan-complete-icon"><text class="plan-complete-icon-text">✓</text></view>
-            <view class="plan-complete-info">
-              <text class="plan-complete-title">{{activePlan.planTitle}} 已完成！</text>
-              <text class="plan-complete-sub">{{activePlan.totalDays}}天全部坚持下来了</text>
-            </view>
-          </view>
-        </view>
+      <!-- 训练计划入口 -->
+      <view class="link-row" bindtap="onViewAllPlans">
+        <text>训练计划</text>
+        <text class="link-go">›</text>
+      </view>
 
-        <view class="today-section" wx:elif="{{!activePlan}}">
-          <view class="section-title-row">
-            <text class="section-title-lg">今日训练</text>
-          </view>
-          <view class="hero-card" wx:if="{{primaryRecommend}}" bindtap="onPrimaryTap">
-            <view class="hero-cover" style="background: {{primaryRecommend.cover_gradient || 'linear-gradient(160deg, #2d2d52, #7c6ff7, #4ecdc4)'}}">
-              <view class="hero-overlay">
-                <view class="hero-info-left">
-                  <text class="hero-duration">{{primaryRecommend.duration_text}}</text>
-                  <text class="hero-title">{{primaryRecommend.title}}</text>
-                </view>
-                <view class="hero-start-btn"><text>立即开始</text></view>
-              </view>
-            </view>
-          </view>
-        </view>
+      <!-- 静养入口 -->
+      <view wx:if="{{meditationRecommend}}" class="link-row" bindtap="onMeditationTap">
+        <text>静养 · {{meditationRecommend.title}}</text>
+        <text class="link-go">›</text>
+      </view>
 
-        <!-- ═══ 训练计划 ═══ -->
-        <view class="plan-section">
-          <view class="section-title-row">
-            <text class="section-title-md">训练计划</text>
-            <view class="section-more" bindtap="onViewAllPlans">
-              <text class="section-more-text">全部</text>
-              <text class="section-more-icon">›</text>
-            </view>
-          </view>
-          <scroll-view scroll-x class="plan-scroll" enhanced="{{true}}" show-scrollbar="{{false}}">
-            <view class="plan-cards-row">
-              <view 
-                wx:for="{{planList}}" wx:key="id"
-                class="plan-card-mini {{activePlan && activePlan.planId === item.id ? 'plan-active' : ''}}"
-                data-id="{{item.id}}" bindtap="onPlanTap"
-              >
-                <view class="plan-mini-cover" style="background: {{item.cover_gradient}}">
-                  <text class="plan-mini-title">{{item.title}}</text>
-                  <text class="plan-mini-sub">{{item.duration_days}}天 · {{item.difficulty}}</text>
-                  <view class="plan-mini-badge" wx:if="{{activePlan && activePlan.planId === item.id}}"><text>进行中</text></view>
-                </view>
-              </view>
-            </view>
-          </scroll-view>
-        </view>
-
-        <!-- ═══ 分类推荐 ═══ -->
-        <view class="page-break"></view>
-        <view class="category-sections">
-          <view wx:for="{{categorySections}}" wx:key="key" class="category-section">
-            <view class="cat-header"><text class="cat-title">{{item.label}}</text></view>
-            <scroll-view scroll-x class="cat-scroll" enhanced="{{true}}" show-scrollbar="{{false}}">
-              <view class="cat-card-list">
-                <view wx:for="{{item.exercises}}" wx:for-item="ex" wx:key="id" class="cat-card" data-id="{{ex.id}}" bindtap="onCardTap">
-                  <view class="cat-card-cover" style="background: {{ex.cover_gradient || 'linear-gradient(135deg, #7c6ff7, #4ecdc4)'}}">
-                    <text class="cat-card-duration-badge">{{ex.duration_text}}</text>
-                  </view>
-                  <view class="cat-card-body"><text class="cat-card-title">{{ex.title}}</text></view>
-                </view>
-              </view>
-            </scroll-view>
-          </view>
-          <view class="drawer-section">
-            <view class="drawer-toggle" bindtap="onToggleDrawer">
-              <text class="drawer-toggle-text">{{showMore ? '收起' : '更多推荐'}}</text>
-              <text class="drawer-toggle-icon">{{showMore ? '▲' : '▼'}}</text>
-            </view>
-            <view class="drawer-content {{showMore ? 'drawer-open' : 'drawer-closed'}}">
-              <view wx:for="{{moreCategories}}" wx:key="key" class="category-section">
-                <view class="cat-header"><text class="cat-title">{{item.label}}</text></view>
-                <scroll-view scroll-x class="cat-scroll" enhanced="{{true}}" show-scrollbar="{{false}}">
-                  <view class="cat-card-list">
-                    <view wx:for="{{item.exercises}}" wx:for-item="ex" wx:key="id" class="cat-card" data-id="{{ex.id}}" bindtap="onCardTap">
-                      <view class="cat-card-cover" style="background: {{ex.cover_gradient || 'linear-gradient(135deg, #7c6ff7, #4ecdc4)'}}">
-                        <text class="cat-card-duration-badge">{{ex.duration_text}}</text>
-                      </view>
-                      <view class="cat-card-body"><text class="cat-card-title">{{ex.title}}</text></view>
-                    </view>
-                  </view>
-                </scroll-view>
-              </view>
-            </view>
-          </view>
-        </view>
-
-        <!-- 静养入口 -->
-        <view class="section" wx:if="{{meditationRecommend}}">
-          <view class="section-title-row"><text class="section-title-md">静养</text></view>
-          <view class="meditation-card" bindtap="onMeditationTap">
-            <view class="meditation-cover" style="background: {{meditationRecommend.cover_gradient || 'linear-gradient(135deg, #7c6ff7, #9d93fa)'}}"></view>
-            <view class="meditation-info">
-              <text class="meditation-title">{{meditationRecommend.title}}</text>
-              <text class="text-sm text-muted">{{meditationRecommend.duration_text}}</text>
-            </view>
-          </view>
-        </view>
-
-        <view style="height: 160rpx;"></view>
-      </scroll-view>
-    </block>
+      <view style="height: 160rpx;"></view>
+    </scroll-view>
   </block>
 </view>

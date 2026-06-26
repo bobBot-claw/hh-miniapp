@@ -1,62 +1,32 @@
-<!--pages/exercise/list/list.wxml - 运动列表 v3.0 — 深空沉浸-->
-<view class="page-exercise-list deep-bg">
-
-  <!-- 训练计划入口 — 全息卡 -->
-  <view class="plan-entry glow-card" bindtap="onViewPlans">
-    <view class="plan-entry-glow"></view>
-    <view class="plan-entry-left">
-      <view class="plan-entry-icon">
-        <text class="plan-entry-icon-text">计划</text>
-      </view>
-      <view class="plan-entry-text">
-        <text class="plan-entry-title">系统训练计划</text>
-        <text class="plan-entry-sub">一个计划解决一个问题</text>
-      </view>
-    </view>
-    <view class="plan-entry-arrow"></view>
+<!--pages/exercise/list/list.wxml - 运动列表 v4.0 — 极简·行动-->
+<view class="page deep-bg">
+  <!-- 计划入口 -->
+  <view class="link-row" bindtap="onViewPlans">
+    <text>训练计划</text>
+    <text class="go">›</text>
   </view>
 
-  <!-- 分类标签 — 全息标签 -->
-  <scroll-view scroll-x class="category-scroll">
-    <view class="category-list">
-      <view
-        class="holo-tag {{activeCategory === '' ? 'holo-tag-active' : ''}}"
-        bindtap="onCategoryTap" data-key=""
-      >
-        <text>全部</text>
-      </view>
-      <view
-        wx:for="{{categories}}" wx:key="key"
-        class="holo-tag {{activeCategory === item.key ? 'holo-tag-active' : ''}}"
-        bindtap="onCategoryTap" data-key="{{item.key}}"
-      >
-        <text>{{item.label}}</text>
-      </view>
+  <!-- 标签 — 一行文字 -->
+  <scroll-view scroll-x class="tags">
+    <view class="tag-row">
+      <text class="tag {{activeCategory === '' ? 'tag-on' : ''}}" data-key="" bindtap="onCategoryTap">全部</text>
+      <text wx:for="{{categories}}" wx:key="key" class="tag {{activeCategory === item.key ? 'tag-on' : ''}}" data-key="{{item.key}}" bindtap="onCategoryTap">{{item.label}}</text>
     </view>
   </scroll-view>
 
-  <!-- 运动列表 -->
-  <view wx:if="{{loading}}" class="loading-container">
-    <text class="text-secondary">加载中...</text>
-  </view>
-
-  <scroll-view wx:else scroll-y class="exercise-scroll">
-    <view class="exercise-grid">
-      <view
-        wx:for="{{exercises}}" wx:key="id"
-        class="ex-card glow-card"
-        data-id="{{item.id}}" bindtap="onExerciseTap"
-      >
-        <view class="ex-card-cover" style="background: {{item.cover_gradient || 'linear-gradient(135deg, #7c6ff7, #4ecdc4)'}}">
-          <text class="ex-card-badge">{{item.duration_text || '5min'}}</text>
-          <!-- 角落光效 -->
-          <view class="ex-card-corner-glow"></view>
+  <!-- 列表 -->
+  <view wx:if="{{loading}}" class="empty"><text class="text-dim">加载中</text></view>
+  <scroll-view wx:else scroll-y class="list-scroll">
+    <view class="list">
+      <view wx:for="{{exercises}}" wx:key="id" class="item" data-id="{{item.id}}" bindtap="onExerciseTap">
+        <view class="item-cover" style="background: {{item.cover_gradient || 'linear-gradient(135deg, #7c6ff7, #4ecdc4)'}}"></view>
+        <view class="item-info">
+          <text class="item-title">{{item.title}}</text>
+          <text class="item-dur">{{item.duration_text || '5min'}}</text>
         </view>
-        <view class="ex-card-body">
-          <text class="ex-card-title">{{item.title}}</text>
-        </view>
+        <text class="item-go">›</text>
       </view>
     </view>
-    <view style="height: 160rpx;"></view>
+    <view style="height:160rpx;"></view>
   </scroll-view>
 </view>

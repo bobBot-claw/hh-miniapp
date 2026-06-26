@@ -1,40 +1,13 @@
-/* pages/discover/index/index.wxss - 发现页 v3.0 — 深空沉浸 */
-.page-discover { min-height: 100vh; }
-.discover-scroll { height: 100vh; }
-.section { padding: 32rpx 32rpx 0; }
-.section-header { margin-bottom: 24rpx; }
-.section-title { font-size: 36rpx; font-weight: 700; color: var(--color-text); }
-
-/* 知识卡片 */
-.knowledge-list { display: flex; flex-direction: column; gap: 20rpx; }
-.knowledge-card { padding: 28rpx; }
-.knowledge-tag-wrap { margin-bottom: 12rpx; }
-.knowledge-title { font-size: 30rpx; font-weight: 600; color: var(--color-text); display: block; margin-bottom: 8rpx; }
-.knowledge-content {
-  font-size: var(--font-size-sm); color: var(--color-text-secondary); line-height: 1.6;
-  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
-  margin-bottom: 12rpx;
+/* pages/discover/index/index.wxss - 发现 v4.0 */
+.page { min-height: 100vh; }
+.scroll { height: 100vh; }
+.section { padding: 32rpx 36rpx 0; }
+.sec-title { font-size: 32rpx; font-weight: 700; color: var(--text); display: block; margin-bottom: 16rpx; }
+.list { }
+.item {
+  display: flex; align-items: center; gap: 12rpx;
+  padding: 18rpx 0; border-bottom: 1rpx solid var(--line);
 }
-.knowledge-read { font-size: var(--font-size-xs); color: var(--color-text-muted); }
-
-/* 冥想横滑 */
-.meditation-scroll { white-space: nowrap; }
-.meditation-list { display: inline-flex; gap: 20rpx; padding-right: 32rpx; }
-.meditation-card { display: inline-flex; flex-direction: column; width: 280rpx; overflow: hidden; }
-.meditation-cover { height: 180rpx; display: flex; align-items: center; justify-content: center; position: relative; }
-.meditation-emoji { font-size: 64rpx; z-index: 1; }
-.med-cover-glow {
-  position: absolute; inset: 0;
-  background: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.06) 0%, transparent 70%);
-  pointer-events: none;
-}
-.meditation-info { padding: 20rpx; }
-.meditation-title { font-size: 28rpx; font-weight: 600; color: var(--color-text); display: block; margin-bottom: 6rpx; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.meditation-sub { font-size: 22rpx; color: var(--color-text-secondary); display: block; margin-bottom: 6rpx; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-
-/* 通用 */
-.flex-between { display: flex; justify-content: space-between; align-items: center; }
-.text-secondary { color: var(--color-text-secondary); }
-.text-muted { color: var(--color-text-muted); }
-.text-xs { font-size: 22rpx; }
-.loading-container { display: flex; justify-content: center; align-items: center; height: 60vh; }
+.item-title { flex: 1; font-size: 28rpx; color: var(--text); font-weight: 500; }
+.item-dur { font-size: 22rpx; color: var(--text-dim); }
+.item-go { font-size: 26rpx; color: var(--text-dim); }

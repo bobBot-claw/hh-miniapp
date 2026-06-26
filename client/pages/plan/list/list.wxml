@@ -1,39 +1,18 @@
-<!--pages/plan/list/list.wxml - 训练计划列表 v3.0 — 深空沉浸-->
-<view class="plan-list deep-bg">
-  <!-- 顶部筛选 — 全息标签 -->
-  <scroll-view class="filter-bar" scroll-x enable-flex>
-    <view 
-      wx:for="{{filterTags}}" wx:key="index"
-      class="holo-tag {{activeFilter === index ? 'holo-tag-active' : ''}}"
-      data-index="{{index}}" bindtap="onFilterTap"
-    >{{item}}</view>
+<!--pages/plan/list/list.wxml - 训练计划 v4.0 — 极简-->
+<view class="page deep-bg">
+  <scroll-view scroll-x class="tags">
+    <view class="tag-row">
+      <text wx:for="{{filterTags}}" wx:key="index" class="tag {{activeFilter === index ? 'tag-on' : ''}}" data-index="{{index}}" bindtap="onFilterTap">{{item}}</text>
+    </view>
   </scroll-view>
 
-  <!-- 计划卡片 -->
-  <view class="plan-cards">
-    <view 
-      wx:for="{{plans}}" wx:key="id"
-      class="plan-card glow-card"
-      data-id="{{item.id}}" bindtap="onPlanTap"
-    >
-      <!-- 封面区 -->
-      <view class="plan-cover" style="background: {{item.cover_gradient}}">
-        <view class="plan-cover-glow"></view>
-        <text class="plan-title">{{item.title}}</text>
-        <text class="plan-subtitle">{{item.duration_days}}天 · {{item.difficulty}}</text>
+  <view class="list">
+    <view wx:for="{{plans}}" wx:key="id" class="item" data-id="{{item.id}}" bindtap="onPlanTap">
+      <view class="item-cover" style="background: {{item.cover_gradient}}">
+        <text class="item-title">{{item.title}}</text>
+        <text class="item-sub">{{item.duration_days}}天 · {{item.difficulty}}</text>
       </view>
-
-      <!-- 信息区 -->
-      <view class="plan-info">
-        <text class="plan-desc">{{item.description}}</text>
-        <view class="plan-gains">
-          <text wx:if="{{item.abilities_gain.posture}}" class="holo-tag">🦴 体态 +{{item.abilities_gain.posture}}</text>
-          <text wx:if="{{item.abilities_gain.core}}" class="holo-tag">💪 核心 +{{item.abilities_gain.core}}</text>
-          <text wx:if="{{item.abilities_gain.flexibility}}" class="holo-tag">🧘 柔韧 +{{item.abilities_gain.flexibility}}</text>
-          <text wx:if="{{item.abilities_gain.vitality}}" class="holo-tag">⚡ 活力 +{{item.abilities_gain.vitality}}</text>
-          <text wx:if="{{item.abilities_gain.mind_body}}" class="holo-tag">🧠 身心 +{{item.abilities_gain.mind_body}}</text>
-        </view>
-      </view>
+      <text class="item-desc">{{item.description}}</text>
     </view>
   </view>
 </view>

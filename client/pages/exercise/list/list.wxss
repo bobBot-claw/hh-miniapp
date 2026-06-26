@@ -1,74 +1,31 @@
-/* pages/exercise/list/list.wxss - 运动列表 v3.0 — 深空沉浸 */
-.page-exercise-list { min-height: 100vh; }
+/* pages/exercise/list/list.wxss - 运动列表 v4.0 */
+.page { min-height: 100vh; }
 
-/* 训练计划入口 */
-.plan-entry {
-  position: relative;
+.link-row {
   display: flex; align-items: center; justify-content: space-between;
-  margin: 20rpx 36rpx 8rpx; padding: 24rpx 28rpx;
-  overflow: hidden;
+  padding: 24rpx 36rpx; font-size: 28rpx; color: var(--text);
 }
-.plan-entry-glow {
-  position: absolute; top: -50%; right: -20%;
-  width: 200rpx; height: 200rpx;
-  background: radial-gradient(circle, rgba(124,111,247,0.12) 0%, transparent 70%);
-  pointer-events: none;
-}
-.plan-entry-left { display: flex; align-items: center; gap: 20rpx; position: relative; z-index: 1; }
-.plan-entry-icon {
-  width: 64rpx; height: 64rpx; border-radius: 16rpx;
-  background: linear-gradient(135deg, #7c6ff7, #4ecdc4);
-  display: flex; align-items: center; justify-content: center;
-  box-shadow: 0 0 20rpx rgba(124,111,247,0.3);
-}
-.plan-entry-icon-text { font-size: 22rpx; font-weight: 700; color: #fff; }
-.plan-entry-text { display: flex; flex-direction: column; gap: 4rpx; }
-.plan-entry-title { font-size: 28rpx; font-weight: 700; color: var(--color-text); }
-.plan-entry-sub { font-size: 22rpx; color: var(--color-text-secondary); }
-.plan-entry-arrow {
-  width: 16rpx; height: 16rpx;
-  border-right: 3rpx solid var(--color-text-muted);
-  border-top: 3rpx solid var(--color-text-muted);
-  transform: rotate(45deg);
-  position: relative; z-index: 1;
-}
+.link-row .go { color: var(--text-dim); }
 
-/* 分类标签 */
-.category-scroll { white-space: nowrap; padding: 20rpx 36rpx; }
-.category-list { display: inline-flex; gap: 12rpx; }
+.tags { white-space: nowrap; padding: 0 36rpx 16rpx; }
+.tag-row { display: inline-flex; gap: 16rpx; }
+.tag { font-size: 24rpx; color: var(--text-dim); padding: 6rpx 0; }
+.tag-on { color: #fff; font-weight: 700; }
 
-/* 运动网格 */
-.exercise-scroll { height: calc(100vh - 200rpx); }
-.exercise-grid { display: flex; flex-wrap: wrap; gap: 16rpx; padding: 0 36rpx 40rpx; }
+.list-scroll { height: calc(100vh - 180rpx); }
+.list { padding: 0 36rpx; }
 
-/* 运动卡片 */
-.ex-card {
-  width: calc(50% - 8rpx);
-  overflow: hidden;
-  transition: transform 0.2s ease;
+.item {
+  display: flex; align-items: center; gap: 16rpx;
+  padding: 20rpx 0;
+  border-bottom: 1rpx solid var(--line);
 }
-.ex-card-cover {
-  height: 160rpx; position: relative;
-  display: flex; justify-content: center; align-items: center;
+.item-cover {
+  width: 56rpx; height: 56rpx; border-radius: 12rpx; flex-shrink: 0;
 }
-.ex-card-badge {
-  position: absolute; top: 12rpx; right: 12rpx; font-size: 20rpx;
-  background: rgba(0,0,0,0.35); color: rgba(255,255,255,0.85);
-  padding: 4rpx 14rpx; border-radius: 10rpx;
-}
-.ex-card-corner-glow {
-  position: absolute; top: 0; right: 0;
-  width: 80rpx; height: 80rpx;
-  background: radial-gradient(circle at 100% 0%, rgba(255,255,255,0.15) 0%, transparent 70%);
-  pointer-events: none;
-}
-.ex-card-body { padding: 14rpx 18rpx 16rpx; }
-.ex-card-title {
-  font-size: var(--font-size-sm); font-weight: 700; color: var(--color-text);
-  line-height: 1.4;
-  overflow: hidden; white-space: normal;
-  display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical;
-}
+.item-info { flex: 1; min-width: 0; }
+.item-title { font-size: 28rpx; font-weight: 600; color: var(--text); display: block; }
+.item-dur { font-size: 22rpx; color: var(--text-dim); }
+.item-go { font-size: 28rpx; color: var(--text-dim); flex-shrink: 0; }
 
-.text-secondary { color: var(--color-text-secondary); }
-.loading-container { display: flex; justify-content: center; align-items: center; height: 60vh; }
+.empty { display: flex; justify-content: center; padding: 120rpx 0; }

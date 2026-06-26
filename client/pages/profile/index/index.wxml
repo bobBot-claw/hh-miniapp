@@ -1,89 +1,47 @@
-<!--pages/profile/index/index.wxml - 我的 v3.0 — 深空沉浸-->
-<view class="page-profile deep-bg">
-  <view wx:if="{{loading}}" class="loading-container">
-    <text class="text-secondary">加载中...</text>
-  </view>
+<!--pages/profile/index/index.wxml - 我的 v4.0 — 极简-->
+<view class="page deep-bg">
+  <view wx:if="{{loading}}" class="empty"><text class="text-dim">加载中</text></view>
 
-  <scroll-view wx:else scroll-y class="profile-scroll">
-    <!-- 新用户引导 -->
-    <view wx:if="{{showOnboarding}}" class="onboarding-card glow-card">
-      <view class="onboard-glow"></view>
-      <text class="onboard-emoji">🚀</text>
-      <text class="onboard-title">欢迎来到 HH</text>
-      <text class="onboard-desc">完成问卷，获取个性化运动计划</text>
-      <view class="cta-holo" bindtap="onStartOnboarding">
-        <text class="cta-holo-text">开始评估</text>
-      </view>
+  <scroll-view wx:else scroll-y class="scroll">
+    <!-- 引导 -->
+    <view wx:if="{{showOnboarding}}" class="onboard">
+      <text class="emoji-xl">🚀</text>
+      <text class="title-lg">开始评估</text>
+      <text class="sub">获取个性化训练计划</text>
+      <view class="cta" bindtap="onStartOnboarding"><text>开始</text></view>
     </view>
 
-    <!-- 用户信息 — 全息名片 -->
-    <view class="profile-header" wx:if="{{profile}}">
-      <view class="avatar-orb">
-        <view class="avatar-halo"></view>
-        <text class="avatar-emoji">🏃</text>
-      </view>
+    <!-- 用户 -->
+    <view class="user" wx:if="{{profile}}">
+      <text class="user-emoji">🏃</text>
       <view class="user-info">
-        <text class="user-name">{{profile.nickname || '健康探索者'}}</text>
-        <text class="user-level">Lv.{{stats.level || 1}} · 已运动 {{stats.total_exercises || 0}} 次</text>
+        <text class="user-name">{{profile.nickname || '探索者'}}</text>
+        <text class="user-stat">Lv.{{stats.level || 1}} · {{stats.total_exercises || 0}}次</text>
       </view>
     </view>
 
-    <!-- 能力值面板 — 迷你能量球 -->
-    <view class="stats-panel glow-card" wx:if="{{stats}}" bindtap="onViewStats">
-      <view class="stats-header">
-        <text class="stats-title">能力值</text>
-        <text class="stats-link">详情 ›</text>
+    <!-- 能力值 — 横向点 -->
+    <view class="ability-bar" wx:if="{{stats}}" bindtap="onViewStats">
+      <view wx:for="{{stats.abilities}}" wx:key="key" class="ab-item">
+        <view class="ab-dot" style="background: {{item.color}}; opacity: {{0.3 + item.value / 150}};"></view>
+        <text class="ab-val" style="color: {{item.color}};">{{item.value}}</text>
       </view>
-      <view class="mini-orbs">
-        <view wx:for="{{stats.abilities}}" wx:key="key" class="mini-orb">
-          <view class="mini-orb-sphere" style="
-            background: radial-gradient(circle at 35% 30%, #fff 0%, {{item.color}} 45%, {{item.color}}88 100%);
-            box-shadow: 0 0 16rpx {{item.color}}66, inset 0 0 6rpx rgba(255,255,255,0.3);
-          "></view>
-          <text class="mini-orb-val" style="color: {{item.color}};">{{item.value}}</text>
-          <text class="mini-orb-name">{{item.emoji}}</text>
-        </view>
-      </view>
+      <text class="ab-more">›</text>
     </view>
 
-    <!-- 成就展示 — 全息徽章 -->
-    <view class="ach-section glow-card" wx:if="{{achievements.length > 0}}" bindtap="onViewAchievements">
-      <view class="ach-header">
-        <text class="ach-title">成就</text>
-        <text class="ach-count">{{achievements.length}} 个 ›</text>
-      </view>
-      <scroll-view scroll-x class="ach-scroll">
-        <view class="ach-list">
-          <view wx:for="{{achievements}}" wx:key="id" class="ach-badge">
-            <view class="ach-badge-glow"></view>
-            <text class="ach-badge-emoji">{{item.emoji}}</text>
-            <text class="ach-badge-name">{{item.name}}</text>
-          </view>
-        </view>
-      </scroll-view>
-    </view>
-
-    <!-- 功能菜单 — 全息列表 -->
-    <view class="menu-section glow-card">
+    <!-- 菜单 -->
+    <view class="menu">
       <view class="menu-item" bindtap="onViewWeeklyReport">
-        <view class="menu-icon">📊</view>
-        <text class="menu-label">每周报告</text>
-        <text class="menu-arrow">›</text>
+        <text>每周报告</text><text class="go">›</text>
       </view>
-      <view class="menu-divider"></view>
       <view class="menu-item" bindtap="onStartOnboarding">
-        <view class="menu-icon">🔄</view>
-        <text class="menu-label">重新评估</text>
-        <text class="menu-arrow">›</text>
+        <text>重新评估</text><text class="go">›</text>
       </view>
-      <view class="menu-divider"></view>
       <view class="menu-item" bindtap="onSettings">
-        <view class="menu-icon">⚙️</view>
-        <text class="menu-label">设置</text>
-        <text class="menu-arrow">›</text>
+        <text>设置</text><text class="go">›</text>
       </view>
     </view>
 
-    <view style="height: 160rpx;"></view>
+    <view style="height:160rpx;"></view>
   </scroll-view>
 </view>

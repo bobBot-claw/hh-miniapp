@@ -1,102 +1,34 @@
-/* pages/plan/detail/detail.wxss - 训练计划详情 v3.0 — 深空沉浸 */
-.plan-detail { min-height: 100vh; padding-bottom: 180rpx; }
+/* pages/plan/detail/detail.wxss - 计划详情 v4.0 */
+.page { min-height: 100vh; padding-bottom: 140rpx; }
 
-/* 头部封面 */
-.detail-hero {
-  padding: 48rpx 32rpx 40rpx; min-height: 280rpx;
-  display: flex; flex-direction: column; justify-content: space-between;
-  position: relative; overflow: hidden;
+.hero {
+  position: relative; padding: 48rpx 36rpx 36rpx; overflow: hidden;
 }
-.hero-vignette {
+.hero-fade {
   position: absolute; bottom: 0; left: 0; right: 0; height: 100rpx;
-  background: linear-gradient(to top, #050510, transparent);
-  z-index: 1;
+  background: linear-gradient(to top, var(--bg), transparent);
 }
-.hero-top { margin-bottom: 32rpx; position: relative; z-index: 2; }
-.hero-title { display: block; font-size: 44rpx; font-weight: 700; color: #fff; margin-bottom: 8rpx; }
+.hero-title { font-size: 40rpx; font-weight: 800; color: #fff; display: block; margin-bottom: 8rpx; position: relative; z-index: 1; }
+.hero-stats { display: flex; align-items: center; gap: 8rpx; position: relative; z-index: 1; font-size: 24rpx; color: rgba(255,255,255,0.7); }
+.hero-stats .dot { opacity: 0.3; }
+.hero-bar { height: 4rpx; background: rgba(255,255,255,0.15); border-radius: 2rpx; overflow: hidden; margin-top: 16rpx; position: relative; z-index: 1; }
+.hero-bar-fill { height: 100%; background: #fff; border-radius: 2rpx; transition: width 0.4s ease; }
 
-.hero-stats { display: flex; align-items: center; gap: 32rpx; margin-bottom: 16rpx; position: relative; z-index: 2; }
-.hero-stat { display: flex; align-items: baseline; gap: 4rpx; }
-.stat-value { font-size: 32rpx; font-weight: 700; color: #fff; }
-.stat-label { font-size: 22rpx; color: rgba(255,255,255,0.6); }
-.hero-stat-divider { width: 2rpx; height: 28rpx; background: rgba(255,255,255,0.2); }
+.cta-wrap { padding: 28rpx 36rpx; display: flex; justify-content: center; }
 
-.hero-progress-bar { height: 6rpx; border-radius: 3rpx; background: rgba(255,255,255,0.15); overflow: hidden; margin-top: 8rpx; position: relative; z-index: 2; }
-.hero-progress-fill { height: 100%; border-radius: 3rpx; background: #fff; transition: width 0.4s ease; box-shadow: 0 0 8rpx rgba(255,255,255,0.4); }
+.phases { display: flex; gap: 12rpx; padding: 0 36rpx; margin-bottom: 16rpx; }
+.phase-tab { padding: 10rpx 20rpx; font-size: 24rpx; color: var(--text-dim); border-radius: 8rpx; }
+.phase-on { color: #fff; font-weight: 700; background: var(--primary-soft); }
 
-/* 描述 */
-.detail-desc { padding: 32rpx; }
-.detail-desc text { font-size: 28rpx; color: var(--color-text-secondary); line-height: 1.7; }
+.days { padding: 0 36rpx; }
+.day { padding: 16rpx 0; border-bottom: 1rpx solid var(--line); }
+.day-done { opacity: 0.4; }
+.day-head { display: flex; align-items: center; gap: 12rpx; }
+.day-num { font-size: 22rpx; font-weight: 800; color: var(--primary); width: 48rpx; }
+.day-title { flex: 1; font-size: 26rpx; font-weight: 500; color: var(--text); }
+.day-dur { font-size: 22rpx; color: var(--text-dim); }
 
-/* 能力值收益 */
-.detail-gains { padding: 0 32rpx 32rpx; }
-.section-label { display: block; font-size: 26rpx; font-weight: 600; color: var(--color-text); margin-bottom: 16rpx; }
-.gains-row { display: flex; flex-wrap: wrap; gap: 12rpx; }
-
-/* 阶段切换 */
-.phase-tabs { display: flex; padding: 0 32rpx; gap: 16rpx; margin-bottom: 24rpx; }
-
-/* 每日列表 */
-.daily-list { padding: 0 32rpx; }
-.day-card { margin-bottom: 16rpx; overflow: hidden; }
-.day-card.day-completed { opacity: 0.5; }
-
-.day-header { display: flex; align-items: center; justify-content: space-between; padding: 24rpx; }
-.day-left { display: flex; align-items: center; gap: 16rpx; }
-.day-number {
-  width: 64rpx; height: 64rpx; border-radius: 16rpx;
-  background: rgba(124,111,247,0.1); border: 1rpx solid rgba(124,111,247,0.2);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 20rpx; font-weight: 700; color: var(--color-primary-light);
-}
-.day-number-done { background: rgba(0,184,148,0.15) !important; border-color: rgba(0,184,148,0.3) !important; color: #4ecdc4 !important; }
-.day-check { font-size: 28rpx; font-weight: 900; }
-.day-title { font-size: 28rpx; font-weight: 600; color: var(--color-text); }
-.day-title-done { text-decoration: line-through; color: var(--color-text-muted); }
-
-.day-right { display: flex; align-items: center; gap: 12rpx; }
-.day-duration { font-size: 24rpx; color: var(--color-text-muted); }
-.day-arrow {
-  width: 16rpx; height: 16rpx;
-  border-right: 2rpx solid var(--color-text-muted);
-  border-bottom: 2rpx solid var(--color-text-muted);
-  transform: rotate(45deg); transition: transform 0.2s;
-}
-.day-arrow.up { transform: rotate(-135deg); }
-
-/* 展开内容 */
-.day-content { padding: 0 24rpx 24rpx; border-top: 1rpx solid var(--color-border); }
-.day-section-label { font-size: 22rpx; color: var(--color-text-muted); padding: 20rpx 0 12rpx; font-weight: 600; }
-.meditation-label { margin-top: 8rpx; }
-
-/* 训练动作行 */
-.exercise-row { display: flex; align-items: center; padding: 16rpx 0; gap: 16rpx; }
-.exercise-icon-wrap {
-  width: 56rpx; height: 56rpx; border-radius: 14rpx;
-  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-  box-shadow: 0 0 12rpx rgba(124,111,247,0.15);
-}
-.exercise-icon-text { font-size: 22rpx; font-weight: 700; color: #fff; }
-.meditation-icon { background: linear-gradient(135deg, #a29bfe, #6c5ce7) !important; }
-.exercise-info { flex: 1; min-width: 0; }
-.exercise-name { display: block; font-size: 26rpx; color: var(--color-text); font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.exercise-meta { display: block; font-size: 22rpx; color: var(--color-text-muted); margin-top: 4rpx; }
-.exercise-go {
-  width: 12rpx; height: 12rpx;
-  border-right: 2rpx solid var(--color-text-muted);
-  border-top: 2rpx solid var(--color-text-muted);
-  transform: rotate(45deg); flex-shrink: 0;
-}
-.meditation-row { padding-bottom: 8rpx; }
-
-/* 开始按钮 — 深色悬浮栏 */
-.start-bar {
-  position: fixed; bottom: 0; left: 0; right: 0;
-  padding: 20rpx 32rpx;
-  padding-bottom: calc(20rpx + env(safe-area-inset-bottom));
-  background: rgba(5,5,16,0.9);
-  backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
-  border-top: 1rpx solid var(--color-border);
-  z-index: 100;
-  display: flex; justify-content: center;
-}
+.day-body { padding: 12rpx 0 4rpx 60rpx; }
+.ex-row { display: flex; align-items: center; justify-content: space-between; padding: 10rpx 0; }
+.ex-name { font-size: 24rpx; color: var(--text-dim); }
+.ex-go { font-size: 22rpx; color: var(--text-dim); }

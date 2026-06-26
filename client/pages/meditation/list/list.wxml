@@ -1,53 +1,30 @@
-<!--pages/meditation/list/list.wxml - 静养模块 v3.0 — 深空沉浸-->
-<view class="page-meditation-list deep-bg">
-  <!-- 页面头部 -->
-  <view class="page-header">
-    <view class="header-glow"></view>
+<!--pages/meditation/list/list.wxml - 静养 v4.0 — 极简·安静-->
+<view class="page deep-bg">
+  <view class="header">
     <text class="page-title">静养</text>
-    <text class="page-subtitle">让身心安静下来</text>
   </view>
 
-  <!-- 标签筛选 — 全息标签 -->
-  <scroll-view scroll-x class="tag-scroll">
-    <view class="tag-list">
-      <view
-        wx:for="{{tags}}" wx:key="key"
-        class="holo-tag {{activeTag === item.key ? 'holo-tag-active' : ''}}"
-        data-tag="{{item.key}}" bindtap="onTagTap"
-      >
-        <text>{{item.label}}</text>
-      </view>
+  <!-- 标签 -->
+  <scroll-view scroll-x class="tags">
+    <view class="tag-row">
+      <text wx:for="{{tags}}" wx:key="key" class="tag {{activeTag === item.key ? 'tag-on' : ''}}" data-tag="{{item.key}}" bindtap="onTagTap">{{item.label}}</text>
     </view>
   </scroll-view>
 
-  <!-- 冥想列表 -->
-  <scroll-view scroll-y class="meditation-scroll">
-    <view wx:if="{{loading}}" class="loading-container">
-      <text class="text-secondary">加载中...</text>
-    </view>
-
-    <block wx:else>
-      <view wx:if="{{filteredList.length === 0}}" class="empty-state">
-        <text class="empty-text">暂无内容</text>
-      </view>
-
-      <view wx:else class="meditation-list">
-        <view
-          wx:for="{{filteredList}}" wx:key="id"
-          class="med-card glow-card"
-          data-id="{{item.id}}" bindtap="onMeditationTap"
-        >
-          <view class="med-card-cover" style="background: {{item.cover_gradient || 'linear-gradient(135deg, #7c6ff7, #4ecdc4)'}}">
-            <text class="med-card-badge">{{item.duration_text || '3min'}}</text>
-            <view class="med-card-ripple"></view>
-          </view>
-          <view class="med-card-info">
-            <text class="med-card-title">{{item.title}}</text>
-          </view>
+  <!-- 列表 -->
+  <view wx:if="{{loading}}" class="empty"><text class="text-dim">加载中</text></view>
+  <scroll-view wx:else scroll-y class="list-scroll">
+    <view wx:if="{{filteredList.length === 0}}" class="empty"><text class="text-dim">暂无内容</text></view>
+    <view wx:else class="list">
+      <view wx:for="{{filteredList}}" wx:key="id" class="item" data-id="{{item.id}}" bindtap="onMeditationTap">
+        <view class="item-cover" style="background: {{item.cover_gradient || 'linear-gradient(135deg, #7c6ff7, #4ecdc4)'}}"></view>
+        <view class="item-info">
+          <text class="item-title">{{item.title}}</text>
+          <text class="item-dur">{{item.duration_text || '3min'}}</text>
         </view>
+        <text class="item-go">›</text>
       </view>
-    </block>
-
-    <view style="height: 160rpx;"></view>
+    </view>
+    <view style="height:160rpx;"></view>
   </scroll-view>
 </view>

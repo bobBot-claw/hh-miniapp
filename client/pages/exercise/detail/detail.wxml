@@ -1,62 +1,37 @@
-<!--pages/exercise/detail/detail.wxml - 运动详情 v3.0 — 深空沉浸-->
-<view class="page-exercise-detail deep-bg">
-  <view wx:if="{{loading}}" class="loading-container">
-    <text class="text-secondary">加载中...</text>
-  </view>
+<!--pages/exercise/detail/detail.wxml - 运动详情 v4.0 — 极简·行动-->
+<view class="page deep-bg">
+  <view wx:if="{{loading}}" class="empty"><text class="text-dim">加载中</text></view>
 
   <block wx:if="{{exercise}}">
-    <!-- 全屏沉浸封面 -->
-    <view class="detail-hero" style="background: {{exercise.cover_gradient || 'linear-gradient(135deg, #7c6ff7, #4ecdc4)'}}">
-      <view class="hero-vignette"></view>
-      <view class="hero-content">
-        <text class="detail-emoji">{{exercise.emoji || '💪'}}</text>
-        <text class="detail-title">{{exercise.title}}</text>
-        <text class="detail-subtitle">{{exercise.subtitle}}</text>
-      </view>
-      <!-- 浮动光点 -->
-      <view class="hero-glow-1"></view>
-      <view class="hero-glow-2"></view>
+    <!-- 沉浸封面 -->
+    <view class="hero" style="background: {{exercise.cover_gradient || 'linear-gradient(135deg, #7c6ff7, #4ecdc4)'}}">
+      <view class="hero-fade"></view>
+      <text class="hero-emoji">{{exercise.emoji || '💪'}}</text>
+      <text class="hero-title">{{exercise.title}}</text>
+      <text class="hero-sub">{{exercise.subtitle}}</text>
     </view>
 
-    <!-- 信息条 -->
-    <view class="detail-meta">
-      <view class="meta-tags">
-        <text class="holo-tag">{{exercise.category_label || exercise.category}}</text>
-        <text class="holo-tag">⏱ {{exercise.duration_text || '5min'}}</text>
-        <text wx:if="{{exercise.difficulty}}" class="holo-tag">{{exercise.difficulty}}</text>
-        <text wx:if="{{exercise.position_type}}" class="holo-tag">{{exercise.position_type}}</text>
-      </view>
+    <!-- CTA — 直接行动 -->
+    <view class="cta-wrap">
+      <view class="cta" bindtap="onStartTap"><text>开始跟练</text></view>
     </view>
 
-    <!-- 开始按钮 -->
-    <view class="detail-action">
-      <view class="cta-holo" bindtap="onStartTap">
-        <text class="cta-holo-text">开始跟练</text>
+    <!-- 极简信息 -->
+    <view class="info">
+      <view class="info-row" wx:if="{{exercise.target_body && exercise.target_body.length}}">
+        <text class="info-label">目标</text>
+        <text class="info-val">{{exercise.target_body.join(' · ')}}</text>
       </view>
-    </view>
-
-    <!-- 目标部位 -->
-    <view class="detail-section">
-      <text class="section-title-cyber">🎯 目标部位</text>
-      <view class="target-list">
-        <text wx:for="{{exercise.target_body}}" wx:key="*this" class="holo-tag">{{item}}</text>
+      <view class="info-row" wx:if="{{exercise.duration_text}}">
+        <text class="info-label">时长</text>
+        <text class="info-val">{{exercise.duration_text}}</text>
+      </view>
+      <view class="info-row" wx:if="{{exercise.difficulty}}">
+        <text class="info-label">难度</text>
+        <text class="info-val">{{exercise.difficulty}}</text>
       </view>
     </view>
 
-    <!-- 解决问题 -->
-    <view class="detail-section">
-      <text class="section-title-cyber">💪 解决问题</text>
-      <view class="target-list">
-        <text wx:for="{{exercise.problem_tags}}" wx:key="*this" class="holo-tag">{{item}}</text>
-      </view>
-    </view>
-
-    <!-- 说明 -->
-    <view wx:if="{{exercise.description}}" class="detail-section">
-      <text class="section-title-cyber">📝 说明</text>
-      <text class="detail-desc">{{exercise.description}}</text>
-    </view>
-
-    <view style="height: 60rpx;"></view>
+    <view style="height:60rpx;"></view>
   </block>
 </view>

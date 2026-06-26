@@ -1,104 +1,56 @@
-/* pages/meditation/player/player.wxss - 冥想播放器 v3.0 — 宇宙深空 */
-.page-meditation-player { min-height: 100vh; background: #050510; }
+/* pages/meditation/player/player.wxss - 冥想播放器 v4.0 */
+.page { min-height: 100vh; background: var(--bg); }
 
-.player-cosmos {
+.play-view {
   min-height: 100vh;
   display: flex; flex-direction: column; align-items: center;
-  padding: 0 32rpx; position: relative; overflow: hidden;
+  padding: 0 36rpx; position: relative;
 }
 
-/* 星尘 */
-.cosmos-star {
-  position: absolute; border-radius: 50%; background: #fff;
+.back { position: absolute; top: 80rpx; left: 36rpx; padding: 16rpx; z-index: 10; }
+.back text { color: var(--text-dim); font-size: 36rpx; }
+
+.info { text-align: center; margin-top: 160rpx; }
+.emoji { font-size: 72rpx; display: block; margin-bottom: 20rpx; animation: float 5s ease-in-out infinite; }
+.title { font-size: 36rpx; font-weight: 700; color: #fff; display: block; }
+
+/* 呼吸环 */
+.ring-wrap { margin: 80rpx 0; }
+.ring {
+  width: 280rpx; height: 280rpx; border-radius: 50%; position: relative;
 }
-.s1 { width: 4rpx; height: 4rpx; top: 10%; left: 20%; animation: twinkle 3s ease-in-out infinite; }
-.s2 { width: 3rpx; height: 3rpx; top: 25%; left: 75%; animation: twinkle 4s ease-in-out infinite 1s; }
-.s3 { width: 4rpx; height: 4rpx; top: 55%; left: 12%; animation: twinkle 3.5s ease-in-out infinite 0.5s; }
-.s4 { width: 3rpx; height: 3rpx; top: 70%; left: 85%; animation: twinkle 5s ease-in-out infinite 2s; }
-@keyframes twinkle { 0%,100%{opacity:.2;transform:scale(1)}50%{opacity:1;transform:scale(1.5)} }
+.ring.breathing { animation: breathe-ring 6s ease-in-out infinite; }
+@keyframes breathe-ring { 0%,100%{transform:scale(0.92)}50%{transform:scale(1.06)} }
 
-.cosmos-glow {
-  position: absolute; border-radius: 50%; filter: blur(60rpx);
-  animation: glow-pulse 8s ease-in-out infinite;
-}
-.g1 { width: 400rpx; height: 400rpx; top: 5%; left: -15%; background: radial-gradient(circle, rgba(9,132,227,0.1) 0%, transparent 70%); }
-.g2 { width: 350rpx; height: 350rpx; bottom: 20%; right: -10%; background: radial-gradient(circle, rgba(124,111,247,0.08) 0%, transparent 70%); animation-delay: 4s; }
-
-/* 返回 */
-.back-btn { position: absolute; top: 80rpx; left: 32rpx; padding: 16rpx; z-index: 10; }
-.back-icon { color: rgba(255,255,255,0.5); font-size: 40rpx; }
-
-/* 冥想信息 */
-.med-info { text-align: center; margin-top: 140rpx; position: relative; z-index: 2; }
-.med-emoji { font-size: 80rpx; display: block; margin-bottom: 24rpx; animation: gentle-float 5s ease-in-out infinite; }
-.med-title { font-size: 40rpx; font-weight: 700; color: #fff; display: block; margin-bottom: 12rpx; }
-.med-subtitle { font-size: 26rpx; color: rgba(255,255,255,0.4); display: block; }
-
-/* 呼吸光环 */
-.breath-ring-container { margin: 80rpx 0; position: relative; z-index: 2; }
-.breath-ring {
-  width: 320rpx; height: 320rpx; border-radius: 50%; position: relative;
-  transition: transform 4s ease-in-out;
-}
-.breath-ring.breathing { animation: breathe 6s ease-in-out infinite; }
-@keyframes breathe { 0%,100%{transform:scale(0.92)}50%{transform:scale(1.08)} }
-
-.breath-ring-halo {
-  position: absolute; inset: -30rpx; border-radius: 50%;
-  background: radial-gradient(circle, rgba(124,111,247,0.1) 0%, transparent 70%);
-  animation: glow-pulse 4s ease-in-out infinite;
-  pointer-events: none;
-}
-.breath-ring-bg {
+.ring-bg {
   position: absolute; inset: 0; border-radius: 50%;
-  border: 6rpx solid rgba(255,255,255,0.06);
+  border: 4rpx solid rgba(255,255,255,0.06);
 }
-.breath-ring-fill {
+.ring-progress {
   position: absolute; inset: 0; border-radius: 50%;
   mask: radial-gradient(transparent 55%, black 56%);
   -webkit-mask: radial-gradient(transparent 55%, black 56%);
 }
-.breath-ring-inner {
+.ring-inner {
   position: absolute; inset: 0;
   display: flex; flex-direction: column; align-items: center; justify-content: center;
 }
-.breath-time { font-size: 48rpx; font-weight: 700; color: #fff; }
-.breath-total { font-size: 24rpx; color: rgba(255,255,255,0.3); margin-top: 4rpx; }
+.time-current { font-size: 40rpx; font-weight: 700; color: #fff; }
+.time-total { font-size: 22rpx; color: var(--text-dim); margin-top: 4rpx; }
 
-/* 播放控制 */
-.controls { margin-bottom: 60rpx; position: relative; z-index: 2; }
 .play-btn {
-  width: 120rpx; height: 120rpx; border-radius: 50%;
-  background: rgba(255,255,255,0.06);
-  display: flex; align-items: center; justify-content: center;
-  border: 1rpx solid rgba(255,255,255,0.15);
-  transition: all 0.3s ease;
+  width: 100rpx; height: 100rpx; border-radius: 50%;
+  background: var(--surface); display: flex; align-items: center; justify-content: center;
+  border: 1rpx solid rgba(255,255,255,0.1);
+  font-size: 40rpx; color: #fff;
 }
-.play-btn.playing {
-  border-color: rgba(124,111,247,0.4);
-  box-shadow: 0 0 30rpx rgba(124,111,247,0.15);
-}
-.play-icon { font-size: 48rpx; color: #fff; margin-left: 6rpx; }
+.play-btn.playing { border-color: var(--primary); }
 
-.hint { font-size: 24rpx; color: rgba(255,255,255,0.25); margin-top: 20rpx; position: relative; z-index: 2; }
-
-/* 完成反馈 */
-.feedback-cosmos {
+/* 完成 */
+.done-view {
   min-height: 100vh;
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  padding: 32rpx; position: relative;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 48rpx;
 }
-.fb-glow {
-  position: absolute; top: 30%; left: 50%; transform: translateX(-50%);
-  width: 400rpx; height: 400rpx;
-  background: radial-gradient(circle, rgba(124,111,247,0.06) 0%, transparent 70%);
-  pointer-events: none;
-}
-.fb-celebrate { font-size: 80rpx; display: block; margin-bottom: 24rpx; animation: fade-up 0.6s ease; }
-.fb-title { font-size: 40rpx; font-weight: 700; color: #fff; display: block; margin-bottom: 16rpx; }
-.fb-text { font-size: 28rpx; color: rgba(255,255,255,0.5); display: block; margin-bottom: 40rpx; line-height: 1.6; text-align: center; }
-
-.fb-gains { margin-bottom: 48rpx; }
-.fb-gain-item { margin-bottom: 12rpx; }
-.fb-gain-text { font-size: 28rpx; color: #7c6ff7; font-weight: 600; }
+.done-icon { font-size: 72rpx; margin-bottom: 24rpx; }
+.done-text { font-size: 32rpx; font-weight: 600; margin-bottom: 48rpx; text-align: center; color: var(--text); }

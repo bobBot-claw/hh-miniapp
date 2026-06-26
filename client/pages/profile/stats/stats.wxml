@@ -1,65 +1,35 @@
-<!--pages/profile/stats/stats.wxml - 能力值详情 v3.0 — 深空沉浸+能量球大展示-->
-<view class="page-stats deep-bg">
-  <view wx:if="{{loading}}" class="loading-container">
-    <text class="text-secondary">加载中...</text>
-  </view>
+<!--pages/profile/stats/stats.wxml - 能力值 v4.0 — 极简-->
+<view class="page deep-bg">
+  <view wx:if="{{loading}}" class="empty"><text class="text-dim">加载中</text></view>
 
-  <scroll-view wx:else scroll-y class="stats-scroll">
-    <view class="stats-header">
-      <text class="stats-title">能力值面板</text>
-      <text class="stats-subtitle">每次运动后能力值会增长</text>
+  <scroll-view wx:else scroll-y class="scroll">
+    <view class="header">
+      <text class="title">能力值</text>
     </view>
 
-    <!-- 能力值大球展示 -->
-    <view class="ability-orbs">
-      <view wx:for="{{abilities}}" wx:key="key" class="ability-orb-card glow-card">
-        <view class="aoc-top">
-          <view class="aoc-orb-wrap">
-            <view class="aoc-halo" style="background: radial-gradient(circle, {{item.color}}33 0%, transparent 70%);"></view>
-            <view class="aoc-sphere" style="
-              background: radial-gradient(circle at 35% 30%, #fff 0%, {{item.color}} 45%, {{item.color}}88 100%);
-              box-shadow: 0 0 24rpx {{item.color}}66, 0 0 48rpx {{item.color}}22, inset 0 0 10rpx rgba(255,255,255,0.3);
-              width: {{item.value >= 80 ? 88 : item.value >= 50 ? 72 : 56}}rpx;
-              height: {{item.value >= 80 ? 88 : item.value >= 50 ? 72 : 56}}rpx;
-            "></view>
-            <view class="aoc-ring" style="border-color: {{item.color}}44; animation-duration: {{(4 - item.value/40).toFixed(1)}}s;"></view>
-          </view>
-          <view class="aoc-info">
-            <text class="aoc-name">{{item.emoji}} {{item.name}}</text>
-            <text class="aoc-level">{{item.value >= 80 ? '高级' : item.value >= 50 ? '中级' : '初级'}}</text>
-          </view>
-          <text class="aoc-value" style="color: {{item.color}};">{{item.value}}</text>
+    <!-- 能力条 -->
+    <view class="abilities">
+      <view wx:for="{{abilities}}" wx:key="key" class="ab-row">
+        <view class="ab-left">
+          <text class="ab-emoji">{{item.emoji}}</text>
+          <text class="ab-name">{{item.name}}</text>
         </view>
-        <view class="aoc-bar-bg">
-          <view class="aoc-bar-fill" style="width: {{item.value}}%; background: linear-gradient(90deg, {{item.color}}88, {{item.color}});"></view>
-        </view>
-        <text class="aoc-hint" wx:if="{{item.value < 50}}">继续运动可以提升{{item.name}} 💪</text>
-      </view>
-    </view>
-
-    <!-- 总体统计 -->
-    <view class="summary-section glow-card" wx:if="{{stats}}">
-      <text class="summary-title">📊 总体统计</text>
-      <view class="summary-grid">
-        <view class="summary-item">
-          <text class="summary-value">{{stats.total_exercises || 0}}</text>
-          <text class="summary-label">完成运动</text>
-        </view>
-        <view class="summary-item">
-          <text class="summary-value">{{stats.total_minutes || 0}}</text>
-          <text class="summary-label">运动分钟</text>
-        </view>
-        <view class="summary-item">
-          <text class="summary-value">{{stats.streak || 0}}</text>
-          <text class="summary-label">连续天数</text>
-        </view>
-        <view class="summary-item">
-          <text class="summary-value">{{stats.level || 1}}</text>
-          <text class="summary-label">当前等级</text>
+        <text class="ab-val" style="color:{{item.color}};">{{item.value}}</text>
+        <view class="ab-bar-bg">
+          <view class="ab-bar" style="width:{{item.value}}%; background:{{item.color}};"></view>
         </view>
       </view>
     </view>
 
-    <view style="height: 40rpx;"></view>
+    <!-- 总体 -->
+    <view class="summary" wx:if="{{stats}}">
+      <view class="sum-row">
+        <view class="sum-item"><text class="sum-val">{{stats.total_exercises || 0}}</text><text class="sum-label">运动</text></view>
+        <view class="sum-item"><text class="sum-val">{{stats.total_minutes || 0}}</text><text class="sum-label">分钟</text></view>
+        <view class="sum-item"><text class="sum-val">{{stats.streak || 0}}</text><text class="sum-label">连续天</text></view>
+      </view>
+    </view>
+
+    <view style="height:40rpx;"></view>
   </scroll-view>
 </view>

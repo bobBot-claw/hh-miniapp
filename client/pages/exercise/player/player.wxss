@@ -1,148 +1,46 @@
-/* pages/exercise/player/player.wxss - 跟练播放器 v3.0 — 深空沉浸 */
-.page-exercise-player { min-height: 100vh; color: #fff; }
+/* pages/exercise/player/player.wxss - 跟练播放器 v4.0 */
+.page { min-height: 100vh; background: var(--bg); color: #fff; }
 
-.player-header { padding: 24rpx 32rpx; text-align: center; }
-.player-title { font-size: 36rpx; font-weight: 700; display: block; margin-bottom: 6rpx; }
-.player-category { display: block; color: rgba(255,255,255,0.4); font-size: 24rpx; }
+.header { padding: 24rpx 36rpx; text-align: center; }
+.title { font-size: 32rpx; font-weight: 700; }
 
-/* 真实视频 */
-.video-container { margin: 0 32rpx; border-radius: 20rpx; overflow: hidden; }
-.exercise-video { width: 100%; height: 420rpx; }
+.video-wrap { margin: 0 36rpx; border-radius: 16rpx; overflow: hidden; }
+.video { width: 100%; height: 420rpx; }
 
-/* ══ Mock 全息播放器 ══ */
-.mock-player { margin: 20rpx 32rpx; min-height: 500rpx; display: flex; align-items: center; justify-content: center; }
+/* Mock */
+.mock { min-height: 60vh; display: flex; align-items: center; justify-content: center; }
+.mock-center { display: flex; flex-direction: column; align-items: center; width: 100%; }
+.mock-emoji { font-size: 72rpx; margin-bottom: 24rpx; }
+.mock-dur { font-size: 26rpx; color: var(--text-dim); margin-bottom: 40rpx; }
 
-/* 准备态 */
-.mock-ready { text-align: center; width: 100%; }
-.energy-orb-lg {
-  position: relative; width: 200rpx; height: 200rpx; margin: 0 auto 32rpx;
-  display: flex; align-items: center; justify-content: center;
-}
-.energy-orb-halo {
-  position: absolute; inset: -30rpx;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(124,111,247,0.15) 0%, transparent 70%);
-  animation: glow-pulse 3s ease-in-out infinite;
-}
-.energy-orb-emoji { font-size: 80rpx; z-index: 1; animation: gentle-float 3s ease-in-out infinite; }
-
-.mock-ex-name { font-size: 40rpx; font-weight: 700; display: block; margin-bottom: 12rpx; }
-.mock-ex-dur { font-size: 28rpx; color: rgba(255,255,255,0.4); display: block; margin-bottom: 48rpx; }
-
-/* 倒计时 */
-.mock-countdown { text-align: center; position: relative; }
 .countdown-num {
-  font-size: 160rpx; font-weight: 900;
-  background: linear-gradient(135deg, #7c6ff7, #4ecdc4);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  display: block; animation: countPulse 1s infinite;
-}
-@keyframes countPulse { 0%,100%{transform:scale(1)}50%{transform:scale(1.12)} }
-.countdown-label { font-size: 28rpx; color: rgba(255,255,255,0.4); display: block; margin-top: 20rpx; }
-.countdown-ring {
-  position: absolute; top: 50%; left: 50%; transform: translate(-50%, -55%);
-  width: 240rpx; height: 240rpx; border-radius: 50%;
-  border: 4rpx solid rgba(124,111,247,0.2);
-  animation: glow-pulse 2s ease-in-out infinite;
-  pointer-events: none;
+  font-size: 140rpx; font-weight: 900;
+  color: var(--primary);
 }
 
-/* 播放中 */
-.mock-playing { text-align: center; width: 100%; }
-.play-energy-ring {
-  position: relative; width: 280rpx; height: 280rpx;
-  margin: 0 auto 40rpx;
-  display: flex; align-items: center; justify-content: center;
-}
-.ring-pulse {
-  position: absolute; inset: 0; border-radius: 50%;
-  border: 3rpx solid rgba(124,111,247,0.3);
-}
-.ring-pulse.ring-active { animation: ring-expand 2s ease-out infinite; }
-.ring-pulse.r2.ring-active { animation-delay: 0.6s; }
-@keyframes ring-expand { 0%{transform:scale(0.8);opacity:1}100%{transform:scale(1.6);opacity:0} }
+.play-emoji { font-size: 72rpx; margin-bottom: 40rpx; }
+.progress-track { width: 70%; height: 6rpx; background: rgba(255,255,255,0.08); border-radius: 3rpx; overflow: hidden; margin-bottom: 16rpx; }
+.progress-fill { height: 100%; background: var(--primary); border-radius: 3rpx; transition: width 1s linear; }
+.play-time { font-size: 24rpx; color: var(--text-dim); margin-bottom: 32rpx; }
 
-.play-emoji { font-size: 80rpx; z-index: 1; animation: gentle-float 4s ease-in-out infinite; }
-
-.play-progress-track {
-  width: 80%; margin: 0 auto 16rpx; height: 8rpx;
-  background: rgba(255,255,255,0.08); border-radius: 4rpx; overflow: hidden;
+.ctrl-row { display: flex; gap: 24rpx; }
+.ctrl {
+  padding: 14rpx 36rpx; border-radius: 28rpx; font-size: 26rpx;
+  background: var(--surface); color: var(--text-dim);
 }
-.play-progress-fill {
-  height: 100%; border-radius: 4rpx;
-  background: linear-gradient(90deg, #7c6ff7, #4ecdc4);
-  transition: width 1s linear;
-  box-shadow: 0 0 12rpx rgba(124,111,247,0.4);
-}
-.play-time { font-size: 26rpx; color: rgba(255,255,255,0.35); display: block; margin-bottom: 40rpx; }
+.ctrl-on { background: var(--primary-soft); color: var(--primary); }
 
-/* 控制按钮 */
-.play-ctrl { display: flex; justify-content: center; }
-.ctrl-btn {
-  padding: 16rpx 48rpx; border-radius: 32rpx; font-size: 28rpx;
-  border: 1rpx solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.06);
-  color: rgba(255,255,255,0.7);
-}
-.ctrl-primary {
-  border-color: rgba(124,111,247,0.4);
-  background: rgba(124,111,247,0.1);
-  color: #fff;
-}
-.ctrl-end { border-color: rgba(255,107,107,0.3); color: rgba(255,255,255,0.5); }
+.end-row { padding: 24rpx 36rpx; display: flex; justify-content: center; }
 
-/* 动作提示 */
-.player-hint { padding: 20rpx 32rpx; text-align: center; font-size: 24rpx; color: rgba(255,255,255,0.3); }
-.player-footer { padding: 24rpx 32rpx; text-align: center; }
-
-/* ══ 完成反馈 — 全息解锁 ══ */
-.feedback-view {
+/* 反馈 */
+.fb {
   min-height: 100vh;
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  padding: 48rpx 32rpx; position: relative;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 48rpx 36rpx;
 }
-.fb-glow {
-  position: absolute; top: 20%; left: 50%; transform: translateX(-50%);
-  width: 500rpx; height: 500rpx;
-  background: radial-gradient(circle, rgba(124,111,247,0.08) 0%, transparent 70%);
-  pointer-events: none;
-}
-.fb-celebrate { font-size: 60rpx; display: block; margin-bottom: 32rpx; animation: fade-up 0.6s ease; }
-.fb-encourage { font-size: 40rpx; font-weight: 700; text-align: center; display: block; margin-bottom: 16rpx; }
-.fb-hint { font-size: 28rpx; color: rgba(255,255,255,0.4); text-align: center; display: block; margin-bottom: 40rpx; }
+.fb-icon { font-size: 64rpx; margin-bottom: 24rpx; }
+.fb-text { font-size: 36rpx; font-weight: 700; margin-bottom: 32rpx; text-align: center; }
+.fb-gains { margin-bottom: 40rpx; }
+.fb-gain { font-size: 26rpx; color: var(--accent); margin-bottom: 8rpx; text-align: center; }
 
-/* 能力值增长 */
-.fb-gains { width: 100%; margin-bottom: 40rpx; }
-.fb-gain-item {
-  display: flex; align-items: center; padding: 12rpx 0; gap: 16rpx;
-  position: relative;
-}
-.fb-gain-label { font-size: 28rpx; color: rgba(255,255,255,0.7); width: 120rpx; }
-.fb-gain-value { font-size: 32rpx; font-weight: 700; color: #4ecdc4; width: 80rpx; }
-.fb-gain-bar {
-  position: absolute; left: 220rpx; height: 6rpx; border-radius: 3rpx;
-  opacity: 0.3;
-}
-
-/* 成就 */
-.fb-achievement {
-  text-align: center; margin-bottom: 40rpx; padding: 28rpx;
-  background: rgba(255,255,255,0.03); border-radius: 20rpx;
-  border: 1rpx solid rgba(255,215,0,0.15);
-  position: relative; overflow: hidden;
-}
-.ach-glow {
-  position: absolute; top: -50%; left: 50%; transform: translateX(-50%);
-  width: 200rpx; height: 200rpx;
-  background: radial-gradient(circle, rgba(255,215,0,0.08) 0%, transparent 70%);
-  pointer-events: none;
-}
-.ach-emoji { font-size: 48rpx; display: block; margin-bottom: 8rpx; }
-.ach-title { font-size: 30rpx; font-weight: 700; color: #ffd700; display: block; margin-bottom: 4rpx; }
-.ach-desc { font-size: 22rpx; color: rgba(255,255,255,0.4); }
-
-/* 操作 */
-.fb-actions { display: flex; gap: 24rpx; }
-
-.text-secondary { color: rgba(255,255,255,0.4); }
-.loading-container { display: flex; justify-content: center; align-items: center; height: 60vh; }
+.empty { display: flex; justify-content: center; padding: 120rpx 0; }

@@ -1,16 +1,10 @@
-<!--custom-tab-bar/index.wxml - 深空悬浮 TabBar v2.0-->
-<view class="float-tabbar">
-  <view class="tabbar-glow"></view>
-  <view class="float-tabbar-inner">
-    <view
-      wx:for="{{list}}"
-      wx:key="index"
-      class="float-tabbar-item {{selected === index ? 'float-tab-active' : ''}}"
-      data-index="{{index}}"
-      bindtap="switchTab"
-    >
-      <view wx:if="{{selected === index}}" class="tab-indicator"></view>
-      <text class="float-tab-label">{{item.text}}</text>
-    </view>
+<!--custom-tab-bar/index.wxml - 极简 TabBar v3.0-->
+<view class="tabbar">
+  <view
+    wx:for="{{list}}" wx:key="index"
+    class="tab {{selected === index ? 'tab-on' : ''}}"
+    data-index="{{index}}" bindtap="switchTab"
+  >
+    <text class="tab-text">{{item.text}}</text>
   </view>
 </view>

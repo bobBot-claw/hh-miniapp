@@ -1,65 +1,35 @@
-<!--pages/meditation/player/player.wxml - 冥想播放器 v3.0 — 宇宙深空+呼吸光环-->
-<view class="page-meditation-player">
-  <!-- 播放界面 -->
-  <view wx:if="{{!completed}}" class="player-cosmos" style="background: {{meditation.cover_gradient || 'linear-gradient(180deg, #0a0a2e, #050510)'}}">
-    <!-- 星尘背景 -->
-    <view class="cosmos-star s1"></view>
-    <view class="cosmos-star s2"></view>
-    <view class="cosmos-star s3"></view>
-    <view class="cosmos-star s4"></view>
-    <view class="cosmos-glow g1"></view>
-    <view class="cosmos-glow g2"></view>
+<!--pages/meditation/player/player.wxml - 冥想播放器 v4.0 — 极简·呼吸-->
+<view class="page">
+  <!-- 播放 -->
+  <view wx:if="{{!completed}}" class="play-view">
+    <view class="back" bindtap="wx.navigateBack"><text>←</text></view>
 
-    <!-- 返回 -->
-    <view class="back-btn" bindtap="wx.navigateBack">
-      <text class="back-icon">←</text>
+    <view class="info">
+      <text class="emoji">{{meditation.emoji || '🧘'}}</text>
+      <text class="title">{{meditation.title}}</text>
     </view>
 
-    <!-- 冥想信息 -->
-    <view class="med-info">
-      <text class="med-emoji">{{meditation.emoji || '🧘'}}</text>
-      <text class="med-title">{{meditation.title}}</text>
-      <text class="med-subtitle">{{meditation.subtitle}}</text>
-    </view>
-
-    <!-- 呼吸光环进度 -->
-    <view class="breath-ring-container">
-      <view class="breath-ring {{isPlaying ? 'breathing' : ''}}">
-        <view class="breath-ring-halo"></view>
-        <view class="breath-ring-bg"></view>
-        <view class="breath-ring-fill" style="background: conic-gradient(rgba(124,111,247,0.6) {{progress}}%, transparent {{progress}}%);"></view>
-        <view class="breath-ring-inner">
-          <text class="breath-time">{{formatTime(currentTime)}}</text>
-          <text class="breath-total">{{formatTime(totalTime)}}</text>
+    <!-- 呼吸环 -->
+    <view class="ring-wrap">
+      <view class="ring {{isPlaying ? 'breathing' : ''}}">
+        <view class="ring-bg"></view>
+        <view class="ring-progress" style="background: conic-gradient(var(--primary) {{progress}}%, transparent {{progress}}%);"></view>
+        <view class="ring-inner">
+          <text class="time-current">{{formatTime(currentTime)}}</text>
+          <text class="time-total">{{formatTime(totalTime)}}</text>
         </view>
       </view>
     </view>
 
-    <!-- 播放控制 -->
-    <view class="controls">
-      <view class="play-btn {{isPlaying ? 'playing' : ''}}" bindtap="onTogglePlay">
-        <text class="play-icon">{{isPlaying ? '⏸' : '▶'}}</text>
-      </view>
+    <view class="play-btn {{isPlaying ? 'playing' : ''}}" bindtap="onTogglePlay">
+      <text>{{isPlaying ? '⏸' : '▶'}}</text>
     </view>
-
-    <text class="hint">戴上耳机，效果更佳 🎧</text>
   </view>
 
-  <!-- 完成反馈 -->
-  <view wx:if="{{completed && feedback}}" class="feedback-cosmos">
-    <view class="fb-glow"></view>
-    <text class="fb-celebrate">🎉</text>
-    <text class="fb-title">冥想完成</text>
-    <text class="fb-text">{{feedback.encouragement}}</text>
-
-    <view wx:if="{{feedback.stat_gains}}" class="fb-gains">
-      <view wx:for="{{feedback.stat_gains}}" wx:key="index" wx:for-index="key" wx:for-item="val" class="fb-gain-item">
-        <text class="fb-gain-text">🧠 身心平衡 +{{val}}</text>
-      </view>
-    </view>
-
-    <view class="cta-holo" bindtap="onCloseFeedback">
-      <text class="cta-holo-text">好的</text>
-    </view>
+  <!-- 完成 -->
+  <view wx:if="{{completed && feedback}}" class="done-view">
+    <text class="done-icon">🎉</text>
+    <text class="done-text">{{feedback.encouragement}}</text>
+    <view class="cta" bindtap="onCloseFeedback"><text>好的</text></view>
   </view>
 </view>
