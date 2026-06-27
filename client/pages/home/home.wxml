@@ -1,45 +1,34 @@
-<!--pages/home/home.wxml — 主页 v0.7 demo 风格-->
+<!--pages/home/home.wxml — 主页：与 demo 完全一致-->
 
-<view class="page warm-bg">
-  <image class="illust-bg {{revealed?'illust-lit':'illust-dim'}}" src="{{currentEgg.blurUrl}}" mode="aspectFill" />
+<view class="page">
+  <!-- 背景：模糊插画 -->
+  <image class="bg-egg {{revealed?'bg-egg-lit':'bg-egg-dim'}}" src="{{eggUrl}}" mode="aspectFill" />
 
+  <!-- 6 光点 -->
   <view class="particles">
-    <view class="particle p1"></view>
-    <view class="particle p2"></view>
-    <view class="particle p3"></view>
-    <view class="particle p4"></view>
-    <view class="particle p5"></view>
-    <view class="particle p6"></view>
+    <view class="particle" style="left:18%;animation-delay:0s;"></view>
+    <view class="particle" style="left:48%;animation-delay:2s;"></view>
+    <view class="particle" style="left:78%;animation-delay:4s;"></view>
+    <view class="particle" style="left:33%;animation-delay:6s;"></view>
+    <view class="particle" style="left:63%;animation-delay:1s;"></view>
+    <view class="particle" style="left:88%;animation-delay:3s;"></view>
   </view>
 
-  <view wx:if="{{!hasEgg}}" class="bg-fallback"></view>
-
-  <view class="top-bar" style="top:{{topBarTop}}px;right:{{topBarRight}}px;">
-    <view class="top-icon" bindtap="goTogether"><view class="icon-together"></view></view>
-    <view class="top-icon" bindtap="goWorld"><view class="icon-world"></view></view>
-    <view class="top-icon" bindtap="goMood"><view class="icon-mood"></view></view>
+  <!-- 右上角世界入口 — demo 只有一个 ◉ -->
+  <view class="top-icon" style="top:{{topBarTop}}px;right:{{topBarRight}}px;" bindtap="goWorld">
+    <view class="icon-globe"></view>
   </view>
 
-  <view class="content">
-    <view class="center">
-      <view class="flame {{revealed?'flame-lit':''}}">
-        <text class="flame-icon">✦</text>
-      </view>
-
-      <text class="home-title">{{actionTitle}}</text>
-      <text class="home-sub">{{actionSub}}</text>
-      <view class="duration-tag"><text>{{durationText}}</text></view>
-
-      <view class="cta" bindtap="startAction"><text>{{ctaText}}</text></view>
-
-      <view wx:if="{{!revealed}}" class="together-entry" bindtap="goTogether">
-        <view class="together-entry-icon"></view>
-        <text class="together-entry-text">邀请好友</text>
-      </view>
-
-      <text wx:if="{{revealed&&tomorrowHint}}" class="tomorrow-hint">{{tomorrowHint}}</text>
-
-      <view class="btn-text-inverse" bindtap="resetDay" style="margin-top:24rpx;"><text>重置状态</text></view>
+  <!-- 中央内容 — demo: flame → title → sub → btn-glow → btn-text -->
+  <view class="home-content">
+    <view class="flame {{revealed?'flame-lit':''}}">
+      <text class="flame-icon">✦</text>
     </view>
+
+    <text class="home-title">{{actionTitle}}</text>
+    <text class="home-sub">{{actionSub}}</text>
+
+    <view class="btn-glow" bindtap="startAction"><text>{{ctaText}}</text></view>
+    <view class="btn-text" bindtap="resetDay"><text>重 置 状 态</text></view>
   </view>
 </view>

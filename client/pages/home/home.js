@@ -1,16 +1,13 @@
-// pages/home/home.js — 慢慢变好 v0.8
+// pages/home/home.js — 慢慢变好 v0.7 demo 风格
 const { getCurrentAction, getTomorrowAction } = require('../../utils/actions')
 
 Page({
   data: {
     actionTitle: '',
     actionSub: '',
-    durationText: '',
-    ctaText: '开始',
+    ctaText: '开 始',
     revealed: false,
-    tomorrowHint: '',
-    hasEgg: false,
-    // 右上角按钮位置（避开胶囊）
+    eggUrl: '/assets/eggs/warm/blur_01.png',
     topBarTop: 0,
     topBarRight: 0,
   },
@@ -27,16 +24,13 @@ Page({
   calcTopBar() {
     try {
       const menu = wx.getMenuButtonBoundingClientRect()
-      const topBarTop = menu.bottom + 12
-      const topBarRight = menu.right - menu.left > 0
-        ? (wx.getSystemInfoSync().windowWidth - menu.right)
-        : 16
-      this.setData({ topBarTop, topBarRight })
+      this.setData({
+        topBarTop: menu.bottom + 12,
+        topBarRight: wx.getSystemInfoSync().windowWidth - menu.right
+      })
     } catch (e) {
       try {
-        const sys = wx.getSystemInfoSync()
-        const topBarTop = sys.statusBarHeight + 44 + 12
-        this.setData({ topBarTop, topBarRight: 16 })
+        this.setData({ topBarTop: wx.getSystemInfoSync().statusBarHeight + 56, topBarRight: 16 })
       } catch (e2) {
         this.setData({ topBarTop: 100, topBarRight: 16 })
       }
@@ -50,19 +44,26 @@ Page({
     const revealed = state.lastRevealDate === today
 
     const action = getCurrentAction()
-    const tomorrow = revealed ? getTomorrowAction() : null
 
-    const m = Math.floor(action.duration/60), s = action.duration%60
-    const durationText = s>0 ? `${m}'${s}"` : `${m}min`
+    // demo 风格：标题字间距用空格
+    const actionTitle = this.spaceText(action.title || '今 天 见 光')
+    const actionSub = this.spaceText(action.subtitle || '走 到 窗 边 · 让 光 进 来')
 
     this.setData({
-      actionTitle: action.title,
-      actionSub: action.subtitle,
-      durationText,
-      ctaText: revealed ? '看世界' : '开始',
+      actionTitle,
+      actionSub,
+      ctaText: revealed ? '看 世 界' : '开 始',
       revealed,
-      tomorrowHint: tomorrow ? `明天·${tomorrow.title}` : '',
+      eggUrl: '/assets/eggs/warm/blur_01.png',
     })
+  },
+
+  // 给文字加空格（demo 风格的 letter-spacing 视觉效果）
+  spaceText(str) {
+    if (!str) return ''
+    // 如果已经有空格就不重复加
+    if (str.includes(' ')) return str
+    return str.split('').join(' ')
   },
 
   startAction() {
