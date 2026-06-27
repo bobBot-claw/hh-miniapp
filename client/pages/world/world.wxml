@@ -11,8 +11,8 @@
   </view>
 
   <view class="title-row">
-    <text class="page-title">我的世界</text>
-    <text class="page-meta">已揭示 {{totalRevealed}} / 360</text>
+    <text class="page-title">世界</text>
+    <text class="page-meta">{{totalRevealed}}/360</text>
   </view>
 
   <!-- 世界网格 -->
@@ -30,10 +30,10 @@
         </view>
         <view class="world-info">
           <text class="world-name">{{item.name}}</text>
-          <text class="world-progress">{{item.revealed}} / {{item.total}}</text>
+          <text class="world-progress">{{item.revealed}}/{{item.total}}</text>
         </view>
         <!-- 探索中标记 -->
-        <view wx:if="{{item.active}}" class="badge">探索中</view>
+        <view wx:if="{{item.active}}" class="badge">中</view>
       </view>
     </view>
 

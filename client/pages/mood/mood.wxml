@@ -7,7 +7,7 @@
     <view class="back-btn" bindtap="goBack">
       <view class="back-arrow"></view>
     </view>
-    <text class="header-title">今天的心情</text>
+    <text class="header-title">心情</text>
     <view style="width: 72rpx;"></view>
   </view>
 
@@ -29,7 +29,7 @@
   <view class="word-section">
     <input
       class="word-input"
-      placeholder="一个词，描述现在"
+      placeholder="一个词"
       placeholder-style="color: rgba(60,60,67,0.3);"
       maxlength="10"
       value="{{word}}"
@@ -39,10 +39,10 @@
 
   <!-- 保存 -->
   <view class="cta cta-green {{!selectedWeather ? 'cta-disabled' : ''}}" bindtap="saveMood">
-    <text>记下来</text>
+    <text>记下</text>
   </view>
 
   <!-- 提示 -->
-  <text class="hint">不评分 · 不比较 · 只和自己有关</text>
+  <text class="hint">不评分·不比较</text>
 
 </view>

@@ -52,18 +52,16 @@ Page({
     const action = getCurrentAction()
     const tomorrow = revealed ? getTomorrowAction() : null
 
-    // 格式化时长
-    const minutes = Math.floor(action.duration / 60)
-    const seconds = action.duration % 60
-    const durationText = seconds > 0 ? `${minutes} 分 ${seconds} 秒` : `${minutes} 分钟`
+    const m = Math.floor(action.duration/60), s = action.duration%60
+    const durationText = s>0 ? `${m}'${s}"` : `${m}min`
 
     this.setData({
       actionTitle: action.title,
       actionSub: action.subtitle,
       durationText,
-      ctaText: revealed ? '看看世界' : '开始',
+      ctaText: revealed ? '看世界' : '开始',
       revealed,
-      tomorrowHint: tomorrow ? `明天：${tomorrow.title}` : '',
+      tomorrowHint: tomorrow ? `明天·${tomorrow.title}` : '',
     })
   },
 

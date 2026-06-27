@@ -1,15 +1,8 @@
-<!--pages/home/home.wxml — 主页：暖白浅色+光点+行动 v0.8-->
+<!--pages/home/home.wxml — 主页 v0.8-->
 
 <view class="page warm-bg">
+  <image class="illust-bg {{revealed?'illust-lit':'illust-dim'}}" src="{{currentEgg.blurUrl}}" mode="aspectFill" />
 
-  <!-- 背景插画(暗态模糊) -->
-  <image
-    class="illust-bg {{revealed ? 'illust-lit' : 'illust-dim'}}"
-    src="{{currentEgg.blurUrl}}"
-    mode="aspectFill"
-  />
-
-  <!-- 光点漂浮 -->
   <view class="particles">
     <view class="particle p1"></view>
     <view class="particle p2"></view>
@@ -18,60 +11,34 @@
     <view class="particle p5"></view>
   </view>
 
-  <!-- 如果没有插画，显示暖白渐变背景 -->
   <view wx:if="{{!hasEgg}}" class="bg-fallback"></view>
 
-  <!-- 右上角按钮组 — 胶囊下方 -->
-  <view class="top-bar" style="top: {{topBarTop}}px; right: {{topBarRight}}px;">
-    <view class="top-icon" bindtap="goTogether">
-      <view class="icon-together"></view>
-    </view>
-    <view class="top-icon" bindtap="goWorld">
-      <view class="icon-world"></view>
-    </view>
-    <view class="top-icon" bindtap="goMood">
-      <view class="icon-mood"></view>
-    </view>
+  <view class="top-bar" style="top:{{topBarTop}}px;right:{{topBarRight}}px;">
+    <view class="top-icon" bindtap="goTogether"><view class="icon-together"></view></view>
+    <view class="top-icon" bindtap="goWorld"><view class="icon-world"></view></view>
+    <view class="top-icon" bindtap="goMood"><view class="icon-mood"></view></view>
   </view>
 
-  <!-- 内容层 -->
   <view class="content">
-
-    <!-- 中央 -->
     <view class="center">
-      <!-- ✦ 光点 -->
-      <view class="flame {{revealed ? 'flame-lit' : ''}}">
+      <view class="flame {{revealed?'flame-lit':''}}">
         <text class="flame-icon">✦</text>
       </view>
 
-      <!-- 行动文字 -->
       <text class="home-title">{{actionTitle}}</text>
       <text class="home-sub">{{actionSub}}</text>
+      <view class="duration-tag"><text>{{durationText}}</text></view>
 
-      <!-- 时长标签 -->
-      <view class="duration-tag">
-        <text>{{durationText}}</text>
-      </view>
+      <view class="cta" bindtap="startAction"><text>{{ctaText}}</text></view>
 
-      <!-- CTA -->
-      <view class="cta" bindtap="startAction">
-        <text>{{ctaText}}</text>
-      </view>
-
-      <!-- 共练入口 -->
       <view wx:if="{{!revealed}}" class="together-entry" bindtap="goTogether">
         <view class="together-entry-icon"></view>
-        <text class="together-entry-text">或者，邀请好友一起练</text>
+        <text class="together-entry-text">或邀请好友一起练</text>
       </view>
 
-      <!-- 明天预告 -->
-      <text wx:if="{{revealed && tomorrowHint}}" class="tomorrow-hint">{{tomorrowHint}}</text>
+      <text wx:if="{{revealed&&tomorrowHint}}" class="tomorrow-hint">{{tomorrowHint}}</text>
 
-      <!-- 调试 -->
-      <view class="btn-text-inverse" bindtap="resetDay" style="margin-top: 20rpx;">
-        <text>重置状态</text>
-      </view>
+      <view class="btn-text-inverse" bindtap="resetDay" style="margin-top:20rpx;"><text>重置</text></view>
     </view>
-
   </view>
 </view>

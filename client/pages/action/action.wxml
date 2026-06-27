@@ -1,89 +1,60 @@
-<!--pages/action/action.wxml — 行动中：倒计时+步骤引导（共练版）-->
+<!--pages/action/action.wxml — 行动中 v0.8-->
 
 <view class="page warm-bg">
-
-  <!-- 背景插画(柔和暗态) -->
-  <image
-    class="illust-bg illust-soft"
-    src="{{eggBlurUrl}}"
-    mode="aspectFill"
-  />
-
-  <!-- 暖白叠加层 -->
+  <image class="illust-bg illust-soft" src="{{eggBlurUrl}}" mode="aspectFill" />
   <view class="overlay"></view>
 
-  <!-- 共练 3-2-1 倒计时遮罩 -->
+  <!-- 共练 3-2-1 -->
   <view wx:if="{{countingDown}}" class="countdown-overlay">
     <text class="countdown-num">{{countdown}}</text>
-    <text class="countdown-hint">准备好了</text>
   </view>
 
-  <!-- 内容 -->
   <view class="content">
-
-    <!-- 返回 — 胶囊下方 -->
-    <view class="top-left" style="top: {{topLeftTop}}px; left: {{topLeftLeft}}px;" bindtap="goBack">
+    <view class="top-left" style="top:{{topLeftTop}}px;left:{{topLeftLeft}}px;" bindtap="goBack">
       <view class="back-icon"></view>
     </view>
 
-    <!-- 共练标识 -->
+    <!-- 共练条 -->
     <view wx:if="{{together}}" class="together-badge">
       <view class="together-dot"></view>
       <text class="together-text">一起练</text>
-      <!-- 分享给好友 -->
-      <button class="together-share" open-type="share">
-        <text>邀请</text>
-      </button>
+      <button class="together-share" open-type="share"><text>邀请</text></button>
     </view>
 
-    <!-- 进度环 -->
     <view class="ring-wrap">
       <view class="ring-bg"></view>
-      <view class="ring-fg" style="conic-gradient: var(--brand-600) {{progress}}%, transparent {{progress}}%);"></view>
-      <!-- 中心阶段标识 -->
+      <view class="ring-fg" style="conic-gradient:var(--brand-600) {{progress}}%,transparent {{progress}}%);"></view>
       <view class="ring-center">
         <text class="phase-label phase-{{currentPhase}}">{{phaseText}}</text>
       </view>
     </view>
 
-    <!-- 动作标题 -->
     <text class="action-title">{{action.title}}</text>
     <text class="action-sub">{{action.subtitle}}</text>
+    <view class="depth-tag depth-{{action.depth}}"><text>{{depthLabel}}</text></view>
 
-    <!-- 深度标签 -->
-    <view class="depth-tag depth-{{action.depth}}">
-      <text>{{depthLabel}}</text>
-    </view>
-
-    <!-- 当前步骤大字 -->
     <view class="current-step">
       <text class="current-step-text">{{action.steps[currentStep].text}}</text>
       <text wx:if="{{action.steps[currentStep].hint}}" class="current-step-hint">{{action.steps[currentStep].hint}}</text>
     </view>
 
-    <!-- 步骤进度条 -->
     <view class="step-track">
       <view wx:for="{{action.steps}}" wx:key="index"
-        class="step-dot step-dot-{{item.phase}} {{currentStep === index ? 'step-dot-active' : ''}} {{currentStep > index ? 'step-dot-done' : ''}}">
+        class="step-dot step-dot-{{item.phase}} {{currentStep===index?'step-dot-active':''}} {{currentStep>index?'step-dot-done':''}}">
       </view>
     </view>
 
-    <!-- 步骤列表（折叠式） -->
     <view class="steps">
       <view wx:for="{{action.steps}}" wx:key="index"
-        class="step {{currentStep === index ? 'step-on' : ''}} {{currentStep > index ? 'step-done' : ''}} {{Math.abs(index - currentStep) > 1 ? 'step-fold' : ''}}">
+        class="step {{currentStep===index?'step-on':''}} {{currentStep>index?'step-done':''}} {{Math.abs(index-currentStep)>1?'step-fold':''}}">
         <view class="step-indicator step-ind-{{item.phase}}"></view>
         <view class="step-content">
           <text class="step-text">{{item.text}}</text>
-          <text wx:if="{{currentStep === index && item.hint}}" class="step-hint">{{item.hint}}</text>
+          <text wx:if="{{currentStep===index&&item.hint}}" class="step-hint">{{item.hint}}</text>
         </view>
       </view>
     </view>
 
-    <!-- 提前结束 -->
-    <view class="btn-text" bindtap="endEarly">
-      <text>提前结束</text>
-    </view>
-
+    <view class="btn-text" bindtap="endEarly"><text>结束</text></view>
   </view>
 </view>

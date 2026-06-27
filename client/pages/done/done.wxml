@@ -1,54 +1,32 @@
-<!--pages/done/done.wxml — 完成后：揭示彩蛋 v0.8-->
+<!--pages/done/done.wxml — 完成后 v0.8-->
 
 <view class="page warm-bg">
-
-  <!-- 背景插画 — 暗态开始，1.5s后变亮 -->
-  <image
-    class="illust-bg {{revealed ? 'illust-lit' : 'illust-dim'}}"
-    src="{{eggClearUrl}}"
-    mode="aspectFill"
-  />
-
-  <!-- 暖白叠加层（轻微，让文字可读） -->
+  <image class="illust-bg {{revealed?'illust-lit':'illust-dim'}}" src="{{eggClearUrl}}" mode="aspectFill" />
   <view class="overlay"></view>
 
-  <!-- 内容 -->
   <view class="content">
-
-    <!-- 顶部消息 -->
     <view class="done-top">
-      <text class="done-msg">{{together ? '一起做到了' : '做到了'}}</text>
+      <text class="done-msg">{{together?'一起做到了':'做到了'}}</text>
 
-      <!-- 共练分享 -->
       <view wx:if="{{together}}" class="done-together">
-        <button class="together-share-btn" open-type="share">
-          <text>告诉好友你完成了</text>
-        </button>
+        <button class="together-share-btn" open-type="share"><text>告诉好友</text></button>
       </view>
 
-      <!-- 当下体感 -->
       <view wx:if="{{feeling}}" class="done-feeling-wrap">
-        <text class="feeling-label">你的身体在说</text>
+        <text class="feeling-label">身体在说</text>
         <text class="done-feeling">{{feeling}}</text>
       </view>
 
-      <!-- 长期收益 -->
       <view wx:if="{{benefit}}" class="done-benefit-wrap">
-        <text class="benefit-label">为什么会变好</text>
+        <text class="benefit-label">会变好</text>
         <text class="done-benefit">{{benefit}}</text>
       </view>
     </view>
 
-    <!-- 底部按钮 -->
     <view class="done-bottom">
-      <text class="egg-credit">{{worldName}} · 第 {{eggIndex}} 张</text>
-      <view class="cta" bindtap="goWorld">
-        <text>收入世界</text>
-      </view>
-      <view class="btn-text" bindtap="goHome">
-        <text>回到主页</text>
-      </view>
+      <text class="egg-credit">{{worldName}} · 第{{eggIndex}}张</text>
+      <view class="cta" bindtap="goWorld"><text>收入世界</text></view>
+      <view class="btn-text" bindtap="goHome"><text>回主页</text></view>
     </view>
-
   </view>
 </view>
