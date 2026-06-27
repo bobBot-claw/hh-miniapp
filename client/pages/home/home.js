@@ -83,6 +83,10 @@ Page({
     wx.navigateTo({ url: '/pages/mood/mood' })
   },
 
+  goTogether() {
+    wx.navigateTo({ url: '/pages/together/together' })
+  },
+
   resetDay() {
     const app = getApp()
     app.saveAppState({ lastRevealDate: '', currentWorld: 'forest' })

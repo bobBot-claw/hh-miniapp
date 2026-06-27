@@ -42,8 +42,26 @@
   color: var(--neutral-900);
   letter-spacing: 8rpx;
   display: block;
-  margin-bottom: 48rpx;
+  margin-bottom: 32rpx;
 }
+
+/* 共练分享按钮 */
+.done-together {
+  margin-bottom: 28rpx;
+}
+.together-share-btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 12rpx 36rpx;
+  border-radius: 28rpx;
+  background: rgba(20, 125, 69, 0.06);
+  border: 1rpx solid rgba(20, 125, 69, 0.15);
+  font-size: 26rpx;
+  color: var(--brand-600, #147D45);
+  letter-spacing: 2rpx;
+  line-height: 1.5;
+}
+.together-share-btn::after { border: none; }
 
 /* 体感 */
 .done-feeling-wrap {

@@ -23,6 +23,9 @@
 
   <!-- 右上角按钮组 — 胶囊下方 -->
   <view class="top-bar" style="top: {{topBarTop}}px; right: {{topBarRight}}px;">
+    <view class="top-icon" bindtap="goTogether">
+      <view class="icon-together"></view>
+    </view>
     <view class="top-icon" bindtap="goWorld">
       <view class="icon-world"></view>
     </view>
@@ -53,6 +56,12 @@
       <!-- CTA -->
       <view class="cta" bindtap="startAction">
         <text>{{ctaText}}</text>
+      </view>
+
+      <!-- 共练入口 -->
+      <view wx:if="{{!revealed}}" class="together-entry" bindtap="goTogether">
+        <view class="together-entry-icon"></view>
+        <text class="together-entry-text">或者，邀请好友一起练</text>
       </view>
 
       <!-- 明天预告 -->

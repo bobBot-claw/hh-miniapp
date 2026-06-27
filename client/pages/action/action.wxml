@@ -1,4 +1,4 @@
-<!--pages/action/action.wxml — 行动中：倒计时+步骤引导-->
+<!--pages/action/action.wxml — 行动中：倒计时+步骤引导（共练版）-->
 
 <view class="page warm-bg">
 
@@ -12,12 +12,28 @@
   <!-- 暖白叠加层 -->
   <view class="overlay"></view>
 
+  <!-- 共练 3-2-1 倒计时遮罩 -->
+  <view wx:if="{{countingDown}}" class="countdown-overlay">
+    <text class="countdown-num">{{countdown}}</text>
+    <text class="countdown-hint">准备好了</text>
+  </view>
+
   <!-- 内容 -->
   <view class="content">
 
     <!-- 返回 — 胶囊下方 -->
     <view class="top-left" style="top: {{topLeftTop}}px; left: {{topLeftLeft}}px;" bindtap="goBack">
       <view class="back-icon"></view>
+    </view>
+
+    <!-- 共练标识 -->
+    <view wx:if="{{together}}" class="together-badge">
+      <view class="together-dot"></view>
+      <text class="together-text">一起练</text>
+      <!-- 分享给好友 -->
+      <button class="together-share" open-type="share">
+        <text>邀请</text>
+      </button>
     </view>
 
     <!-- 进度环 -->

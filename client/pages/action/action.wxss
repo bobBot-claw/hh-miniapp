@@ -1,4 +1,4 @@
-/* pages/action/action.wxss — 行动页：暖白浅色 v0.8 三段式 */
+/* pages/action/action.wxss — 行动页：暖白浅色 v0.8 三段式+共练 */
 
 .page {
   min-height: 100vh;
@@ -27,6 +27,72 @@
   z-index: 1;
   pointer-events: none;
 }
+
+/* ═══ 共练 3-2-1 倒计时遮罩 ═══ */
+.countdown-overlay {
+  position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+  z-index: 20;
+  background: rgba(252, 252, 253, 0.85);
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.countdown-num {
+  font-size: 160rpx;
+  font-weight: 200;
+  color: var(--brand-600, #147D45);
+  letter-spacing: 8rpx;
+  animation: breathe 1s ease-in-out infinite;
+}
+.countdown-hint {
+  font-size: 28rpx;
+  color: var(--text-secondary);
+  letter-spacing: 6rpx;
+  margin-top: 32rpx;
+}
+
+/* ═══ 共练标识条 ═══ */
+.together-badge {
+  position: fixed;
+  top: 0;
+  left: 0; right: 0;
+  z-index: 15;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12rpx;
+  padding: 16rpx 0;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1rpx solid rgba(20, 125, 69, 0.08);
+}
+.together-dot {
+  width: 12rpx; height: 12rpx;
+  border-radius: 50%;
+  background: var(--brand-600, #147D45);
+  animation: breathe 2s ease-in-out infinite;
+}
+.together-text {
+  font-size: 24rpx;
+  color: var(--brand-600, #147D45);
+  letter-spacing: 3rpx;
+  font-weight: 500;
+}
+.together-share {
+  margin-left: 16rpx;
+  padding: 6rpx 24rpx;
+  border-radius: 20rpx;
+  background: rgba(20, 125, 69, 0.06);
+  border: 1rpx solid rgba(20, 125, 69, 0.15);
+  font-size: 22rpx;
+  color: var(--brand-600, #147D45);
+  line-height: 1.4;
+}
+.together-share::after { border: none; }
 
 /* 内容 */
 .content {
@@ -200,29 +266,15 @@
   background: rgba(0, 0, 0, 0.08);
   transition: all 0.4s ease;
 }
-/* 按 phase 着色 */
-.step-dot-warmup {
-  background: rgba(201, 166, 107, 0.3);
-}
-.step-dot-work {
-  background: rgba(20, 125, 69, 0.3);
-}
-.step-dot-rest {
-  background: rgba(156, 163, 175, 0.25);
-}
-.step-dot-cooldown {
-  background: rgba(106, 90, 205, 0.25);
-}
-/* 激活态 */
-.step-dot-active {
-  width: 22rpx; height: 22rpx;
-  transform: scale(1.2);
-}
+.step-dot-warmup { background: rgba(201, 166, 107, 0.3); }
+.step-dot-work { background: rgba(20, 125, 69, 0.3); }
+.step-dot-rest { background: rgba(156, 163, 175, 0.25); }
+.step-dot-cooldown { background: rgba(106, 90, 205, 0.25); }
+.step-dot-active { width: 22rpx; height: 22rpx; transform: scale(1.2); }
 .step-dot-active.step-dot-warmup { background: var(--gold-500, #C9A66B); }
 .step-dot-active.step-dot-work { background: var(--brand-600, #147D45); }
 .step-dot-active.step-dot-rest { background: rgba(156, 163, 175, 0.5); }
 .step-dot-active.step-dot-cooldown { background: rgba(106, 90, 205, 0.6); }
-/* 已完成 */
 .step-dot-done.step-dot-warmup { background: rgba(201, 166, 107, 0.15); }
 .step-dot-done.step-dot-work { background: rgba(20, 125, 69, 0.15); }
 .step-dot-done.step-dot-rest { background: rgba(156, 163, 175, 0.1); }
@@ -242,22 +294,11 @@
   transition: opacity 0.5s ease, max-height 0.4s ease;
   overflow: hidden;
 }
-.step-on {
-  opacity: 1;
-  max-height: 300rpx;
-}
-.step-done {
-  opacity: 0.5;
-  max-height: 120rpx;
-}
-.step-fold {
-  max-height: 0;
-  padding: 0;
-  opacity: 0;
-}
+.step-on { opacity: 1; max-height: 300rpx; }
+.step-done { opacity: 0.5; max-height: 120rpx; }
+.step-fold { max-height: 0; padding: 0; opacity: 0; }
 .step-indicator {
-  width: 10rpx;
-  height: 10rpx;
+  width: 10rpx; height: 10rpx;
   border-radius: 50%;
   margin-top: 16rpx;
   margin-right: 16rpx;
@@ -268,34 +309,14 @@
 .step-ind-rest { background: rgba(156, 163, 175, 0.5); }
 .step-ind-cooldown { background: rgba(106, 90, 205, 0.5); }
 
-.step-content {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-}
-.step-text {
-  font-size: 26rpx;
-  color: var(--text-primary);
-  line-height: 1.6;
-}
+.step-content { flex: 1; display: flex; flex-direction: column; }
+.step-text { font-size: 26rpx; color: var(--text-primary); line-height: 1.6; }
 .step-hint {
-  font-size: 24rpx;
-  color: var(--brand-600, #147D45);
-  opacity: 0.7;
-  margin-top: 4rpx;
-  line-height: 1.5;
+  font-size: 24rpx; color: var(--brand-600, #147D45);
+  opacity: 0.7; margin-top: 4rpx; line-height: 1.5;
   animation: breathe 3s ease-in-out infinite;
 }
 
 /* 提前结束 */
-.btn-text {
-  margin-top: 32rpx;
-  padding: 16rpx 40rpx;
-  background: transparent;
-  border: none;
-}
-.btn-text text {
-  font-size: 26rpx;
-  color: var(--text-tertiary);
-  letter-spacing: 4rpx;
-}
+.btn-text { margin-top: 32rpx; padding: 16rpx 40rpx; background: transparent; border: none; }
+.btn-text text { font-size: 26rpx; color: var(--text-tertiary); letter-spacing: 4rpx; }

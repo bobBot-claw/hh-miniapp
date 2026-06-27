@@ -1,5 +1,5 @@
-// pages/done/done.js — 完成后：揭示彩蛋
-const { WORLDS, getCurrentAction } = require('../../utils/actions')
+// pages/done/done.js — 完成后：揭示彩蛋 v0.8
+const { ACTIONS, WORLDS, getCurrentAction } = require('../../utils/actions')
 
 Page({
   data: {
@@ -9,9 +9,11 @@ Page({
     eggIndex: 1,
     feeling: '',
     benefit: '',
+    together: false,
+    actionTitle: '',
   },
 
-  onLoad() {
+  onLoad(options) {
     let state = {}
     try { state = wx.getStorageSync('appState') || {} } catch(e) {}
 
@@ -21,8 +23,15 @@ Page({
     const revealedCount = (progress[worldId] || 0) + 1
     const eggIndex = revealedCount
 
-    // 获取当前行动的 feeling 和 benefit
-    const action = getCurrentAction()
+    // 获取当前行动（支持通过 actionId 指定）
+    let action
+    if (options.actionId && ACTIONS[options.actionId]) {
+      action = ACTIONS[options.actionId]
+    } else {
+      action = getCurrentAction()
+    }
+
+    const together = options.together === '1'
 
     // 更新状态
     const todayKey = this.getTodayKey()
@@ -38,6 +47,8 @@ Page({
         : '',
       feeling: action ? action.feeling : '',
       benefit: action ? action.benefit : '',
+      together,
+      actionTitle: action ? action.title : '',
     })
 
     // 延迟揭示
@@ -49,6 +60,14 @@ Page({
   getTodayKey() {
     const d = new Date()
     return `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`
+  },
+
+  // 共练分享：告诉好友你完成了
+  onShareAppMessage() {
+    return {
+      title: `我刚做完了${this.data.actionTitle || '今天的行动'}！`,
+      path: `/pages/together/together`,
+    }
   },
 
   goWorld() {

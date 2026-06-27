@@ -17,7 +17,14 @@
 
     <!-- 顶部消息 -->
     <view class="done-top">
-      <text class="done-msg">做到了</text>
+      <text class="done-msg">{{together ? '一起做到了' : '做到了'}}</text>
+
+      <!-- 共练分享 -->
+      <view wx:if="{{together}}" class="done-together">
+        <button class="together-share-btn" open-type="share">
+          <text>告诉好友你完成了</text>
+        </button>
+      </view>
 
       <!-- 当下体感 -->
       <view wx:if="{{feeling}}" class="done-feeling-wrap">

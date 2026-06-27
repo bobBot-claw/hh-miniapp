@@ -1,5 +1,5 @@
-// pages/action/action.js — 行动中：倒计时+步骤引导（v0.8 三段式）
-const { getCurrentAction } = require('../../utils/actions')
+// pages/action/action.js — 行动中：倒计时+步骤引导（v0.8 共练版）
+const { ACTIONS, getCurrentAction } = require('../../utils/actions')
 
 const DEPTH_LABELS = {
   light: '随时可做',
@@ -27,6 +27,12 @@ Page({
     depthLabel: '',
     topLeftTop: 0,
     topLeftLeft: 0,
+    // 共练模式
+    together: false,
+    partnerReady: false,
+    // 3秒倒计时
+    countdown: 0,
+    countingDown: false,
   },
 
   _timer: null,
@@ -34,7 +40,15 @@ Page({
   onLoad(options) {
     this.calcTopBar()
 
-    const action = getCurrentAction()
+    // 支持从共练页面进入：指定 actionId
+    let action
+    if (options.actionId && ACTIONS[options.actionId]) {
+      action = ACTIONS[options.actionId]
+    } else {
+      action = getCurrentAction()
+    }
+
+    const together = options.together === '1'
     const totalSeconds = action.duration || 180
 
     // 彩蛋模糊图
@@ -42,7 +56,7 @@ Page({
     try { state = wx.getStorageSync('appState') || {} } catch(e) {}
     const worldId = state.currentWorld || 'forest'
 
-    // 兼容旧格式 steps（字符串数组）和新格式（对象数组含 phase）
+    // 兼容旧格式 steps
     const steps = (action.steps || []).map(s => {
       if (typeof s === 'string') return { text: s, hint: '', phase: 'work' }
       return { phase: 'work', hint: '', ...s }
@@ -57,9 +71,40 @@ Page({
       depthLabel: DEPTH_LABELS[action.depth] || '',
       currentPhase: firstPhase,
       phaseText: PHASE_TEXT[firstPhase] || '训练',
+      together,
     })
 
-    this.startCountdown()
+    if (together) {
+      // 共练模式：3-2-1 倒计时后开始
+      this.startTogetherCountdown()
+    } else {
+      this.startCountdown()
+    }
+  },
+
+  // 共练 3-2-1 倒计时
+  startTogetherCountdown() {
+    this.setData({ countingDown: true, countdown: 3 })
+    let count = 3
+    const cd = setInterval(() => {
+      count--
+      if (count <= 0) {
+        clearInterval(cd)
+        this.setData({ countingDown: false, partnerReady: true })
+        this.startCountdown()
+      } else {
+        this.setData({ countdown: count })
+      }
+    }, 1000)
+  },
+
+  // 分享给好友一起练
+  onShareAppMessage() {
+    const action = this.data.action
+    return {
+      title: `一起做${action.title || '这个行动'}？`,
+      path: `/pages/together/together?actionId=${action.id}`,
+    }
   },
 
   calcTopBar() {
@@ -108,8 +153,9 @@ Page({
       if (elapsed >= total) {
         clearInterval(this._timer)
         this._timer = null
+        const togetherParam = this.data.together ? '&together=1' : ''
         setTimeout(() => {
-          wx.redirectTo({ url: '/pages/done/done' })
+          wx.redirectTo({ url: `/pages/done/done?actionId=${this.data.action.id}${togetherParam}` })
         }, 500)
       }
     }, 1000)

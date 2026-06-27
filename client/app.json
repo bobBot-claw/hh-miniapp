@@ -4,7 +4,8 @@
     "pages/action/action",
     "pages/done/done",
     "pages/world/world",
-    "pages/mood/mood"
+    "pages/mood/mood",
+    "pages/together/together"
   ],
   "window": {
     "navigationStyle": "custom",
