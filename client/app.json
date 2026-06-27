@@ -1,48 +1,18 @@
 {
   "pages": [
-    "pages/index/index",
-    "pages/exercise/list/list",
-    "pages/exercise/detail/detail",
-    "pages/exercise/player/player",
-    "pages/meditation/list/list",
-    "pages/meditation/player/player",
-    "pages/profile/index/index",
-    "pages/profile/onboarding/onboarding",
-    "pages/profile/stats/stats",
-    "pages/plan/list/list",
-    "pages/plan/detail/detail"
+    "pages/home/home",
+    "pages/action/action",
+    "pages/done/done",
+    "pages/world/world",
+    "pages/mood/mood"
   ],
   "window": {
-    "navigationBarBackgroundColor": "#f5f6fa",
-    "navigationBarTitleText": "HH",
+    "navigationStyle": "custom",
+    "navigationBarBackgroundColor": "#FCFCFD",
+    "navigationBarTitleText": "慢慢变好",
     "navigationBarTextStyle": "black",
-    "backgroundColor": "#f5f6fa",
+    "backgroundColor": "#FCFCFD",
     "backgroundTextStyle": "dark"
-  },
-  "tabBar": {
-    "custom": true,
-    "color": "#a0a0b4",
-    "selectedColor": "#7c6ff7",
-    "backgroundColor": "#f5f6fa",
-    "borderStyle": "white",
-    "list": [
-      {
-        "pagePath": "pages/index/index",
-        "text": "首页"
-      },
-      {
-        "pagePath": "pages/exercise/list/list",
-        "text": "运动"
-      },
-      {
-        "pagePath": "pages/meditation/list/list",
-        "text": "静养"
-      },
-      {
-        "pagePath": "pages/profile/index/index",
-        "text": "我的"
-      }
-    ]
   },
   "sitemapLocation": "sitemap.json",
   "style": "v2",

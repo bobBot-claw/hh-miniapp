@@ -1,0 +1,48 @@
+<!--pages/mood/mood.wxml — 情绪天气：5天气+1词-->
+
+<view class="page warm-bg">
+
+  <!-- 返回 -->
+  <view class="header">
+    <view class="back-btn" bindtap="goBack">
+      <view class="back-arrow"></view>
+    </view>
+    <text class="header-title">今天的心情</text>
+    <view style="width: 72rpx;"></view>
+  </view>
+
+  <!-- 天气选择 -->
+  <view class="weather-row">
+    <view
+      wx:for="{{weathers}}" wx:key="id"
+      class="weather-item {{selectedWeather === item.id ? 'weather-on' : ''}}"
+      bindtap="selectWeather"
+      data-id="{{item.id}}"
+    >
+      <!-- 单色线条天气图标 -->
+      <view class="weather-icon icon-weather-{{item.id}}"></view>
+      <text class="weather-label">{{item.name}}</text>
+    </view>
+  </view>
+
+  <!-- 一句话 -->
+  <view class="word-section">
+    <input
+      class="word-input"
+      placeholder="一个词，描述现在"
+      placeholder-style="color: rgba(60,60,67,0.3);"
+      maxlength="10"
+      value="{{word}}"
+      bindinput="onWordInput"
+    />
+  </view>
+
+  <!-- 保存 -->
+  <view class="cta cta-green {{!selectedWeather ? 'cta-disabled' : ''}}" bindtap="saveMood">
+    <text>记下来</text>
+  </view>
+
+  <!-- 提示 -->
+  <text class="hint">不评分 · 不比较 · 只和自己有关</text>
+
+</view>

@@ -1,0 +1,43 @@
+<!--pages/world/world.wxml — 治愈世界：12主题世界网格-->
+
+<view class="page warm-bg">
+
+  <!-- 顶部 -->
+  <view class="header">
+    <view class="back-btn" bindtap="goBack">
+      <view class="back-arrow"></view>
+    </view>
+    <view class="header-right"></view>
+  </view>
+
+  <view class="title-row">
+    <text class="page-title">我的世界</text>
+    <text class="page-meta">已揭示 {{totalRevealed}} / 360</text>
+  </view>
+
+  <!-- 世界网格 -->
+  <scroll-view scroll-y class="grid-scroll">
+    <view class="grid">
+      <view
+        wx:for="{{worlds}}" wx:key="id"
+        class="world-card {{item.active ? 'card-active' : ''}} {{item.locked ? 'card-locked' : ''}}"
+        bindtap="onWorldTap"
+        data-id="{{item.id}}"
+      >
+        <!-- 单色线条图标 -->
+        <view class="world-icon-wrap">
+          <view class="icon-line icon-{{item.iconType}}"></view>
+        </view>
+        <view class="world-info">
+          <text class="world-name">{{item.name}}</text>
+          <text class="world-progress">{{item.revealed}} / {{item.total}}</text>
+        </view>
+        <!-- 探索中标记 -->
+        <view wx:if="{{item.active}}" class="badge">探索中</view>
+      </view>
+    </view>
+
+    <view style="height: 80rpx;"></view>
+  </scroll-view>
+
+</view>

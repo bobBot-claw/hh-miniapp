@@ -1,0 +1,67 @@
+<!--pages/home/home.wxml — 主页：暗+模糊插画+光点+行动-->
+
+<view class="page warm-bg">
+
+  <!-- 背景插画(暗态模糊) -->
+  <image
+    class="illust-bg {{revealed ? 'illust-lit' : 'illust-dim'}}"
+    src="{{currentEgg.blurUrl}}"
+    mode="aspectFill"
+  />
+
+  <!-- 光点漂浮 -->
+  <view class="particles">
+    <view class="particle p1"></view>
+    <view class="particle p2"></view>
+    <view class="particle p3"></view>
+    <view class="particle p4"></view>
+    <view class="particle p5"></view>
+  </view>
+
+  <!-- 如果没有插画，显示纯色渐变背景 -->
+  <view wx:if="{{!hasEgg}}" class="bg-fallback"></view>
+
+  <!-- 内容层 -->
+  <view class="content">
+
+    <!-- 右上角 — 治愈世界入口 -->
+    <view class="top-right" bindtap="goWorld">
+      <view class="top-icon">
+        <view class="icon-world"></view>
+      </view>
+    </view>
+
+    <!-- 右上角 — 情绪天气入口 -->
+    <view class="top-right-2" bindtap="goMood">
+      <view class="top-icon">
+        <view class="icon-mood"></view>
+      </view>
+    </view>
+
+    <!-- 中央 -->
+    <view class="center">
+      <!-- ✦ 光点 -->
+      <view class="flame {{revealed ? 'flame-lit' : ''}}">
+        <text class="flame-icon">✦</text>
+      </view>
+
+      <!-- 行动文字 -->
+      <text class="home-title">{{actionTitle}}</text>
+      <text class="home-sub">{{actionSub}}</text>
+
+      <!-- CTA -->
+      <view class="cta" bindtap="startAction">
+        <text>{{ctaText}}</text>
+      </view>
+
+      <!-- 明天预告 -->
+      <text wx:if="{{revealed && tomorrowHint}}" class="tomorrow-hint">{{tomorrowHint}}</text>
+
+      <!-- 调试 -->
+      <view class="btn-text-inverse" bindtap="resetDay" style="margin-top: 20rpx;">
+        <text>重置状态</text>
+      </view>
+    </view>
+
+  </view>
+</view>

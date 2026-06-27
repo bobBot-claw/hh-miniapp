@@ -1,0 +1,55 @@
+<!--pages/action/action.wxml — 行动中：倒计时+步骤引导-->
+
+<view class="page dark-bg">
+
+  <!-- 背景插画(暗态) -->
+  <image
+    class="illust-bg illust-dim"
+    src="{{eggBlurUrl}}"
+    mode="aspectFill"
+  />
+
+  <!-- 光点 -->
+  <view class="particles">
+    <view class="particle p1"></view>
+    <view class="particle p2"></view>
+    <view class="particle p3"></view>
+  </view>
+
+  <!-- 内容 -->
+  <view class="content">
+
+    <!-- 返回 -->
+    <view class="top-left" bindtap="goBack">
+      <view class="back-icon"></view>
+    </view>
+
+    <!-- 进度环 -->
+    <view class="ring-wrap">
+      <view class="ring-bg"></view>
+      <view class="ring-fg" style="conic-gradient: var(--gold-400) {{progress}}%, transparent {{progress}}%);"></view>
+      <!-- 中心火焰 -->
+      <view class="ring-center">
+        <view class="flame-svg"></view>
+      </view>
+    </view>
+
+    <!-- 动作标题 -->
+    <text class="action-title">{{action.title}}</text>
+    <text class="action-sub">{{action.subtitle}}</text>
+
+    <!-- 步骤引导 -->
+    <view class="steps">
+      <view wx:for="{{action.steps}}" wx:key="index" class="step {{currentStep >= index ? 'step-on' : ''}}">
+        <view class="step-num">{{index + 1}}</view>
+        <text class="step-text">{{item}}</text>
+      </view>
+    </view>
+
+    <!-- 提前结束 -->
+    <view class="btn-text-inverse" bindtap="endEarly">
+      <text>提前结束</text>
+    </view>
+
+  </view>
+</view>

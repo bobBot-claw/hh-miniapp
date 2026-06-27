@@ -1,0 +1,33 @@
+<!--pages/done/done.wxml — 完成后：揭示彩蛋-->
+
+<view class="page warm-bg">
+
+  <!-- 背景插画 — 暗态开始，1.5s后变亮 -->
+  <image
+    class="illust-bg {{revealed ? 'illust-lit' : 'illust-dim'}}"
+    src="{{eggClearUrl}}"
+    mode="aspectFill"
+  />
+
+  <!-- 内容 -->
+  <view class="content">
+
+    <!-- 顶部消息 -->
+    <view class="done-top">
+      <text class="done-msg">今天有了光</text>
+      <text class="done-sub">明天继续</text>
+    </view>
+
+    <!-- 底部按钮 -->
+    <view class="done-bottom">
+      <text class="egg-credit">{{worldName}} · 第 {{eggIndex}} 张</text>
+      <view class="cta" bindtap="goWorld">
+        <text>收入世界</text>
+      </view>
+      <view class="btn-text" bindtap="goHome">
+        <text>回到主页</text>
+      </view>
+    </view>
+
+  </view>
+</view>
