@@ -16,11 +16,15 @@ Page({
     totalSeconds: 180,
     elapsedSeconds: 0,
     depthLabel: '',
+    topLeftTop: 0,
+    topLeftLeft: 0,
   },
 
   _timer: null,
 
   onLoad(options) {
+    this.calcTopBar()
+
     const action = getCurrentAction()
     const totalSeconds = action.duration || 180
 
@@ -43,6 +47,23 @@ Page({
     })
 
     this.startCountdown()
+  },
+
+  calcTopBar() {
+    try {
+      const menu = wx.getMenuButtonBoundingClientRect()
+      const sys = wx.getSystemInfoSync()
+      const topLeftTop = menu.bottom + 12
+      const topLeftLeft = sys.windowWidth - menu.right
+      this.setData({ topLeftTop, topLeftLeft })
+    } catch (e) {
+      try {
+        const sys = wx.getSystemInfoSync()
+        this.setData({ topLeftTop: sys.statusBarHeight + 44 + 12, topLeftLeft: 16 })
+      } catch (e2) {
+        this.setData({ topLeftTop: 100, topLeftLeft: 16 })
+      }
+    }
   },
 
   onUnload() {

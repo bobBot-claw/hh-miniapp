@@ -21,22 +21,18 @@
   <!-- 如果没有插画，显示暖白渐变背景 -->
   <view wx:if="{{!hasEgg}}" class="bg-fallback"></view>
 
+  <!-- 右上角按钮组 — 胶囊下方 -->
+  <view class="top-bar" style="top: {{topBarTop}}px; right: {{topBarRight}}px;">
+    <view class="top-icon" bindtap="goWorld">
+      <view class="icon-world"></view>
+    </view>
+    <view class="top-icon" bindtap="goMood">
+      <view class="icon-mood"></view>
+    </view>
+  </view>
+
   <!-- 内容层 -->
   <view class="content">
-
-    <!-- 右上角 — 治愈世界入口 -->
-    <view class="top-right" bindtap="goWorld">
-      <view class="top-icon">
-        <view class="icon-world"></view>
-      </view>
-    </view>
-
-    <!-- 右上角 — 情绪天气入口 -->
-    <view class="top-right-2" bindtap="goMood">
-      <view class="top-icon">
-        <view class="icon-mood"></view>
-      </view>
-    </view>
 
     <!-- 中央 -->
     <view class="center">

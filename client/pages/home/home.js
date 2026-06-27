@@ -1,4 +1,4 @@
-// pages/home/home.js — 慢慢变好 v0.7
+// pages/home/home.js — 慢慢变好 v0.7.1
 const { getCurrentAction, getTomorrowAction } = require('../../utils/actions')
 
 Page({
@@ -11,14 +11,40 @@ Page({
     hasEgg: false,
     blurSrc: '',
     clearSrc: '',
+    // 右上角按钮位置（避开胶囊）
+    topBarTop: 0,
+    topBarRight: 0,
   },
 
   onLoad() {
+    this.calcTopBar()
     this.refresh()
   },
 
   onShow() {
     this.refresh()
+  },
+
+  calcTopBar() {
+    try {
+      const menu = wx.getMenuButtonBoundingClientRect()
+      // 胶囊底部 + 间距 12px 作为按钮区域顶部
+      const topBarTop = menu.bottom + 12
+      // 右侧与胶囊右对齐
+      const topBarRight = menu.right - menu.left > 0
+        ? (wx.getSystemInfoSync().windowWidth - menu.right)
+        : 16
+      this.setData({ topBarTop, topBarRight })
+    } catch (e) {
+      // 降级：用状态栏高度推算
+      try {
+        const sys = wx.getSystemInfoSync()
+        const topBarTop = sys.statusBarHeight + 44 + 12
+        this.setData({ topBarTop, topBarRight: 16 })
+      } catch (e2) {
+        this.setData({ topBarTop: 100, topBarRight: 16 })
+      }
+    }
   },
 
   refresh() {

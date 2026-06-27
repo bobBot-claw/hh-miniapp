@@ -15,8 +15,8 @@
   <!-- 内容 -->
   <view class="content">
 
-    <!-- 返回 -->
-    <view class="top-left" bindtap="goBack">
+    <!-- 返回 — 胶囊下方 -->
+    <view class="top-left" style="top: {{topLeftTop}}px; left: {{topLeftLeft}}px;" bindtap="goBack">
       <view class="back-icon"></view>
     </view>
 
