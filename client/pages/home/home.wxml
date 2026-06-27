@@ -1,4 +1,4 @@
-<!--pages/home/home.wxml — 主页 v0.8-->
+<!--pages/home/home.wxml — 主页 v0.7 demo 风格-->
 
 <view class="page warm-bg">
   <image class="illust-bg {{revealed?'illust-lit':'illust-dim'}}" src="{{currentEgg.blurUrl}}" mode="aspectFill" />
@@ -9,6 +9,7 @@
     <view class="particle p3"></view>
     <view class="particle p4"></view>
     <view class="particle p5"></view>
+    <view class="particle p6"></view>
   </view>
 
   <view wx:if="{{!hasEgg}}" class="bg-fallback"></view>
@@ -33,12 +34,12 @@
 
       <view wx:if="{{!revealed}}" class="together-entry" bindtap="goTogether">
         <view class="together-entry-icon"></view>
-        <text class="together-entry-text">或邀请好友一起练</text>
+        <text class="together-entry-text">邀请好友</text>
       </view>
 
       <text wx:if="{{revealed&&tomorrowHint}}" class="tomorrow-hint">{{tomorrowHint}}</text>
 
-      <view class="btn-text-inverse" bindtap="resetDay" style="margin-top:20rpx;"><text>重置</text></view>
+      <view class="btn-text-inverse" bindtap="resetDay" style="margin-top:24rpx;"><text>重置状态</text></view>
     </view>
   </view>
 </view>

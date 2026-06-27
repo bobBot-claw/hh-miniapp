@@ -1,4 +1,4 @@
-<!--pages/action/action.wxml — 行动中 v0.8-->
+<!--pages/action/action.wxml — 行动中 v0.7 demo 风格-->
 
 <view class="page warm-bg">
   <image class="illust-bg illust-soft" src="{{eggBlurUrl}}" mode="aspectFill" />
@@ -21,40 +21,27 @@
       <button class="together-share" open-type="share"><text>邀请</text></button>
     </view>
 
-    <view class="ring-wrap">
-      <view class="ring-bg"></view>
-      <view class="ring-fg" style="conic-gradient:var(--brand-600) {{progress}}%,transparent {{progress}}%);"></view>
-      <view class="ring-center">
-        <text class="phase-label phase-{{currentPhase}}">{{phaseText}}</text>
+    <!-- 进度环 + 火焰中心 (demo 风格) -->
+    <view class="progress-ring">
+      <view class="ring-svg">
+        <view class="ring-bg-circle"></view>
+        <view class="ring-fg-circle" style="conic-gradient:var(--gold-400) {{progress}}%, transparent {{progress}}%);"></view>
+      </view>
+      <view class="flame-center">
+        <view class="flame-center-icon">✦</view>
       </view>
     </view>
 
-    <text class="action-title">{{action.title}}</text>
-    <text class="action-sub">{{action.subtitle}}</text>
-    <view class="depth-tag depth-{{action.depth}}"><text>{{depthLabel}}</text></view>
+    <text class="action-title">{{currentStepText}}</text>
+    <text class="action-sub">{{currentStepHint}}</text>
 
-    <view class="current-step">
-      <text class="current-step-text">{{action.steps[currentStep].text}}</text>
-      <text wx:if="{{action.steps[currentStep].hint}}" class="current-step-hint">{{action.steps[currentStep].hint}}</text>
-    </view>
-
+    <!-- 步骤进度条 — 阶段色彩 -->
     <view class="step-track">
       <view wx:for="{{action.steps}}" wx:key="index"
         class="step-dot step-dot-{{item.phase}} {{currentStep===index?'step-dot-active':''}} {{currentStep>index?'step-dot-done':''}}">
       </view>
     </view>
 
-    <view class="steps">
-      <view wx:for="{{action.steps}}" wx:key="index"
-        class="step {{currentStep===index?'step-on':''}} {{currentStep>index?'step-done':''}} {{Math.abs(index-currentStep)>1?'step-fold':''}}">
-        <view class="step-indicator step-ind-{{item.phase}}"></view>
-        <view class="step-content">
-          <text class="step-text">{{item.text}}</text>
-          <text wx:if="{{currentStep===index&&item.hint}}" class="step-hint">{{item.hint}}</text>
-        </view>
-      </view>
-    </view>
-
-    <view class="btn-text" bindtap="endEarly"><text>结束</text></view>
+    <view class="btn-text" bindtap="endEarly"><text>提前结束</text></view>
   </view>
 </view>

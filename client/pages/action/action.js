@@ -1,13 +1,13 @@
-// pages/action/action.js — 行动中 v0.8
+// pages/action/action.js — 行动中 v0.7 demo 风格
 const { ACTIONS, getCurrentAction } = require('../../utils/actions')
 
-const DEPTH_LABELS = { light: '随时', medium: '要空间', deep: '要躺下' }
 const PHASE_TEXT = { warmup: '热身', work: '训练', rest: '间歇', cooldown: '放松' }
 
 Page({
   data: {
-    action: {}, progress: 0, currentStep: 0, currentPhase: 'warmup', phaseText: '热身',
-    eggBlurUrl: '', totalSeconds: 180, elapsedSeconds: 0, depthLabel: '',
+    action: {}, progress: 0, currentStep: 0, currentPhase: 'warmup',
+    currentStepText: '', currentStepHint: '',
+    eggBlurUrl: '', totalSeconds: 180, elapsedSeconds: 0,
     topLeftTop: 0, topLeftLeft: 0,
     together: false, countdown: 0, countingDown: false,
   },
@@ -20,7 +20,12 @@ Page({
     let state = {}; try { state = wx.getStorageSync('appState') || {} } catch(e) {}
     const steps = (action.steps||[]).map(s => typeof s === 'string' ? {text:s,hint:'',phase:'work'} : {phase:'work',hint:'',...s})
     const firstPhase = steps[0] ? steps[0].phase : 'warmup'
-    this.setData({ action:{...action,steps}, totalSeconds:action.duration||180, eggBlurUrl:`/assets/eggs/${state.currentWorld||'forest'}/blur_01.png`, depthLabel:DEPTH_LABELS[action.depth]||'', currentPhase:firstPhase, phaseText:PHASE_TEXT[firstPhase]||'训练', together })
+    this.setData({
+      action:{...action,steps}, totalSeconds:action.duration||180,
+      eggBlurUrl:`/assets/eggs/${state.currentWorld||'forest'}/blur_01.png`,
+      currentPhase:firstPhase, currentStepText:steps[0]?steps[0].text:'', currentStepHint:steps[0]?steps[0].hint:'',
+      together
+    })
     together ? this.startTogetherCountdown() : this.startCountdown()
   },
 
@@ -48,7 +53,9 @@ Page({
       const elapsed = this.data.elapsedSeconds+1, progress = Math.min((elapsed/total)*100,100)
       const currentStep = Math.min(Math.floor(elapsed/stepInterval), steps.length-1)
       const currentPhase = steps[currentStep] ? steps[currentStep].phase : 'work'
-      this.setData({ elapsedSeconds:elapsed, progress, currentStep, currentPhase, phaseText:PHASE_TEXT[currentPhase]||'训练' })
+      const currentStepText = steps[currentStep] ? steps[currentStep].text : ''
+      const currentStepHint = steps[currentStep] ? steps[currentStep].hint : ''
+      this.setData({ elapsedSeconds:elapsed, progress, currentStep, currentPhase, currentStepText, currentStepHint })
       if (elapsed >= total) { clearInterval(this._timer); this._timer=null; const t=this.data.together?'&together=1':''; setTimeout(()=>wx.redirectTo({url:`/pages/done/done?actionId=${this.data.action.id}${t}`}),500) }
     }, 1000)
   },

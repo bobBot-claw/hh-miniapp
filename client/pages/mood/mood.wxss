@@ -1,4 +1,4 @@
-/* pages/mood/mood.wxss — 情绪天气：5天气+1词 */
+/* pages/mood/mood.wxss — 情绪天气：5天气+1词 v0.7 demo 风格 */
 
 .page {
   position: relative;
@@ -28,9 +28,9 @@
   margin-left: 6rpx;
 }
 .header-title {
-  font-size: 32rpx; font-weight: 500;
+  font-size: 32rpx; font-weight: 300;
   color: var(--neutral-900);
-  letter-spacing: 4rpx;
+  letter-spacing: 0.2em;
 }
 
 /* 天气选择 */
@@ -48,7 +48,7 @@
   opacity: 1;
 }
 
-/* 天气线条图标 — 用 CSS 画 */
+/* 天气线条图标 */
 .weather-icon {
   width: 80rpx; height: 80rpx;
   border-radius: 50%;
@@ -56,7 +56,7 @@
   display: flex; align-items: center; justify-content: center;
 }
 
-/* 晴：圆+放射线 */
+/* 晴 */
 .icon-weather-sunny {
   background: transparent;
   border: 4rpx solid var(--gold-500);
@@ -68,7 +68,7 @@
   background: var(--gold-500);
 }
 
-/* 多云：圆+偏移小圆 */
+/* 多云 */
 .icon-weather-cloudy {
   background: transparent;
 }
@@ -87,7 +87,7 @@
   background: var(--neutral-200);
 }
 
-/* 小雨：圆+竖线 */
+/* 小雨 */
 .icon-weather-rainy {
   background: transparent;
   border: 4rpx solid #7B9EC6;
@@ -100,7 +100,7 @@
   transform: translateX(-50%);
 }
 
-/* 雷阵雨：圆+闪电 */
+/* 雷阵雨 */
 .icon-weather-stormy {
   background: transparent;
   border: 4rpx solid #5B5B7B;
@@ -114,7 +114,7 @@
   transform: translateX(-50%);
 }
 
-/* 雨后：圆+弧线 */
+/* 雨后 */
 .icon-weather-after {
   background: transparent;
   border: 4rpx solid var(--brand-600);
@@ -135,7 +135,7 @@
 .weather-label {
   font-size: 22rpx;
   color: var(--text-secondary);
-  letter-spacing: 3rpx;
+  letter-spacing: 0.15em;
 }
 .weather-on .weather-label {
   color: var(--neutral-900);
@@ -152,7 +152,7 @@
   text-align: center;
   font-size: 40rpx; font-weight: 300;
   color: var(--neutral-900);
-  letter-spacing: 8rpx;
+  letter-spacing: 0.2em;
   border: none;
   background: transparent;
   border-bottom: 2rpx solid var(--neutral-200);
@@ -170,6 +170,6 @@
   text-align: center;
   font-size: 22rpx;
   color: var(--text-tertiary);
-  letter-spacing: 4rpx;
+  letter-spacing: 0.2em;
   margin-top: 32rpx;
 }

@@ -1,4 +1,4 @@
-<!--pages/mood/mood.wxml — 情绪天气：5天气+1词-->
+<!--pages/mood/mood.wxml — 情绪天气：5天气+1词 v0.7 demo 风格-->
 
 <view class="page warm-bg">
 
@@ -7,7 +7,7 @@
     <view class="back-btn" bindtap="goBack">
       <view class="back-arrow"></view>
     </view>
-    <text class="header-title">心情</text>
+    <text class="header-title">心 情</text>
     <view style="width: 72rpx;"></view>
   </view>
 
@@ -29,7 +29,7 @@
   <view class="word-section">
     <input
       class="word-input"
-      placeholder="一个词"
+      placeholder="一 个 词"
       placeholder-style="color: rgba(60,60,67,0.3);"
       maxlength="10"
       value="{{word}}"
@@ -39,10 +39,10 @@
 
   <!-- 保存 -->
   <view class="cta cta-green {{!selectedWeather ? 'cta-disabled' : ''}}" bindtap="saveMood">
-    <text>记下</text>
+    <text>记 下</text>
   </view>
 
   <!-- 提示 -->
-  <text class="hint">不评分·不比较</text>
+  <text class="hint">不 评 分 · 不 比 较</text>
 
 </view>

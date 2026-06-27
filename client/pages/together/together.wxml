@@ -1,4 +1,4 @@
-<!--pages/together/together.wxml — 共练：选行动+邀请好友-->
+<!--pages/together/together.wxml — 共练：选行动+邀请好友 v0.7 demo 风格-->
 
 <view class="page warm-bg">
 
@@ -15,22 +15,22 @@
   <view class="content">
 
     <view class="header">
-      <text class="title">一起练</text>
-      <text class="subtitle">选一个，邀请好友</text>
+      <text class="title">一 起 练</text>
+      <text class="subtitle">选 一 个 · 邀 请 好 友</text>
     </view>
 
     <view class="scene-tabs">
       <view class="scene-tab {{scene === 'morning' ? 'tab-on' : ''}}" bindtap="switchScene" data-scene="morning">
-        <text>晨间</text>
+        <text>晨 间</text>
       </view>
       <view class="scene-tab {{scene === 'work' ? 'tab-on' : ''}}" bindtap="switchScene" data-scene="work">
-        <text>工间</text>
+        <text>工 间</text>
       </view>
       <view class="scene-tab {{scene === 'night' ? 'tab-on' : ''}}" bindtap="switchScene" data-scene="night">
-        <text>夜间</text>
+        <text>夜 间</text>
       </view>
       <view class="scene-tab {{scene === 'problem' ? 'tab-on' : ''}}" bindtap="switchScene" data-scene="problem">
-        <text>按需</text>
+        <text>按 需</text>
       </view>
     </view>
 
@@ -54,7 +54,7 @@
 
     <view class="bottom-bar">
       <view class="cta {{selectedId ? '' : 'cta-disabled'}}" bindtap="shareAction">
-        <text>{{selectedId ? '邀请好友' : '先选一个'}}</text>
+        <text>{{selectedId ? '邀 请 好 友' : '先 选 一 个'}}</text>
       </view>
     </view>
 

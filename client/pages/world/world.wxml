@@ -1,18 +1,17 @@
-<!--pages/world/world.wxml — 治愈世界：12主题世界网格-->
+<!--pages/world/world.wxml — 治愈世界：12主题世界网格 v0.7 demo 风格-->
 
 <view class="page warm-bg">
 
   <!-- 顶部 -->
-  <view class="header">
+  <view class="top-bar">
     <view class="back-btn" bindtap="goBack">
       <view class="back-arrow"></view>
     </view>
-    <view class="header-right"></view>
   </view>
 
   <view class="title-row">
-    <text class="page-title">世界</text>
-    <text class="page-meta">{{totalRevealed}}/360</text>
+    <text class="page-title">我 的 世 界</text>
+    <text class="page-meta">已 揭 示 {{totalRevealed}} / 360</text>
   </view>
 
   <!-- 世界网格 -->
@@ -30,10 +29,10 @@
         </view>
         <view class="world-info">
           <text class="world-name">{{item.name}}</text>
-          <text class="world-progress">{{item.revealed}}/{{item.total}}</text>
+          <text class="world-progress">{{item.revealed}} / {{item.total}}</text>
         </view>
         <!-- 探索中标记 -->
-        <view wx:if="{{item.active}}" class="badge">中</view>
+        <view wx:if="{{item.active}}" class="badge">探 索 中</view>
       </view>
     </view>
 
