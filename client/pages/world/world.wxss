@@ -1,14 +1,14 @@
-/* pages/world/world.wxss — 治愈世界：12主题世界网格 v0.7 demo 风格 */
+/* pages/world/world.wxss — 我的世界：12主题世界+插画收藏 v0.7 demo 风格 */
 
 .page {
   position: relative;
   width: 100%; min-height: 100vh;
 }
 
-/* 顶 bar */
+/* ═══ 顶 bar ═══ */
 .top-bar {
   position: absolute; top: 0; left: 0; right: 0;
-  display: flex; align-items: center;
+  display: flex; align-items: center; justify-content: space-between;
   padding: 100rpx 48rpx 0;
   z-index: 10;
 }
@@ -27,6 +27,11 @@
   border-bottom: 3rpx solid rgba(42, 40, 32, 0.6);
   transform: rotate(45deg);
   margin-left: 6rpx;
+}
+
+/* ═══ 世界列表视图 ═══ */
+.world-view {
+  position: relative; z-index: 5;
 }
 
 /* 标题行 */
@@ -56,7 +61,7 @@
   gap: 24rpx;
 }
 
-/* 世界卡片 — demo 毛玻璃风格 */
+/* ═══ 世界卡片 — demo 毛玻璃 ═══ */
 .world-card {
   position: relative;
   aspect-ratio: 1;
@@ -91,10 +96,6 @@
   width: 40rpx; height: 40rpx;
   border-radius: 50%;
   border: 3rpx solid var(--gold-500);
-}
-/* 森林 */
-.icon-forest {
-  border-radius: 50%;
   position: relative;
 }
 .icon-forest::before {
@@ -104,11 +105,8 @@
   background: var(--gold-500);
   transform: translateX(-50%);
 }
-/* 海边 */
 .icon-sea {
-  border-radius: 50%;
-  border: 3rpx solid var(--brand-600);
-  position: relative;
+  border-color: var(--brand-600);
 }
 .icon-sea::before {
   content: '';
@@ -117,7 +115,6 @@
   background: var(--brand-600);
   border-radius: 50%;
 }
-/* 窗边 */
 .icon-window {
   position: relative;
 }
@@ -134,10 +131,8 @@
   left: -4rpx; right: -4rpx; top: 50%;
   height: 3rpx; transform: translateY(-50%);
 }
-/* 暖屋 */
 .icon-warm {
-  border: 3rpx solid #D4755A;
-  position: relative;
+  border-color: #D4755A;
 }
 .icon-warm::before {
   content: '';
@@ -147,21 +142,15 @@
   background: #D4755A;
   border-radius: 4rpx;
 }
-/* 茶书 */
-.icon-tea {
-  position: relative;
-}
 .icon-tea::before {
   content: '';
   position: absolute; top: 50%; left: 4rpx; right: 4rpx;
   height: 3rpx;
   background: var(--gold-500);
 }
-/* 夜星 */
 .icon-night {
-  position: relative;
+  border-color: #5B6AAF;
   background: transparent;
-  border: 3rpx solid #5B6AAF;
 }
 .icon-night::before {
   content: '';
@@ -170,9 +159,8 @@
   background: #5B6AAF;
   border-radius: 50%;
 }
-/* 默认 */
 .icon-default {
-  border: 3rpx solid var(--neutral-200);
+  border-color: var(--neutral-200);
 }
 
 /* 世界信息 */
@@ -206,4 +194,100 @@
   border-radius: 100rpx;
   letter-spacing: 0.1em;
   font-weight: 500;
+}
+
+/* ═══ 插画收藏视图 ═══ */
+.gallery-view {
+  position: relative; z-index: 5;
+}
+
+.gallery-header {
+  display: flex; align-items: center; gap: 24rpx;
+  padding: 100rpx 48rpx 32rpx;
+}
+.gallery-title {
+  font-size: 36rpx; font-weight: 300;
+  color: var(--neutral-900);
+  letter-spacing: 0.2em;
+  flex: 1;
+}
+.gallery-meta {
+  font-size: 22rpx;
+  color: rgba(42, 40, 32, 0.5);
+  letter-spacing: 0.15em;
+}
+
+.gallery-scroll {
+  height: calc(100vh - 200rpx);
+  padding: 0 48rpx;
+}
+
+/* 插画网格 */
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20rpx;
+  margin-bottom: 32rpx;
+}
+
+/* 已揭示的插画卡片 */
+.egg-card {
+  position: relative;
+  border-radius: 24rpx;
+  overflow: hidden;
+  aspect-ratio: 3/4;
+  background: rgba(255, 255, 255, 0.4);
+}
+.egg-img {
+  width: 100%; height: 100%;
+}
+.egg-num {
+  position: absolute; bottom: 12rpx; left: 0; right: 0;
+  text-align: center;
+  font-size: 18rpx;
+  color: rgba(255, 255, 255, 0.9);
+  letter-spacing: 0.15em;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* 未揭示的插画 */
+.egg-locked {
+  background: rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1rpx dashed rgba(42, 40, 32, 0.15);
+}
+.egg-blur {
+  width: 100%; height: 100%;
+  background: rgba(201, 166, 107, 0.08);
+}
+.egg-num-dim {
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 36rpx; font-weight: 300;
+  color: rgba(42, 40, 32, 0.15);
+  letter-spacing: 0.2em;
+}
+
+/* 空态 */
+.empty {
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 160rpx 0;
+}
+.empty-flame {
+  width: 96rpx; height: 96rpx;
+  background: radial-gradient(circle, rgba(232, 232, 232, 0.5) 0%, transparent 65%);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 32rpx;
+}
+.empty-icon {
+  font-size: 48rpx;
+  color: var(--text-tertiary);
+}
+.empty-text {
+  font-size: 24rpx;
+  color: var(--text-tertiary);
+  letter-spacing: 0.2em;
 }

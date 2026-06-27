@@ -1,42 +1,97 @@
-<!--pages/world/world.wxml — 治愈世界：12主题世界网格 v0.7 demo 风格-->
+<!--pages/world/world.wxml — 我的世界：12主题世界+插画收藏 v0.7 demo 风格-->
 
 <view class="page warm-bg">
 
-  <!-- 顶部 -->
+  <!-- 顶 bar -->
   <view class="top-bar">
     <view class="back-btn" bindtap="goBack">
       <view class="back-arrow"></view>
     </view>
+    <view style="width:72rpx;"></view>
+    <view style="width:72rpx;"></view>
   </view>
 
-  <view class="title-row">
-    <text class="page-title">我 的 世 界</text>
-    <text class="page-meta">已 揭 示 {{totalRevealed}} / 360</text>
-  </view>
+  <!-- 世界列表视图 -->
+  <view class="world-view" wx:if="{{!selectedWorld}}">
 
-  <!-- 世界网格 -->
-  <scroll-view scroll-y class="grid-scroll">
-    <view class="grid">
-      <view
-        wx:for="{{worlds}}" wx:key="id"
-        class="world-card {{item.active ? 'card-active' : ''}} {{item.locked ? 'card-locked' : ''}}"
-        bindtap="onWorldTap"
-        data-id="{{item.id}}"
-      >
-        <!-- 单色线条图标 -->
-        <view class="world-icon-wrap">
-          <view class="icon-line icon-{{item.iconType}}"></view>
-        </view>
-        <view class="world-info">
-          <text class="world-name">{{item.name}}</text>
-          <text class="world-progress">{{item.revealed}} / {{item.total}}</text>
-        </view>
-        <!-- 探索中标记 -->
-        <view wx:if="{{item.active}}" class="badge">探 索 中</view>
-      </view>
+    <view class="title-row">
+      <text class="page-title">我 的 世 界</text>
+      <text class="page-meta">已 揭 示 {{totalRevealed}} / 360</text>
     </view>
 
-    <view style="height: 80rpx;"></view>
-  </scroll-view>
+    <scroll-view scroll-y class="grid-scroll">
+      <view class="grid">
+        <view
+          wx:for="{{worlds}}" wx:key="id"
+          class="world-card {{item.active ? 'card-active' : ''}} {{item.locked ? 'card-locked' : ''}}"
+          bindtap="onWorldTap"
+          data-id="{{item.id}}"
+        >
+          <!-- 单色线条图标 -->
+          <view class="world-icon-wrap">
+            <view class="icon-line icon-{{item.iconType}}"></view>
+          </view>
+          <view class="world-info">
+            <text class="world-name">{{item.name}}</text>
+            <text class="world-progress">{{item.revealed}} / {{item.total}}</text>
+          </view>
+          <!-- 探索中标记 -->
+          <view wx:if="{{item.active}}" class="badge">探 索 中</view>
+        </view>
+      </view>
+      <view style="height:80rpx;"></view>
+    </scroll-view>
+
+  </view>
+
+  <!-- 插画收藏视图 — 选中某个世界后展示 -->
+  <view class="gallery-view" wx:if="{{selectedWorld}}">
+
+    <view class="gallery-header">
+      <view class="back-btn" bindtap="closeGallery">
+        <view class="back-arrow"></view>
+      </view>
+      <text class="gallery-title">{{selectedWorld.name}}</text>
+      <text class="gallery-meta">{{selectedWorld.revealed}} / {{selectedWorld.total}}</text>
+    </view>
+
+    <scroll-view scroll-y class="gallery-scroll">
+
+      <!-- 已揭示的插画 -->
+      <view class="gallery-grid" wx:if="{{revealedEggs.length > 0}}">
+        <view
+          wx:for="{{revealedEggs}}" wx:key="index"
+          class="egg-card"
+          bindtap="previewEgg"
+          data-url="{{item.clearUrl}}"
+        >
+          <image class="egg-img" src="{{item.clearUrl}}" mode="aspectFill" />
+          <text class="egg-num">第 {{item.num}} 张</text>
+        </view>
+      </view>
+
+      <!-- 还没揭示的 — 模糊占位 -->
+      <view class="gallery-grid gallery-locked" wx:if="{{lockedEggs.length > 0}}">
+        <view
+          wx:for="{{lockedEggs}}" wx:key="index"
+          class="egg-card egg-locked"
+        >
+          <view class="egg-blur"></view>
+          <text class="egg-num-dim">?</text>
+        </view>
+      </view>
+
+      <!-- 空态 -->
+      <view class="empty" wx:if="{{revealedEggs.length === 0}}">
+        <view class="empty-flame">
+          <text class="empty-icon">✦</text>
+        </view>
+        <text class="empty-text">完 成 行 动 · 揭 示 插 画</text>
+      </view>
+
+      <view style="height:80rpx;"></view>
+    </scroll-view>
+
+  </view>
 
 </view>

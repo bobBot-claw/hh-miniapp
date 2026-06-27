@@ -1,10 +1,13 @@
-// pages/world/world.js — 治愈世界：12主题世界网格
+// pages/world/world.js — 我的世界：12主题世界+插画收藏
 const { WORLDS } = require('../../utils/actions')
 
 Page({
   data: {
     worlds: [],
     totalRevealed: 0,
+    selectedWorld: null,
+    revealedEggs: [],
+    lockedEggs: [],
   },
 
   onLoad() {
@@ -28,7 +31,6 @@ Page({
     }))
 
     const totalRevealed = worlds.reduce((sum, w) => sum + w.revealed, 0)
-
     this.setData({ worlds, totalRevealed })
   },
 
@@ -37,17 +39,49 @@ Page({
     const world = this.data.worlds.find(w => w.id === id)
     if (!world || world.locked) return
 
-    // 切换当前世界
-    let state = {}
-    try { state = wx.getStorageSync('appState') || {} } catch(e) {}
-    state.currentWorld = id
-    try { wx.setStorageSync('appState', state) } catch(e) {}
+    // 构建已揭示/未揭示的插画列表
+    const revealedEggs = []
+    const lockedEggs = []
+    for (let i = 1; i <= world.total; i++) {
+      const numStr = String(i).padStart(2, '0')
+      if (i <= world.revealed) {
+        revealedEggs.push({
+          num: i,
+          clearUrl: world.eggs && world.eggs[i-1]
+            ? world.eggs[i-1].clearUrl
+            : `/assets/eggs/${world.id}/clear_${numStr}.png`,
+        })
+      } else {
+        lockedEggs.push({ num: i })
+      }
+    }
 
-    // 回主页
-    wx.reLaunch({ url: '/pages/home/home' })
+    this.setData({
+      selectedWorld: world,
+      revealedEggs,
+      lockedEggs,
+    })
+  },
+
+  closeGallery() {
+    this.setData({ selectedWorld: null, revealedEggs: [], lockedEggs: [] })
+  },
+
+  previewEgg(e) {
+    const url = e.currentTarget.dataset.url
+    if (!url) return
+    // 全屏预览插画
+    wx.previewImage({
+      current: url,
+      urls: this.data.revealedEggs.map(egg => egg.clearUrl).filter(Boolean),
+    })
   },
 
   goBack() {
-    wx.navigateBack()
+    if (this.data.selectedWorld) {
+      this.closeGallery()
+    } else {
+      wx.navigateBack()
+    }
   },
 })
