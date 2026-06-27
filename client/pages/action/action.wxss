@@ -1,12 +1,12 @@
-/* pages/action/action.wxss — 行动中：倒计时+步骤引导 */
+/* pages/action/action.wxss — 行动页 */
 
 .page {
+  min-height: 100vh;
   position: relative;
-  width: 100%; min-height: 100vh;
   overflow: hidden;
-  background: #1a1810;
 }
 
+/* 背景插画 */
 .illust-bg {
   position: fixed; top: 0; left: 0;
   width: 100%; height: 100%;
@@ -14,136 +14,149 @@
   transform: scale(1.15);
 }
 
+/* 光点 */
 .particles {
-  position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-  z-index: 1; pointer-events: none; overflow: hidden;
+  position: fixed; top: 0; left: 0;
+  width: 100%; height: 100%;
+  z-index: 1;
+  pointer-events: none;
 }
 .particle {
-  position: absolute; bottom: 0;
-  width: 10rpx; height: 10rpx;
-  background: radial-gradient(circle, var(--gold-400) 0%, transparent 70%);
+  position: absolute;
+  width: 6rpx; height: 6rpx;
   border-radius: 50%;
-  animation: float-particle 9s ease-in-out infinite;
-  opacity: 0;
+  background: rgba(201, 166, 107, 0.6);
+  animation: float-particle 8s ease-in-out infinite;
 }
-.p1 { left: 25%; animation-delay: 0s; }
-.p2 { left: 55%; animation-delay: 2.5s; }
-.p3 { left: 80%; animation-delay: 5s; }
+.p1 { top: 20%; left: 15%; animation-delay: 0s; }
+.p2 { top: 60%; left: 75%; animation-delay: 2s; }
+.p3 { top: 40%; left: 50%; animation-delay: 4s; }
 
+/* 内容 */
 .content {
-  position: relative; z-index: 2;
-  width: 100%; min-height: 100vh;
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  padding: 160rpx 64rpx 80rpx;
+  position: relative;
+  z-index: 5;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 64rpx;
+  padding-top: 120rpx;
+  padding-bottom: 80rpx;
 }
 
-/* 返回按钮 */
+/* 返回 */
 .top-left {
   position: fixed; top: 100rpx; left: 48rpx;
   z-index: 10;
 }
 .back-icon {
-  width: 72rpx; height: 72rpx;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  width: 60rpx; height: 60rpx;
   position: relative;
 }
 .back-icon::before {
   content: '';
   position: absolute;
   top: 50%; left: 50%;
-  width: 20rpx; height: 3rpx;
-  background: rgba(255, 255, 255, 0.7);
+  width: 20rpx; height: 2rpx;
+  background: rgba(255, 255, 255, 0.6);
   transform: translate(-50%, -50%) rotate(45deg);
+  transform-origin: right center;
 }
 .back-icon::after {
   content: '';
   position: absolute;
   top: 50%; left: 50%;
-  width: 20rpx; height: 3rpx;
-  background: rgba(255, 255, 255, 0.7);
+  width: 20rpx; height: 2rpx;
+  background: rgba(255, 255, 255, 0.6);
   transform: translate(-50%, -50%) rotate(-45deg);
   transform-origin: right center;
-  transform: translate(-35%, -50%) rotate(-45deg);
 }
 
 /* 进度环 */
 .ring-wrap {
+  width: 260rpx; height: 260rpx;
   position: relative;
-  width: 440rpx; height: 440rpx;
-  margin-bottom: 64rpx;
+  margin-bottom: 40rpx;
 }
 .ring-bg {
-  position: absolute; inset: 0;
+  position: absolute; top: 0; left: 0;
+  width: 100%; height: 100%;
   border-radius: 50%;
-  border: 6rpx solid rgba(255, 255, 255, 0.15);
+  border: 6rpx solid rgba(255, 255, 255, 0.08);
 }
 .ring-fg {
-  position: absolute; inset: 0;
+  position: absolute; top: 0; left: 0;
+  width: 100%; height: 100%;
   border-radius: 50%;
-  transition: conic-gradient 1s linear;
+  border: 6rpx solid transparent;
+  border-top-color: var(--gold-400, #C9A66B);
+  animation: ring-pulse 3s ease-in-out infinite;
 }
-/* 用 mask 做圆环效果 */
-.ring-fg::before {
-  content: '';
-  position: absolute; inset: 6rpx;
-  border-radius: 50%;
-  background: #1a1810;
-}
-
-/* 中心火焰 */
 .ring-center {
   position: absolute;
   top: 50%; left: 50%;
   transform: translate(-50%, -50%);
-  width: 160rpx; height: 160rpx;
-  background: radial-gradient(circle, var(--gold-400) 0%, var(--gold-600) 60%, transparent 80%);
+  width: 120rpx; height: 120rpx;
   border-radius: 50%;
-  box-shadow: 0 0 80rpx var(--gold-400);
+  background: radial-gradient(circle, rgba(201, 166, 107, 0.25) 0%, transparent 70%);
   display: flex; align-items: center; justify-content: center;
-  animation: ring-pulse 2s ease-in-out infinite;
 }
-
-/* 简化火焰 SVG — 线条火苗 */
 .flame-svg {
-  width: 60rpx; height: 80rpx;
-  background: linear-gradient(to top, transparent 0%, rgba(255,255,255,0.9) 100%);
-  clip-path: polygon(50% 0%, 20% 60%, 30% 90%, 50% 100%, 70% 90%, 80% 60%);
+  width: 40rpx; height: 40rpx;
+  background: radial-gradient(circle, var(--gold-400, #C9A66B) 0%, rgba(201, 166, 107, 0.3) 60%, transparent 100%);
+  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
 }
 
 /* 标题 */
 .action-title {
-  font-size: 40rpx; font-weight: 300;
-  color: var(--text-inverse);
-  letter-spacing: 6rpx;
-  margin-bottom: 16rpx;
-  text-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.2);
-  display: block;
-  text-align: center;
+  font-size: 44rpx;
+  font-weight: 600;
+  color: var(--neutral-25, #FCFCFD);
+  margin-bottom: 12rpx;
 }
 .action-sub {
-  font-size: 26rpx;
-  color: rgba(255, 255, 255, 0.6);
-  letter-spacing: 4rpx;
-  margin-bottom: 64rpx;
-  text-align: center;
-  display: block;
+  font-size: 28rpx;
+  color: rgba(255, 255, 255, 0.5);
+  margin-bottom: 16rpx;
+}
+
+/* 深度标签 */
+.depth-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 4rpx 20rpx;
+  border-radius: 20rpx;
+  font-size: 22rpx;
+  margin-bottom: 32rpx;
+}
+.depth-light {
+  background: rgba(20, 125, 69, 0.3);
+  color: rgba(20, 125, 69, 0.9);
+  border: 1rpx solid rgba(20, 125, 69, 0.4);
+}
+.depth-medium {
+  background: rgba(201, 166, 107, 0.2);
+  color: rgba(201, 166, 107, 0.9);
+  border: 1rpx solid rgba(201, 166, 107, 0.4);
+}
+.depth-deep {
+  background: rgba(106, 90, 205, 0.2);
+  color: rgba(106, 90, 205, 0.9);
+  border: 1rpx solid rgba(106, 90, 205, 0.4);
 }
 
 /* 步骤 */
 .steps {
   width: 100%;
-  max-width: 560rpx;
-  margin-bottom: 64rpx;
+  margin-top: 8rpx;
 }
 .step {
-  display: flex; align-items: flex-start; gap: 20rpx;
-  padding: 20rpx 0;
-  opacity: 0.3;
-  transition: opacity 0.3s;
+  display: flex;
+  align-items: flex-start;
+  padding: 16rpx 0;
+  opacity: 0.35;
+  transition: opacity 0.5s ease;
 }
 .step-on {
   opacity: 1;
@@ -151,19 +164,43 @@
 .step-num {
   width: 48rpx; height: 48rpx;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.1);
-  color: rgba(255, 255, 255, 0.7);
-  font-size: 24rpx; font-weight: 600;
+  border: 2rpx solid rgba(255, 255, 255, 0.2);
   display: flex; align-items: center; justify-content: center;
+  font-size: 22rpx;
+  color: rgba(255, 255, 255, 0.4);
   flex-shrink: 0;
+  margin-right: 20rpx;
+  transition: all 0.5s ease;
 }
 .step-on .step-num {
-  background: var(--gold-500);
-  color: #fff;
+  border-color: var(--gold-400, #C9A66B);
+  color: var(--gold-400, #C9A66B);
+  background: rgba(201, 166, 107, 0.1);
+}
+.step-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 .step-text {
   font-size: 28rpx;
-  color: rgba(255, 255, 255, 0.8);
-  line-height: 1.7;
-  letter-spacing: 2rpx;
+  color: rgba(255, 255, 255, 0.85);
+  line-height: 1.6;
+}
+.step-hint {
+  font-size: 24rpx;
+  color: rgba(201, 166, 107, 0.7);
+  margin-top: 6rpx;
+  line-height: 1.5;
+  animation: breathe 3s ease-in-out infinite;
+}
+
+/* 提前结束 */
+.btn-text-inverse {
+  margin-top: 40rpx;
+  padding: 16rpx 40rpx;
+}
+.btn-text-inverse text {
+  font-size: 26rpx;
+  color: rgba(255, 255, 255, 0.3);
 }

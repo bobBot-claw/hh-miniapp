@@ -38,11 +38,19 @@
     <text class="action-title">{{action.title}}</text>
     <text class="action-sub">{{action.subtitle}}</text>
 
+    <!-- 深度标签 -->
+    <view class="depth-tag depth-{{action.depth}}">
+      <text>{{depthLabel}}</text>
+    </view>
+
     <!-- 步骤引导 -->
     <view class="steps">
       <view wx:for="{{action.steps}}" wx:key="index" class="step {{currentStep >= index ? 'step-on' : ''}}">
         <view class="step-num">{{index + 1}}</view>
-        <text class="step-text">{{item}}</text>
+        <view class="step-content">
+          <text class="step-text">{{item.text}}</text>
+          <text wx:if="{{currentStep === index && item.hint}}" class="step-hint">{{item.hint}}</text>
+        </view>
       </view>
     </view>
 

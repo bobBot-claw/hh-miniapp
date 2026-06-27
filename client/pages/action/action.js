@@ -1,5 +1,11 @@
 // pages/action/action.js — 行动中：倒计时+步骤引导
-const { ACTIONS, getCurrentAction, getActionByTime } = require('../../utils/actions')
+const { getCurrentAction } = require('../../utils/actions')
+
+const DEPTH_LABELS = {
+  light: '随时可做',
+  medium: '需要一点空间',
+  deep: '需要躺下或靠墙',
+}
 
 Page({
   data: {
@@ -7,26 +13,33 @@ Page({
     progress: 0,
     currentStep: 0,
     eggBlurUrl: '',
-    totalSeconds: 120,
+    totalSeconds: 180,
     elapsedSeconds: 0,
+    depthLabel: '',
   },
 
   _timer: null,
 
   onLoad(options) {
-    // 获取当前行动
     const action = getCurrentAction()
-    const totalSeconds = action.duration || 120
+    const totalSeconds = action.duration || 180
 
     // 彩蛋模糊图
     let state = {}
     try { state = wx.getStorageSync('appState') || {} } catch(e) {}
     const worldId = state.currentWorld || 'forest'
 
+    // 兼容旧格式 steps（字符串数组）和新格式（对象数组）
+    const steps = (action.steps || []).map(s => {
+      if (typeof s === 'string') return { text: s, hint: '' }
+      return s
+    })
+
     this.setData({
-      action,
+      action: { ...action, steps },
       totalSeconds,
       eggBlurUrl: `/assets/eggs/${worldId}/blur_01.png`,
+      depthLabel: DEPTH_LABELS[action.depth] || '',
     })
 
     this.startCountdown()
@@ -54,10 +67,9 @@ Page({
       if (elapsed >= total) {
         clearInterval(this._timer)
         this._timer = null
-        // 跳转揭示页
         setTimeout(() => {
           wx.redirectTo({ url: '/pages/done/done' })
-        }, 300)
+        }, 500)
       }
     }, 1000)
   },

@@ -15,7 +15,10 @@
     <!-- 顶部消息 -->
     <view class="done-top">
       <text class="done-msg">今天有了光</text>
-      <text class="done-sub">明天继续</text>
+      <!-- 当下体感 -->
+      <text wx:if="{{feeling}}" class="done-feeling">{{feeling}}</text>
+      <!-- 长期收益 -->
+      <text wx:if="{{benefit}}" class="done-benefit">{{benefit}}</text>
     </view>
 
     <!-- 底部按钮 -->
