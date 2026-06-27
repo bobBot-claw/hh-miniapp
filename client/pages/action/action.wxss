@@ -1,4 +1,4 @@
-/* pages/action/action.wxss — 行动页：暖白浅色 */
+/* pages/action/action.wxss — 行动页：暖白浅色 v0.8 三段式 */
 
 .page {
   min-height: 100vh;
@@ -80,7 +80,7 @@
 .ring-wrap {
   width: 260rpx; height: 260rpx;
   position: relative;
-  margin-bottom: 40rpx;
+  margin-bottom: 32rpx;
 }
 .ring-bg {
   position: absolute; top: 0; left: 0;
@@ -100,15 +100,28 @@
   position: absolute;
   top: 50%; left: 50%;
   transform: translate(-50%, -50%);
-  width: 120rpx; height: 120rpx;
+  width: 160rpx; height: 160rpx;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(201, 166, 107, 0.15) 0%, transparent 70%);
   display: flex; align-items: center; justify-content: center;
 }
-.flame-svg {
-  width: 40rpx; height: 40rpx;
-  background: radial-gradient(circle, var(--gold-500, #C9A66B) 0%, rgba(201, 166, 107, 0.2) 60%, transparent 100%);
-  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+
+/* 阶段标识 */
+.phase-label {
+  font-size: 30rpx;
+  font-weight: 600;
+  letter-spacing: 4rpx;
+}
+.phase-warmup {
+  color: var(--gold-500, #C9A66B);
+}
+.phase-work {
+  color: var(--brand-600, #147D45);
+}
+.phase-rest {
+  color: var(--text-tertiary, #9CA3AF);
+}
+.phase-cooldown {
+  color: rgba(106, 90, 205, 0.7);
 }
 
 /* 标题 */
@@ -131,7 +144,7 @@
   padding: 4rpx 20rpx;
   border-radius: 20rpx;
   font-size: 22rpx;
-  margin-bottom: 32rpx;
+  margin-bottom: 28rpx;
 }
 .depth-light {
   background: rgba(20, 125, 69, 0.08);
@@ -149,45 +162,119 @@
   border: 1rpx solid rgba(106, 90, 205, 0.2);
 }
 
-/* 步骤 */
+/* 当前步骤大字 */
+.current-step {
+  width: 100%;
+  text-align: center;
+  margin-bottom: 32rpx;
+}
+.current-step-text {
+  display: block;
+  font-size: 36rpx;
+  font-weight: 600;
+  color: var(--neutral-900);
+  line-height: 1.6;
+}
+.current-step-hint {
+  display: block;
+  font-size: 26rpx;
+  color: var(--brand-600, #147D45);
+  opacity: 0.8;
+  margin-top: 12rpx;
+  line-height: 1.5;
+  animation: breathe 3s ease-in-out infinite;
+}
+
+/* 步骤进度条 — 阶段色彩 */
+.step-track {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8rpx;
+  margin-bottom: 32rpx;
+  flex-wrap: wrap;
+}
+.step-dot {
+  width: 14rpx; height: 14rpx;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.08);
+  transition: all 0.4s ease;
+}
+/* 按 phase 着色 */
+.step-dot-warmup {
+  background: rgba(201, 166, 107, 0.3);
+}
+.step-dot-work {
+  background: rgba(20, 125, 69, 0.3);
+}
+.step-dot-rest {
+  background: rgba(156, 163, 175, 0.25);
+}
+.step-dot-cooldown {
+  background: rgba(106, 90, 205, 0.25);
+}
+/* 激活态 */
+.step-dot-active {
+  width: 22rpx; height: 22rpx;
+  transform: scale(1.2);
+}
+.step-dot-active.step-dot-warmup { background: var(--gold-500, #C9A66B); }
+.step-dot-active.step-dot-work { background: var(--brand-600, #147D45); }
+.step-dot-active.step-dot-rest { background: rgba(156, 163, 175, 0.5); }
+.step-dot-active.step-dot-cooldown { background: rgba(106, 90, 205, 0.6); }
+/* 已完成 */
+.step-dot-done.step-dot-warmup { background: rgba(201, 166, 107, 0.15); }
+.step-dot-done.step-dot-work { background: rgba(20, 125, 69, 0.15); }
+.step-dot-done.step-dot-rest { background: rgba(156, 163, 175, 0.1); }
+.step-dot-done.step-dot-cooldown { background: rgba(106, 90, 205, 0.1); }
+
+/* 步骤列表 */
 .steps {
   width: 100%;
-  margin-top: 8rpx;
+  margin-top: 4rpx;
 }
 .step {
   display: flex;
   align-items: flex-start;
-  padding: 16rpx 0;
-  opacity: 0.35;
-  transition: opacity 0.5s ease;
+  padding: 12rpx 0;
+  opacity: 0.3;
+  max-height: 120rpx;
+  transition: opacity 0.5s ease, max-height 0.4s ease;
+  overflow: hidden;
 }
 .step-on {
   opacity: 1;
+  max-height: 300rpx;
 }
-.step-num {
-  width: 48rpx; height: 48rpx;
+.step-done {
+  opacity: 0.5;
+  max-height: 120rpx;
+}
+.step-fold {
+  max-height: 0;
+  padding: 0;
+  opacity: 0;
+}
+.step-indicator {
+  width: 10rpx;
+  height: 10rpx;
   border-radius: 50%;
-  border: 2rpx solid rgba(0, 0, 0, 0.1);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 22rpx;
-  color: var(--text-tertiary);
+  margin-top: 16rpx;
+  margin-right: 16rpx;
   flex-shrink: 0;
-  margin-right: 20rpx;
-  transition: all 0.5s ease;
-  background: #fff;
 }
-.step-on .step-num {
-  border-color: var(--brand-600, #147D45);
-  color: var(--brand-600, #147D45);
-  background: rgba(20, 125, 69, 0.06);
-}
+.step-ind-warmup { background: var(--gold-500, #C9A66B); }
+.step-ind-work { background: var(--brand-600, #147D45); }
+.step-ind-rest { background: rgba(156, 163, 175, 0.5); }
+.step-ind-cooldown { background: rgba(106, 90, 205, 0.5); }
+
 .step-content {
   flex: 1;
   display: flex;
   flex-direction: column;
 }
 .step-text {
-  font-size: 28rpx;
+  font-size: 26rpx;
   color: var(--text-primary);
   line-height: 1.6;
 }
@@ -195,14 +282,14 @@
   font-size: 24rpx;
   color: var(--brand-600, #147D45);
   opacity: 0.7;
-  margin-top: 6rpx;
+  margin-top: 4rpx;
   line-height: 1.5;
   animation: breathe 3s ease-in-out infinite;
 }
 
 /* 提前结束 */
 .btn-text {
-  margin-top: 40rpx;
+  margin-top: 32rpx;
   padding: 16rpx 40rpx;
   background: transparent;
   border: none;

@@ -1,4 +1,4 @@
-<!--pages/home/home.wxml — 主页：暖白浅色+光点+行动-->
+<!--pages/home/home.wxml — 主页：暖白浅色+光点+行动 v0.8-->
 
 <view class="page warm-bg">
 
@@ -44,6 +44,11 @@
       <!-- 行动文字 -->
       <text class="home-title">{{actionTitle}}</text>
       <text class="home-sub">{{actionSub}}</text>
+
+      <!-- 时长标签 -->
+      <view class="duration-tag">
+        <text>{{durationText}}</text>
+      </view>
 
       <!-- CTA -->
       <view class="cta" bindtap="startAction">

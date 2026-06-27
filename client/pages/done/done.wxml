@@ -1,4 +1,4 @@
-<!--pages/done/done.wxml — 完成后：揭示彩蛋-->
+<!--pages/done/done.wxml — 完成后：揭示彩蛋 v0.8-->
 
 <view class="page warm-bg">
 
@@ -9,16 +9,27 @@
     mode="aspectFill"
   />
 
+  <!-- 暖白叠加层（轻微，让文字可读） -->
+  <view class="overlay"></view>
+
   <!-- 内容 -->
   <view class="content">
 
     <!-- 顶部消息 -->
     <view class="done-top">
-      <text class="done-msg">今天有了光</text>
+      <text class="done-msg">做到了</text>
+
       <!-- 当下体感 -->
-      <text wx:if="{{feeling}}" class="done-feeling">{{feeling}}</text>
+      <view wx:if="{{feeling}}" class="done-feeling-wrap">
+        <text class="feeling-label">你的身体在说</text>
+        <text class="done-feeling">{{feeling}}</text>
+      </view>
+
       <!-- 长期收益 -->
-      <text wx:if="{{benefit}}" class="done-benefit">{{benefit}}</text>
+      <view wx:if="{{benefit}}" class="done-benefit-wrap">
+        <text class="benefit-label">为什么会变好</text>
+        <text class="done-benefit">{{benefit}}</text>
+      </view>
     </view>
 
     <!-- 底部按钮 -->

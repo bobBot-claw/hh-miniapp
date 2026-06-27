@@ -1,4 +1,4 @@
-// pages/action/action.js — 行动中：倒计时+步骤引导
+// pages/action/action.js — 行动中：倒计时+步骤引导（v0.8 三段式）
 const { getCurrentAction } = require('../../utils/actions')
 
 const DEPTH_LABELS = {
@@ -7,11 +7,20 @@ const DEPTH_LABELS = {
   deep: '需要躺下或靠墙',
 }
 
+const PHASE_TEXT = {
+  warmup: '热身',
+  work: '训练',
+  rest: '间歇',
+  cooldown: '放松',
+}
+
 Page({
   data: {
     action: {},
     progress: 0,
     currentStep: 0,
+    currentPhase: 'warmup',
+    phaseText: '热身',
     eggBlurUrl: '',
     totalSeconds: 180,
     elapsedSeconds: 0,
@@ -33,17 +42,21 @@ Page({
     try { state = wx.getStorageSync('appState') || {} } catch(e) {}
     const worldId = state.currentWorld || 'forest'
 
-    // 兼容旧格式 steps（字符串数组）和新格式（对象数组）
+    // 兼容旧格式 steps（字符串数组）和新格式（对象数组含 phase）
     const steps = (action.steps || []).map(s => {
-      if (typeof s === 'string') return { text: s, hint: '' }
-      return s
+      if (typeof s === 'string') return { text: s, hint: '', phase: 'work' }
+      return { phase: 'work', hint: '', ...s }
     })
+
+    const firstPhase = steps.length > 0 ? steps[0].phase : 'warmup'
 
     this.setData({
       action: { ...action, steps },
       totalSeconds,
       eggBlurUrl: `/assets/eggs/${worldId}/blur_01.png`,
       depthLabel: DEPTH_LABELS[action.depth] || '',
+      currentPhase: firstPhase,
+      phaseText: PHASE_TEXT[firstPhase] || '训练',
     })
 
     this.startCountdown()
@@ -82,8 +95,15 @@ Page({
       const elapsed = this.data.elapsedSeconds + 1
       const progress = Math.min((elapsed / total) * 100, 100)
       const currentStep = Math.min(Math.floor(elapsed / stepInterval), steps.length - 1)
+      const currentPhase = steps[currentStep] ? steps[currentStep].phase : 'work'
 
-      this.setData({ elapsedSeconds: elapsed, progress, currentStep })
+      this.setData({
+        elapsedSeconds: elapsed,
+        progress,
+        currentStep,
+        currentPhase,
+        phaseText: PHASE_TEXT[currentPhase] || '训练',
+      })
 
       if (elapsed >= total) {
         clearInterval(this._timer)
