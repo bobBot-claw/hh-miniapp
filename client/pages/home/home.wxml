@@ -1,4 +1,4 @@
-<!--pages/home/home.wxml — 主页：暗+模糊插画+光点+行动-->
+<!--pages/home/home.wxml — 主页：暖白浅色+光点+行动-->
 
 <view class="page warm-bg">
 
@@ -18,7 +18,7 @@
     <view class="particle p5"></view>
   </view>
 
-  <!-- 如果没有插画，显示纯色渐变背景 -->
+  <!-- 如果没有插画，显示暖白渐变背景 -->
   <view wx:if="{{!hasEgg}}" class="bg-fallback"></view>
 
   <!-- 内容层 -->

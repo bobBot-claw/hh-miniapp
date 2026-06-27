@@ -1,20 +1,16 @@
 <!--pages/action/action.wxml — 行动中：倒计时+步骤引导-->
 
-<view class="page dark-bg">
+<view class="page warm-bg">
 
-  <!-- 背景插画(暗态) -->
+  <!-- 背景插画(柔和暗态) -->
   <image
-    class="illust-bg illust-dim"
+    class="illust-bg illust-soft"
     src="{{eggBlurUrl}}"
     mode="aspectFill"
   />
 
-  <!-- 光点 -->
-  <view class="particles">
-    <view class="particle p1"></view>
-    <view class="particle p2"></view>
-    <view class="particle p3"></view>
-  </view>
+  <!-- 暖白叠加层 -->
+  <view class="overlay"></view>
 
   <!-- 内容 -->
   <view class="content">
@@ -27,7 +23,7 @@
     <!-- 进度环 -->
     <view class="ring-wrap">
       <view class="ring-bg"></view>
-      <view class="ring-fg" style="conic-gradient: var(--gold-400) {{progress}}%, transparent {{progress}}%);"></view>
+      <view class="ring-fg" style="conic-gradient: var(--brand-600) {{progress}}%, transparent {{progress}}%);"></view>
       <!-- 中心火焰 -->
       <view class="ring-center">
         <view class="flame-svg"></view>
@@ -55,7 +51,7 @@
     </view>
 
     <!-- 提前结束 -->
-    <view class="btn-text-inverse" bindtap="endEarly">
+    <view class="btn-text" bindtap="endEarly">
       <text>提前结束</text>
     </view>
 
