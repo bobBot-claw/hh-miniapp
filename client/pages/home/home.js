@@ -27,6 +27,51 @@ const NIGHT_WORDS = [
   '今日终。',
 ]
 
+// 节气安眠文案（四立）
+const SOLAR_WORDS = {
+  lichun: '春夜宜安眠，万物在生长，你也是。',
+  lixia: '夏夜风轻，适合把烦闷交给月亮。',
+  liqiu: '秋夜渐凉，早睡是对身体的温柔。',
+  lidong: '冬夜漫长，正好多睡一会儿。',
+}
+
+// 判断当天是否为四立节气（基于寿星万年历算法，误差±1天内）
+function getSolarTerm(year, termIdx) {
+  // 24节气对应的世纪常数 C
+  const C = [
+    3.87, 18.73, 5.63, 20.59, 4.15, 20.10,   // 小寒~谷雨
+    5.52, 21.15, 6.18, 21.95, 7.20, 23.00,   // 立夏~大暑
+    7.50, 23.23, 8.08, 23.72, 7.95, 23.63,   // 立秋~霜降
+    8.15, 23.85, 7.85, 23.48, 7.60, 23.08,   // 立冬~冬至
+  ]
+  const Y = year % 100
+  const L = Math.floor(Y / 4)
+  const day = Math.floor(Y * 0.2422 + C[termIdx]) - L
+  return day
+}
+
+function checkSolarTerms(now) {
+  const year = now.getFullYear()
+  const month = now.getMonth() + 1
+  const date = now.getDate()
+  // 四立对应的 termIdx: 立春=2, 立夏=6, 立秋=12, 立冬=18
+  const terms = [
+    { key: 'lichun', idx: 2, month: 2 },
+    { key: 'lixia', idx: 6, month: 5 },
+    { key: 'liqiu', idx: 12, month: 8 },
+    { key: 'lidong', idx: 18, month: 11 },
+  ]
+  for (const t of terms) {
+    if (month === t.month) {
+      const day = getSolarTerm(year, t.idx)
+      if (date === day || date === day - 1 || date === day + 1) {
+        return SOLAR_WORDS[t.key]
+      }
+    }
+  }
+  return null
+}
+
 Page({
   data: {
     isNight: false,
@@ -53,13 +98,17 @@ Page({
     if (isNight) {
       const h = String(hour).padStart(2, '0')
       const m = String(now.getMinutes()).padStart(2, '0')
-      // 基于日期的随机，同一天显示同一句
-      const seed = now.getFullYear() * 10000 + (now.getMonth() + 1) * 100 + now.getDate()
-      const idx = seed % NIGHT_WORDS.length
+      // 节气文案优先，否则基于日期随机选一句
+      const solarWord = checkSolarTerms(now)
+      let nightWord = solarWord
+      if (!nightWord) {
+        const seed = now.getFullYear() * 10000 + (now.getMonth() + 1) * 100 + now.getDate()
+        nightWord = NIGHT_WORDS[seed % NIGHT_WORDS.length]
+      }
       this.setData({
         isNight: true,
         nightTime: h + ':' + m,
-        nightWord: NIGHT_WORDS[idx],
+        nightWord,
       })
       return
     }
