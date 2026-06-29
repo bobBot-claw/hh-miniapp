@@ -1,4 +1,4 @@
-// pages/home/home.js — 慢慢变好 · 七日微光计划 — 与 demo 完全一致
+// pages/home/home.js — 慢慢变好 · 七日微光计划 — 含夜间模式
 
 const WEEK_PLAN = [
   { day: 0, label: '周 一', title: '晨 起 一 杯 温 水', sub: '极 低 成 本', scene: '吃 · 喝 水', know: { tag: '吃 · 喝 水', text: '晨起喝水能降低血液粘稠度 · 你为今天的心血管减负了一次' } },
@@ -10,8 +10,28 @@ const WEEK_PLAN = [
   { day: 6, label: '周 日', title: '发 呆 10 分 钟 · 什 么 都 不 做', sub: '极 低 成 本', scene: '情 绪 · 留 白', know: { tag: '情 绪 · 留 白', text: '主动发呆能降低杏仁核活跃度 · 你的焦虑不是少了 · 是被看见了' } },
 ]
 
+const NIGHT_WORDS = [
+  '今天已经做得很好了，\n剩下的交给睡眠。',
+  '白天你照顾了世界，\n现在轮到身体照顾你。',
+  '身体有自己的时钟，\n你准时了，它便开始修复。',
+  '节律不是自律，是身体的语言。\n你在听。',
+  '早睡的每一分钟，\n都是对明天自己的投资。',
+  '生物钟不会骗人，\n你给它规律，它给你精力。',
+  '大脑不需要思考了，\n交给呼吸就好。',
+  '此时此刻，什么都不用做，\n躺着就是贡献。',
+  '发呆是白天的事，\n现在只需闭上眼睛。',
+  '没有电话、没有消息、没有任务——\n只有你和夜色。',
+  '该睡了。',
+  '夜已深，身已静。',
+  '关机，交给梦。',
+  '今日终。',
+]
+
 Page({
   data: {
+    isNight: false,
+    nightWord: '',
+    nightTime: '',
     weekNum: 1,
     dateText: '',
     actionTitle: '',
@@ -26,52 +46,66 @@ Page({
   onShow() { this.refresh() },
 
   refresh() {
+    const now = new Date()
+    const hour = now.getHours()
+    const isNight = hour >= 23 || hour < 5
+
+    if (isNight) {
+      const h = String(hour).padStart(2, '0')
+      const m = String(now.getMinutes()).padStart(2, '0')
+      // 基于日期的随机，同一天显示同一句
+      const seed = now.getFullYear() * 10000 + (now.getMonth() + 1) * 100 + now.getDate()
+      const idx = seed % NIGHT_WORDS.length
+      this.setData({
+        isNight: true,
+        nightTime: h + ':' + m,
+        nightWord: NIGHT_WORDS[idx],
+      })
+      return
+    }
+
     let state = {}
     try { state = wx.getStorageSync('appState') || {} } catch(e) {}
 
-    const now = new Date()
-    const jsDay = now.getDay() // 0=Sun
-    const dayIdx = jsDay === 0 ? 6 : jsDay - 1 // 0=Mon
+    const jsDay = now.getDay()
+    const dayIdx = jsDay === 0 ? 6 : jsDay - 1
 
     const weekNum = state.weekNum || 1
-
-    const m = now.getMonth() + 1
+    const mt = now.getMonth() + 1
     const d = now.getDate()
-    const dateText = `${m} 月 ${d} 日`
+    const dateText = mt + ' 月 ' + d + ' 日'
 
     const today = WEEK_PLAN[dayIdx]
-    const actionTitle = today.title
-    const actionSub = today.sub
-    const sceneLabel = today.scene
-
     const weekDone = state.weekDone || []
     const weekDays = WEEK_PLAN.map((w, i) => ({
       idx: i,
       label: w.label,
       state: weekDone.includes(i) ? 'done' : (i === dayIdx ? 'now' : ''),
     }))
-    const doneCount = weekDone.length
-
-    const knowCards = (state.knowCards || []).map(idx => WEEK_PLAN[idx].know)
 
     this.setData({
-      weekNum, dateText, actionTitle, actionSub, sceneLabel,
-      doneCount, weekDays, knowCards, dayIdx,
+      isNight: false,
+      weekNum,
+      dateText,
+      actionTitle: today.title,
+      actionSub: today.sub,
+      sceneLabel: today.scene,
+      doneCount: weekDone.length,
+      weekDays,
+      knowCards: (state.knowCards || []).map(idx => WEEK_PLAN[idx].know),
+      dayIdx,
     })
   },
 
   startAction() {
     wx.navigateTo({ url: '/pages/action/action' })
   },
-
   openContract() {
     wx.navigateTo({ url: '/pages/mood/mood' })
   },
-
   goWorld() {
     wx.navigateTo({ url: '/pages/world/world' })
   },
-
   goWeekPlan() {
     wx.navigateTo({ url: '/pages/together/together' })
   },
