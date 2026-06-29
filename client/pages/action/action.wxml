@@ -1,47 +1,42 @@
-<!--pages/action/action.wxml — 行动中 v0.7 demo 风格-->
+<!--pages/action/action.wxml — 行动+认知卡片：与 demo 屏3 完全一致-->
 
-<view class="page warm-bg">
-  <image class="illust-bg illust-soft" src="{{eggBlurUrl}}" mode="aspectFill" />
-  <view class="overlay"></view>
+<view class="page">
 
-  <!-- 共练 3-2-1 -->
-  <view wx:if="{{countingDown}}" class="countdown-overlay">
-    <text class="countdown-num">{{countdown}}</text>
+  <!-- 暖色光晕 -->
+  <view class="halo halo-1"></view>
+  <view class="halo halo-2"></view>
+
+  <!-- 行动中状态 — 简化倒计时 -->
+  <view class="action-view" wx:if="{{!showCognize}}">
+    <view class="top-row">
+      <text class="brand-l">慢 慢 变 好</text>
+      <text class="day-l">第 {{weekNum}} 周 · {{dayLabel}}</text>
+    </view>
+
+    <view class="recommend">
+      <text class="tag">今 日 微 动 作</text>
+      <text class="rec-scene">{{sceneLabel}}</text>
+      <text class="act-name">{{actionTitle}}</text>
+      <text class="act-sub">{{actionSub}}</text>
+    </view>
+
+    <view class="timer-section">
+      <text class="timer-label">行 动 中</text>
+      <view class="cta" bindtap="completeAction"><text>完 成 了</text></view>
+      <view class="cta-alt" bindtap="goBack"><text>提 前 结 束</text></view>
+    </view>
   </view>
 
-  <view class="content">
-    <view class="top-left" style="top:{{topLeftTop}}px;left:{{topLeftLeft}}px;" bindtap="goBack">
-      <view class="back-icon"></view>
+  <!-- 认知卡片弹层 — demo: .cognize -->
+  <view class="overlay" wx:if="{{showCognize}}">
+    <view class="cognize">
+      <text class="ci-tag">你 今 天 的 发 现</text>
+      <text class="ci-h">{{cognizeTitle}}</text>
+      <text class="ci-t">{{cognizeText}}</text>
+      <text class="ci-em">{{cognizeEm}}</text>
+      <text class="ci-foot">科 学 小 知 识 · 不 是 点 评</text>
+      <view class="cta" style="width:100%;text-align:center;" bindtap="goHome"><text>收 到</text></view>
     </view>
-
-    <!-- 共练条 -->
-    <view wx:if="{{together}}" class="together-badge">
-      <view class="together-dot"></view>
-      <text class="together-text">一起练</text>
-      <button class="together-share" open-type="share"><text>邀请</text></button>
-    </view>
-
-    <!-- 进度环 + 火焰中心 (demo 风格) -->
-    <view class="progress-ring">
-      <view class="ring-svg">
-        <view class="ring-bg-circle"></view>
-        <view class="ring-fg-circle" style="conic-gradient:var(--gold-400) {{progress}}%, transparent {{progress}}%);"></view>
-      </view>
-      <view class="flame-center">
-        <view class="flame-center-icon">✦</view>
-      </view>
-    </view>
-
-    <text class="action-title">{{currentStepText}}</text>
-    <text class="action-sub">{{currentStepHint}}</text>
-
-    <!-- 步骤进度条 — 阶段色彩 -->
-    <view class="step-track">
-      <view wx:for="{{action.steps}}" wx:key="index"
-        class="step-dot step-dot-{{item.phase}} {{currentStep===index?'step-dot-active':''}} {{currentStep>index?'step-dot-done':''}}">
-      </view>
-    </view>
-
-    <view class="btn-text" bindtap="endEarly"><text>提前结束</text></view>
   </view>
+
 </view>

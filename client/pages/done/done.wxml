@@ -1,24 +1,17 @@
-<!--pages/done/done.wxml — 完成后 v0.7 demo 风格-->
+<!--pages/done/done.wxml — 完成：认知卡片确认页（备用）-->
 
 <view class="page">
-  <image class="illust-bg {{revealed?'illust-lit':'illust-dim'}}" src="{{eggClearUrl}}" mode="aspectFill" />
+  <view class="halo halo-1"></view>
+  <view class="halo halo-2"></view>
 
-  <view class="content">
-    <!-- 顶部文案 -->
-    <view class="done-top">
-      <text class="done-msg">{{together?'一起做到了':'做到了'}}</text>
-      <text class="done-sub">明 天 继 续</text>
-    </view>
-
-    <!-- 底部操作 -->
-    <view class="done-bottom">
-      <text class="egg-credit">{{worldName}} · 第{{eggIndex}}张</text>
-      <view class="cta" bindtap="goWorld"><text>收入世界</text></view>
-      <view class="btn-text" bindtap="goHome"><text>回到主页</text></view>
-
-      <view wx:if="{{together}}" class="done-together">
-        <button class="together-share-btn" open-type="share"><text>告诉好友</text></button>
-      </view>
+  <view class="center">
+    <view class="cognize">
+      <text class="ci-tag">你 今 天 的 发 现</text>
+      <text class="ci-h">{{cognizeTitle}}</text>
+      <text class="ci-t">{{cognizeText}}</text>
+      <text class="ci-em">{{cognizeEm}}</text>
+      <text class="ci-foot">科 学 小 知 识 · 不 是 点 评</text>
+      <view class="cta" style="width:100%;text-align:center;" bindtap="goHome"><text>收 到</text></view>
     </view>
   </view>
 </view>

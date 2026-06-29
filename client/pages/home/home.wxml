@@ -1,34 +1,67 @@
-<!--pages/home/home.wxml — 主页：与 demo 完全一致-->
+<!--pages/home/home.wxml — 主页：与 demo 屏1 完全一致-->
 
 <view class="page">
-  <!-- 背景：模糊插画 -->
-  <image class="bg-egg {{revealed?'bg-egg-lit':'bg-egg-dim'}}" src="{{eggUrl}}" mode="aspectFill" />
 
-  <!-- 6 光点 -->
-  <view class="particles">
-    <view class="particle" style="left:18%;animation-delay:0s;"></view>
-    <view class="particle" style="left:48%;animation-delay:2s;"></view>
-    <view class="particle" style="left:78%;animation-delay:4s;"></view>
-    <view class="particle" style="left:33%;animation-delay:6s;"></view>
-    <view class="particle" style="left:63%;animation-delay:1s;"></view>
-    <view class="particle" style="left:88%;animation-delay:3s;"></view>
-  </view>
+  <!-- 暖色光晕 -->
+  <view class="halo halo-1"></view>
+  <view class="halo halo-2"></view>
 
-  <!-- 右上角世界入口 — demo 只有一个 ◉ -->
-  <view class="top-icon" style="top:{{topBarTop}}px;right:{{topBarRight}}px;" bindtap="goWorld">
-    <view class="icon-globe"></view>
-  </view>
+  <scroll-view scroll-y class="scroll">
 
-  <!-- 中央内容 — demo: flame → title → sub → btn-glow → btn-text -->
-  <view class="home-content">
-    <view class="flame {{revealed?'flame-lit':''}}">
-      <text class="flame-icon">✦</text>
+    <!-- 顶部行：品牌 + 日期 -->
+    <view class="top-row">
+      <text class="brand-l">慢 慢 变 好</text>
+      <text class="day-l">第 {{weekNum}} 周 · {{dateText}}</text>
     </view>
 
-    <text class="home-title">{{actionTitle}}</text>
-    <text class="home-sub">{{actionSub}}</text>
+    <!-- 今日推荐卡 -->
+    <view class="recommend">
+      <text class="tag">今 日 微 动 作</text>
+      <text class="rec-scene">{{sceneLabel}}</text>
+      <text class="act-name">{{actionTitle}}</text>
+      <text class="act-sub">{{actionSub}}</text>
+      <view class="cta" bindtap="startAction"><text>开 始</text></view>
+    </view>
 
-    <view class="btn-glow" bindtap="startAction"><text>{{ctaText}}</text></view>
-    <view class="btn-text" bindtap="resetDay"><text>重 置 状 态</text></view>
+    <!-- 周历光点条 -->
+    <view class="week-bar" bindtap="goWeekPlan">
+      <view class="wb-head">
+        <view class="wb-t"><text class="wb-num">{{doneCount}}</text><text> 天 完 成</text></view>
+        <text class="wb-s">这 周 · 没 压 力</text>
+      </view>
+      <view class="week-row">
+        <view wx:for="{{weekDays}}" wx:key="idx" class="day-cell {{item.state}}">
+          <view class="d-pip"></view>
+          <text class="d-lbl">{{item.label}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 已收认知小卡 -->
+    <view class="know-section" wx:if="{{knowCards.length > 0}}">
+      <text class="know-title">已 收 的 认 知 小 卡</text>
+      <scroll-view scroll-x class="know-row">
+        <view wx:for="{{knowCards}}" wx:key="idx" class="know-card">
+          <text class="kc-tag">{{item.tag}}</text>
+          <text class="kc-t">{{item.text}}</text>
+        </view>
+      </scroll-view>
+    </view>
+
+    <!-- 底部工具入口 -->
+    <view class="tool-row">
+      <view class="tool-pill" bindtap="goWorld"><text>我 的 进 阶</text></view>
+      <view class="tool-pill" bindtap="goWeekPlan"><text>本 周 一 览</text></view>
+    </view>
+
+    <view style="height: 200rpx;"></view>
+
+  </scroll-view>
+
+  <!-- 浮动：微光契约按钮 -->
+  <view class="float-pill" bindtap="openContract">
+    <view class="dot"></view>
+    <text>这 周 微 光 契 约 ↓</text>
   </view>
+
 </view>

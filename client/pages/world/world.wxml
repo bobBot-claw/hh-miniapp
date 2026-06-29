@@ -1,97 +1,64 @@
-<!--pages/world/world.wxml — 我的世界：12主题世界+插画收藏 v0.7 demo 风格-->
+<!--pages/world/world.wxml — 渐进微调：与 demo 屏4 完全一致-->
 
-<view class="page warm-bg">
+<view class="page">
 
-  <!-- 顶 bar -->
-  <view class="top-bar">
-    <view class="back-btn" bindtap="goBack">
-      <view class="back-arrow"></view>
-    </view>
-    <view style="width:72rpx;"></view>
-    <view style="width:72rpx;"></view>
-  </view>
+  <!-- 暖色光晕 -->
+  <view class="halo halo-1"></view>
+  <view class="halo halo-2"></view>
 
-  <!-- 世界列表视图 -->
-  <view class="world-view" wx:if="{{!selectedWorld}}">
+  <scroll-view scroll-y class="scroll">
 
-    <view class="title-row">
-      <text class="page-title">我 的 世 界</text>
-      <text class="page-meta">已 揭 示 {{totalRevealed}} / 360</text>
-    </view>
-
-    <scroll-view scroll-y class="grid-scroll">
-      <view class="grid">
-        <view
-          wx:for="{{worlds}}" wx:key="id"
-          class="world-card {{item.active ? 'card-active' : ''}} {{item.locked ? 'card-locked' : ''}}"
-          bindtap="onWorldTap"
-          data-id="{{item.id}}"
-        >
-          <!-- 单色线条图标 -->
-          <view class="world-icon-wrap">
-            <view class="icon-line icon-{{item.iconType}}"></view>
-          </view>
-          <view class="world-info">
-            <text class="world-name">{{item.name}}</text>
-            <text class="world-progress">{{item.revealed}} / {{item.total}}</text>
-          </view>
-          <!-- 探索中标记 -->
-          <view wx:if="{{item.active}}" class="badge">探 索 中</view>
-        </view>
-      </view>
-      <view style="height:80rpx;"></view>
-    </scroll-view>
-
-  </view>
-
-  <!-- 插画收藏视图 — 选中某个世界后展示 -->
-  <view class="gallery-view" wx:if="{{selectedWorld}}">
-
-    <view class="gallery-header">
-      <view class="back-btn" bindtap="closeGallery">
+    <!-- 顶部行 -->
+    <view class="top-row">
+      <view class="back-btn" bindtap="goBack">
         <view class="back-arrow"></view>
       </view>
-      <text class="gallery-title">{{selectedWorld.name}}</text>
-      <text class="gallery-meta">{{selectedWorld.revealed}} / {{selectedWorld.total}}</text>
+      <text class="brand-l">慢 慢 变 好</text>
+      <text class="day-l">我 的 · 微 动 作 进 阶</text>
     </view>
 
-    <scroll-view scroll-y class="gallery-scroll">
-
-      <!-- 已揭示的插画 -->
-      <view class="gallery-grid" wx:if="{{revealedEggs.length > 0}}">
-        <view
-          wx:for="{{revealedEggs}}" wx:key="index"
-          class="egg-card"
-          bindtap="previewEgg"
-          data-url="{{item.clearUrl}}"
-        >
-          <image class="egg-img" src="{{item.clearUrl}}" mode="aspectFill" />
-          <text class="egg-num">第 {{item.num}} 张</text>
-        </view>
+    <!-- 微调卡片 — demo: .delta-card -->
+    <view class="delta-card">
+      <text class="dc-t">周 三 · 快 走</text>
+      <view class="delta-row">
+        <text class="wk">第 1 周</text>
+        <text class="val">12 分</text>
+        <text class="arr">基 线</text>
       </view>
-
-      <!-- 还没揭示的 — 模糊占位 -->
-      <view class="gallery-grid gallery-locked" wx:if="{{lockedEggs.length > 0}}">
-        <view
-          wx:for="{{lockedEggs}}" wx:key="index"
-          class="egg-card egg-locked"
-        >
-          <view class="egg-blur"></view>
-          <text class="egg-num-dim">?</text>
-        </view>
+      <view class="delta-row">
+        <text class="wk">第 2 周</text>
+        <text class="val">14 分</text>
+        <text class="arr">+ 2</text>
       </view>
-
-      <!-- 空态 -->
-      <view class="empty" wx:if="{{revealedEggs.length === 0}}">
-        <view class="empty-flame">
-          <text class="empty-icon">✦</text>
-        </view>
-        <text class="empty-text">完 成 行 动 · 揭 示 插 画</text>
+      <view class="delta-row">
+        <text class="wk">第 3 周</text>
+        <text class="val">15 分</text>
+        <text class="arr">+ 1</text>
+        <text class="now-mark">今 日</text>
       </view>
+    </view>
 
-      <view style="height:80rpx;"></view>
-    </scroll-view>
+    <!-- 数据网格 — demo: .data-grid -->
+    <view class="data-grid">
+      <view class="data-card">
+        <text class="dc-k">累 计 出 汗</text>
+        <text class="dc-m">{{sweatCount}} <text class="unit">次</text></text>
+        <text class="dc-d">每 周 平 均 {{avgPerWeek}} 次</text>
+      </view>
+      <view class="data-card">
+        <text class="dc-k">认 知 卡 片</text>
+        <text class="dc-m">{{knowCount}} <text class="unit">张</text></text>
+        <text class="dc-d">{{weekNum}} 周 累 积</text>
+      </view>
+    </view>
 
-  </view>
+    <!-- 隐私说明 — demo: .explain -->
+    <view class="explain" style="margin-top: 48rpx;">
+      <text class="privacy-tag">隐 私 · 不 暴 露</text>
+      <text class="explain-text">只 有 你 自 己 看 得 到 · 没 有 排 名 · 没 有 比 较 · 你 今 天 的 15 分 = 你 上 周 的 14 分 + 1</text>
+    </view>
+
+    <view style="height: 80rpx;"></view>
+  </scroll-view>
 
 </view>

@@ -1,65 +1,85 @@
-// pages/action/action.js — 行动中 v0.7 demo 风格
-const { ACTIONS, getCurrentAction } = require('../../utils/actions')
+// pages/action/action.js — 行动+认知卡片：与 demo 完全一致
 
-const PHASE_TEXT = { warmup: '热身', work: '训练', rest: '间歇', cooldown: '放松' }
+const WEEK_PLAN = [
+  { label: '周 一', title: '晨 起 一 杯 温 水', scene: '吃 · 喝 水',
+    knowTitle: '晨起一杯温水 · 收工', knowText: '晨起喝水能降低血液粘稠度 · 你为今天的心血管减负了一次', knowEm: '你今天的血比昨天稀了一点' },
+  { label: '周 二', title: '午 餐 一 个 拳 头 蛋 白 质', scene: '吃 · 蛋 白 质',
+    knowTitle: '午餐一个拳头蛋白质 · 收工', knowText: '早上蛋白质优先 · 上午的血糖比昨天平稳 · 你今天不容易困', knowEm: '你今天的脑子比昨天好使了一点' },
+  { label: '周 三', title: '快 走 / 爬 楼 15 分', scene: '动 · 每 日 出 汗',
+    knowTitle: '快 走 15 分 · 收 工', knowText: '快走后肌肉会释放鸢尾素 · 这种激素能穿过血脑屏障 · 改善记忆力', knowEm: '你今天的脑子比昨天好使了一点' },
+  { label: '周 四', title: '晚 餐 选 原 型 食 物', scene: '吃 · 原 型 食 物',
+    knowTitle: '晚餐选原型食物 · 收工', knowText: '原型食物的饱腹感比加工食品多30% · 你今天少吃了却不饿', knowEm: '你今天少吃了 · 但不觉得亏' },
+  { label: '周 五', title: '一 组 力 竭 训 练', scene: '动 · 抗 阻 力 竭',
+    knowTitle: '力竭训练 · 收工', knowText: '力竭训练后48小时基础代谢仍升高 · 你在休息时也在消耗', knowEm: '你现在坐着也在比昨天多烧' },
+  { label: '周 六', title: '睡 前 1 小 时 调 暗 灯 光 + 手 机 放 客 厅', scene: '睡 · 暗 光 / 隔 离',
+    knowTitle: '暗光隔离 · 收工', knowText: '暗光环境让褪黑素提前分泌30% · 你今晚会比平时早困', knowEm: '你今晚可能比昨天早困半小时' },
+  { label: '周 日', title: '发 呆 10 分 钟 · 什 么 都 不 做', scene: '情 绪 · 留 白',
+    knowTitle: '发呆10分钟 · 收工', knowText: '主动发呆能降低杏仁核活跃度 · 你的焦虑不是少了 · 是被看见了', knowEm: '你的焦虑没少 · 但它知道你看见了' },
+]
 
 Page({
   data: {
-    action: {}, progress: 0, currentStep: 0, currentPhase: 'warmup',
-    currentStepText: '', currentStepHint: '',
-    eggBlurUrl: '', totalSeconds: 180, elapsedSeconds: 0,
-    topLeftTop: 0, topLeftLeft: 0,
-    together: false, countdown: 0, countingDown: false,
+    weekNum: 1,
+    dayLabel: '',
+    actionTitle: '',
+    actionSub: '',
+    sceneLabel: '',
+    showCognize: false,
+    cognizeTitle: '',
+    cognizeText: '',
+    cognizeEm: '',
   },
-  _timer: null,
 
-  onLoad(options) {
-    this.calcTopBar()
-    let action = (options.actionId && ACTIONS[options.actionId]) ? ACTIONS[options.actionId] : getCurrentAction()
-    const together = options.together === '1'
-    let state = {}; try { state = wx.getStorageSync('appState') || {} } catch(e) {}
-    const steps = (action.steps||[]).map(s => typeof s === 'string' ? {text:s,hint:'',phase:'work'} : {phase:'work',hint:'',...s})
-    const firstPhase = steps[0] ? steps[0].phase : 'warmup'
+  onLoad() {
+    let state = {}
+    try { state = wx.getStorageSync('appState') || {} } catch(e) {}
+
+    const now = new Date()
+    const jsDay = now.getDay()
+    const dayIdx = jsDay === 0 ? 6 : jsDay - 1
+
+    const today = WEEK_PLAN[dayIdx]
     this.setData({
-      action:{...action,steps}, totalSeconds:action.duration||180,
-      eggBlurUrl:`/assets/eggs/${state.currentWorld||'forest'}/blur_01.png`,
-      currentPhase:firstPhase, currentStepText:steps[0]?steps[0].text:'', currentStepHint:steps[0]?steps[0].hint:'',
-      together
+      weekNum: state.weekNum || 1,
+      dayLabel: today.label,
+      actionTitle: today.title,
+      actionSub: '',
+      sceneLabel: today.scene,
+      dayIdx,
+      cognizeTitle: today.knowTitle,
+      cognizeText: today.knowText,
+      cognizeEm: today.knowEm,
     })
-    together ? this.startTogetherCountdown() : this.startCountdown()
   },
 
-  startTogetherCountdown() {
-    this.setData({ countingDown: true, countdown: 3 }); let c = 3
-    const cd = setInterval(() => { c--; if (c<=0) { clearInterval(cd); this.setData({countingDown:false}); this.startCountdown() } else { this.setData({countdown:c}) } }, 1000)
+  completeAction() {
+    // 标记今天完成
+    let state = {}
+    try { state = wx.getStorageSync('appState') || {} } catch(e) {}
+
+    const weekDone = state.weekDone || []
+    if (!weekDone.includes(this.data.dayIdx)) {
+      weekDone.push(this.data.dayIdx)
+    }
+
+    // 保存认知卡片
+    const knowCards = state.knowCards || []
+    if (!knowCards.includes(this.data.dayIdx)) {
+      knowCards.push(this.data.dayIdx)
+    }
+
+    state.weekDone = weekDone
+    state.knowCards = knowCards
+    try { wx.setStorageSync('appState', state) } catch(e) {}
+
+    this.setData({ showCognize: true })
   },
 
-  onShareAppMessage() {
-    const a = this.data.action
-    return { title: `一起做${a.title||'这个'}？`, path: `/pages/together/together?actionId=${a.id}` }
+  goHome() {
+    wx.reLaunch({ url: '/pages/home/home' })
   },
 
-  calcTopBar() {
-    try { const m = wx.getMenuButtonBoundingClientRect(); this.setData({topLeftTop:m.bottom+12, topLeftLeft:wx.getSystemInfoSync().windowWidth-m.right}) }
-    catch(e) { try { this.setData({topLeftTop:wx.getSystemInfoSync().statusBarHeight+56, topLeftLeft:16}) } catch(e2) { this.setData({topLeftTop:100,topLeftLeft:16}) } }
+  goBack() {
+    wx.navigateBack()
   },
-
-  onUnload() { if (this._timer) { clearInterval(this._timer); this._timer = null } },
-
-  startCountdown() {
-    const total = this.data.totalSeconds, steps = this.data.action.steps||[]
-    const stepInterval = steps.length > 0 ? Math.floor(total/steps.length) : total
-    this._timer = setInterval(() => {
-      const elapsed = this.data.elapsedSeconds+1, progress = Math.min((elapsed/total)*100,100)
-      const currentStep = Math.min(Math.floor(elapsed/stepInterval), steps.length-1)
-      const currentPhase = steps[currentStep] ? steps[currentStep].phase : 'work'
-      const currentStepText = steps[currentStep] ? steps[currentStep].text : ''
-      const currentStepHint = steps[currentStep] ? steps[currentStep].hint : ''
-      this.setData({ elapsedSeconds:elapsed, progress, currentStep, currentPhase, currentStepText, currentStepHint })
-      if (elapsed >= total) { clearInterval(this._timer); this._timer=null; const t=this.data.together?'&together=1':''; setTimeout(()=>wx.redirectTo({url:`/pages/done/done?actionId=${this.data.action.id}${t}`}),500) }
-    }, 1000)
-  },
-
-  endEarly() { if(this._timer){clearInterval(this._timer);this._timer=null} wx.navigateBack() },
-  goBack() { this.endEarly() },
 })

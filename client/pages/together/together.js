@@ -1,55 +1,38 @@
-// pages/together/together.js — 共练
-const { ACTIONS, SCENE_ACTIONS } = require('../../utils/actions')
+// pages/together/together.js — 全周计划：与 demo 屏5 完全一致
 
-const DEPTH_LABELS = { light: '随时可做', medium: '需空间', deep: '需躺下' }
-const PROBLEM_IDS = ['problem_dizzy','problem_energy','problem_core','problem_posture','problem_neck','problem_eyes']
+const WEEK_PLAN = [
+  { dayLabel: '周一', title: '晨 起 一 杯 温 水', scene: '吃 · 喝 水', cost: '极 低 成 本' },
+  { dayLabel: '周二', title: '午 餐 一 个 拳 头 蛋 白 质', scene: '吃 · 蛋 白 质', cost: '低 成 本' },
+  { dayLabel: '周三', title: '快 走 / 爬 楼 15 分', scene: '动 · 每 日 出 汗', cost: '中 成 本' },
+  { dayLabel: '周四', title: '晚 餐 选 原 型 食 物', scene: '吃 · 原 型 食 物', cost: '低 成 本' },
+  { dayLabel: '周五', title: '一 组 力 竭 训 练', scene: '动 · 抗 阻 力 竭', cost: '中 成 本' },
+  { dayLabel: '周六', title: '睡 前 1 小 时 调 暗 灯 光 + 手 机 放 客 厅', scene: '睡 · 暗 光 / 隔 离', cost: '低 成 本' },
+  { dayLabel: '周日', title: '发 呆 10 分 钟 · 什 么 都 不 做', scene: '情 绪 · 留 白', cost: '极 低 成 本' },
+]
 
 Page({
-  data: { scene: '', actionList: [], selectedId: '', topBarTop: 0, topBarLeft: 0 },
-
-  onLoad(options) {
-    this.calcTopBar()
-    const preselect = options.actionId || ''
-    const scene = preselect ? (ACTIONS[preselect] ? ACTIONS[preselect].scene : '') : this.getDefaultScene()
-    this.setData({ scene, selectedId: preselect })
-    this.loadActions(scene)
+  data: {
+    weekDays: [],
   },
 
-  calcTopBar() {
-    try {
-      const menu = wx.getMenuButtonBoundingClientRect()
-      this.setData({ topBarTop: menu.bottom + 12, topBarLeft: wx.getSystemInfoSync().windowWidth - menu.right })
-    } catch (e) {
-      try { this.setData({ topBarTop: wx.getSystemInfoSync().statusBarHeight + 56, topBarLeft: 16 }) } catch(e2) { this.setData({ topBarTop: 100, topBarLeft: 16 }) }
-    }
+  onLoad() {
+    const now = new Date()
+    const jsDay = now.getDay()
+    const todayIdx = jsDay === 0 ? 6 : jsDay - 1
+
+    const weekDays = WEEK_PLAN.map((w, i) => ({
+      idx: i,
+      dayLabel: w.dayLabel,
+      title: w.title,
+      scene: w.scene,
+      cost: w.cost,
+      isToday: i === todayIdx,
+    }))
+
+    this.setData({ weekDays })
   },
 
-  getDefaultScene() {
-    const h = new Date().getHours()
-    if (h >= 6 && h < 11) return 'morning'
-    if (h >= 11 && h < 20) return 'work'
-    return 'night'
+  goBack() {
+    wx.navigateBack()
   },
-
-  switchScene(e) { this.setData({ scene: e.currentTarget.dataset.scene, selectedId: '' }); this.loadActions(this.data.scene) },
-
-  loadActions(scene) {
-    const ids = scene === 'problem' ? PROBLEM_IDS : (SCENE_ACTIONS[scene] || [])
-    const actionList = ids.map(id => { const a = ACTIONS[id]; if (!a) return null; const m = Math.floor(a.duration/60), s = a.duration%60; return { ...a, durationText: s ? `${m}分${s}秒` : `${m}分钟`, depthLabel: DEPTH_LABELS[a.depth]||'' } }).filter(Boolean)
-    this.setData({ actionList })
-  },
-
-  selectAction(e) { this.setData({ selectedId: e.currentTarget.dataset.id }) },
-
-  shareAction() {
-    if (!this.data.selectedId) return
-    wx.navigateTo({ url: `/pages/action/action?actionId=${this.data.selectedId}&together=1` })
-  },
-
-  onShareAppMessage() {
-    const a = ACTIONS[this.data.selectedId]
-    return { title: `一起做${a?a.title:'这个'}？`, path: `/pages/together/together?actionId=${this.data.selectedId}` }
-  },
-
-  goBack() { wx.navigateBack() },
 })

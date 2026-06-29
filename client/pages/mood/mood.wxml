@@ -1,48 +1,49 @@
-<!--pages/mood/mood.wxml — 情绪天气：5天气+1词 v0.7 demo 风格-->
+<!--pages/mood/mood.wxml — 微光契约：与 demo 屏2 完全一致-->
 
-<view class="page warm-bg">
+<view class="page">
 
-  <!-- 返回 -->
-  <view class="header">
-    <view class="back-btn" bindtap="goBack">
-      <view class="back-arrow"></view>
+  <!-- 暖色光晕 -->
+  <view class="halo halo-1"></view>
+  <view class="halo halo-2"></view>
+
+  <!-- 遮罩背景 -->
+  <view class="modal-bg">
+    <view class="modal-card">
+      <!-- 关闭 -->
+      <view class="mc-close" bindtap="goBack">
+        <text class="close-x">×</text>
+      </view>
+
+      <text class="mc-t">这 周 的 微 光 契 约</text>
+      <text class="mc-h">你 自 己 点 · 你 自 己 写 ·\nApp 只 见 证</text>
+      <text class="mc-b">这 周 我 承 诺 完 成 至 少 5 天 的 微 动 作。\n完 成 后 · 奖 励 自 己</text>
+
+      <!-- 奖励输入 -->
+      <input
+        class="reward-input"
+        placeholder="看 一 场 电 影"
+        placeholder-style="color: var(--ink-dim);"
+        value="{{reward}}"
+        bindinput="onRewardInput"
+      />
+
+      <!-- 预设选择 -->
+      <text class="pill-label">或 选 一 个</text>
+      <view class="pill-row">
+        <view class="pill {{selectedPill==='看 电 影'?'sel':''}}" bindtap="selectPill" data-val="看 电 影"><text>看 电 影</text></view>
+        <view class="pill {{selectedPill==='甜 甜 圈'?'sel':''}}" bindtap="selectPill" data-val="甜 甜 圈"><text>甜 甜 圈</text></view>
+        <view class="pill {{selectedPill==='小 物 件'?'sel':''}}" bindtap="selectPill" data-val="小 物 件"><text>小 物 件</text></view>
+        <view class="pill {{selectedPill==='懒 觉'?'sel':''}}" bindtap="selectPill" data-val="懒 觉"><text>懒 觉</text></view>
+      </view>
+
+      <!-- 双按钮 -->
+      <view class="cta-row">
+        <view class="cta-alt" bindtap="goBack"><text>这 周 不 签</text></view>
+        <view class="cta" bindtap="signContract"><text>我 承 诺 · 这 周 见</text></view>
+      </view>
+
+      <text class="mc-foot">你 也 可 以 不 签 · 自 由 跟 · 没 副 作 用</text>
     </view>
-    <text class="header-title">心 情</text>
-    <view style="width: 72rpx;"></view>
   </view>
-
-  <!-- 天气选择 -->
-  <view class="weather-row">
-    <view
-      wx:for="{{weathers}}" wx:key="id"
-      class="weather-item {{selectedWeather === item.id ? 'weather-on' : ''}}"
-      bindtap="selectWeather"
-      data-id="{{item.id}}"
-    >
-      <!-- 单色线条天气图标 -->
-      <view class="weather-icon icon-weather-{{item.id}}"></view>
-      <text class="weather-label">{{item.name}}</text>
-    </view>
-  </view>
-
-  <!-- 一句话 -->
-  <view class="word-section">
-    <input
-      class="word-input"
-      placeholder="一 个 词"
-      placeholder-style="color: rgba(60,60,67,0.3);"
-      maxlength="10"
-      value="{{word}}"
-      bindinput="onWordInput"
-    />
-  </view>
-
-  <!-- 保存 -->
-  <view class="cta cta-green {{!selectedWeather ? 'cta-disabled' : ''}}" bindtap="saveMood">
-    <text>记 下</text>
-  </view>
-
-  <!-- 提示 -->
-  <text class="hint">不 评 分 · 不 比 较</text>
 
 </view>
