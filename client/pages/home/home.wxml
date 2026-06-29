@@ -8,10 +8,9 @@
 
   <scroll-view scroll-y class="scroll">
 
-    <!-- 顶部行：品牌 + 日期 -->
+    <!-- 顶部行：slogan -->
     <view class="top-row">
-      <text class="brand-l">慢 慢 变 好</text>
-      <text class="day-l">第 {{weekNum}} 周 · {{dateText}}</text>
+      <text class="slogan-l">七 日 微 光 ， 一 生 晴 朗 。</text>
     </view>
 
     <!-- 今日推荐卡 -->

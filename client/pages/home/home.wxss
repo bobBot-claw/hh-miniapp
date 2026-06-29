@@ -29,16 +29,13 @@
   padding: 72rpx 44rpx 0;
 }
 
-/* 顶部行 — demo: .top-row */
+/* 顶部行 — slogan */
 .top-row {
-  display: flex; justify-content: space-between; align-items: flex-end;
   margin-bottom: 44rpx;
 }
-.brand-l {
-  font-size: 22rpx; letter-spacing: 0.3em; color: var(--ink-mute);
-}
-.day-l {
-  font-size: 22rpx; letter-spacing: 0.2em; color: var(--ink-dim);
+.slogan-l {
+  font-size: 24rpx; letter-spacing: 0.2em; color: var(--ink-mute);
+  font-weight: 300;
 }
 
 /* 推荐卡 — demo: .recommend */
