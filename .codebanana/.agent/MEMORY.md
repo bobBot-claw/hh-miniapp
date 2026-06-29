@@ -1,77 +1,61 @@
 # MEMORY.md — Project Knowledge
 
-## Project: 慢慢变好 (v0.8)
+## Project: 慢慢变好 (v0.9 → 七日微光计划)
 - **类型:** WeChat Mini Program（微信小程序）
-- **定位:** 极简行动 + 治愈世界 wellness 体验
+- **定位:** 七日微光计划 — 按周几推送微行动 · 微光契约 · 认知卡片 · 渐进微调
 - **核心问题:** 信息过载 → 不知道怎么行动 + 坚持不下去
-- **核心解法:** 每天只给 1 个行动，做完揭示 1 张治愈插画
-- **原产品名:** HH小程序 → 慢慢变好（临时用名）
+- **核心解法:** 每天只1个微动作(按周几固定)，完成后揭示1张认知卡片，周间渐进+1
 
-## 设计系统
-- **暖白:** #FCFCFD / **翠绿:** #147D45 / **暖金:** #C9A66B / **深暗:** #2A2820
-- **图标:** 单色线条（不用 emoji，红线 #1）
-- **导航:** 流程式（无 TabBar），5 页面
-- **15 条红线:** 不做仪表盘/排行/推送/打卡/游戏化/百分比/倒计时数字等
+## 设计系统 (七日微光计划)
+- **底色:** #FCFCFD / **暖卡:** #FDF6EE→#FDF1DF渐变 / **墨字:** #1F2937
+- **品牌绿:** #147D45 / **浅绿底:** #E8F1EC / **灰字:** #6B7280 / **淡字:** #9CA3AF
+- **分割线:** #EEF0F3 / **光点:** #DCE5DD / **完成绿:** #3C8F60
+- **光晕:** halo-cream(#FDF6EC) + halo-gold(#F0E2C9), blur(140px)
+- **排版:** font-weight:300, letter-spacing:0.2em, line-height:1.7
 
-## 5 页面结构
-- **Home:** 今日行动 + ✦光点 + 时长标签 + CTA + 世界/情绪入口
-- **Action:** 阶段标识进度环 + 当前步骤大字 + 阶段色彩进度条 + 折叠式步骤
-- **Done:** 插画模糊→清晰揭示 + 体感(feeling) + 收益(benefit) + 彩蛋
-- **World:** 12世界网格（6开放 + 6锁定）
-- **Mood:** 5天气 + 1词（不评分不比较）
+## 5屏结构（映射到6页面）
+- **home** → 屏1主页：品牌行+推荐卡(暖色渐变)+7日周历光点+认知小卡+浮动契约按钮
+- **mood** → 屏2微光契约：弹层·自选承诺+奖励输入+预设pill+双按钮(签/不签)
+- **action** → 屏3认知卡片：完成后弹暖色大卡·科学知识+金句+"收到"按钮
+- **world** → 屏4渐进微调：周间进度(delta-card)+累计数据(data-grid)+隐私声明
+- **together** → 屏5全周计划：7天列表·当天高亮暖色边框
+- **done** → 备用确认页
 
-## 行动体系 (v0.8 专业健身)
-- **21 个行动:** 15时间轴(morning/work/night × 5) + 6问题轴
-- **三段式:** 热身(warmup) → 训练(work/rest) → 放松(cooldown)
-- **有组数/次数/间歇:** 深蹲3×15、俯卧撑3组、HIIT 30s:15s 等
-- **时长:** 90~420 秒（1.5~7 分钟），HIIT 最长
-- **深度:** light(随时可做) / medium(需要空间) / deep(需要躺下)
-- **步骤:** 6~12 步，每步 = 动作说明 + 感受提示(hint) + 阶段(phase)
-- **双反馈:** feeling(做完当下体感) + benefit(长期收益)
-- **标签:** neck/shoulder/back/core/eyes/energy/calm/sleep/posture/lower/upper/cardio/full
-- **阶段色彩:** 金色热身 / 绿色训练 / 灰色间歇 / 紫色放松
+## 七日微光计划
+| 周几 | 微动作 | 准则 | 成本 |
+|------|--------|------|------|
+| 周一 | 晨起一杯温水 | 吃·喝水 | 极低 |
+| 周二 | 午餐一个拳头蛋白质 | 吃·蛋白质 | 低 |
+| 周三 | 快走/爬楼15分 | 动·每日出汗 | 中 |
+| 周四 | 晚餐选原型食物 | 吃·原型食物 | 低 |
+| 周五 | 一组力竭训练 | 动·抗阻力竭 | 中 |
+| 周六 | 睡前1小时调暗灯光+手机放客厅 | 睡·暗光/隔离 | 低 |
+| 周日 | 发呆10分钟·什么都不做 | 情绪·留白 | 极低 |
 
-### 晨间 (唤醒+激活)
-- morning_squat: 深蹲 3×15 (300s, medium)
-- morning_pushup: 俯卧撑 3组 (300s, medium)
-- morning_core: 平板+死虫+卷腹 (300s, medium)
-- morning_flow: 太阳礼拜A×3 (360s, light)
-- morning_hiit: 4动作×2轮 HIIT (420s, deep)
+## 认知卡片（7张）
+- 周一：晨起喝水降低血液粘稠度
+- 周二：蛋白质优先→血糖平稳
+- 周三：快走释放鸢尾素→改善记忆力
+- 周四：原型食物饱腹感+30%
+- 周五：力竭训练后48h基础代谢仍升高
+- 周六：暗光→褪黑素提前分泌30%
+- 周日：主动发呆→降低杏仁核活跃度
 
-### 工间 (对抗久坐)
-- work_lunge: 弓步矩阵 (300s, medium)
-- work_back: 背部唤醒YTW+划船 (300s, medium)
-- work_glute: 久坐臀救 臀桥+蚌式 (300s, light)
-- work_posture: 体态矫正 靠墙天使+颈后缩 (300s, light)
-- work_eyes_shoulder: 肩眼双救 (240s, light)
+## 渐进微调逻辑
+- 周三快走：第1周12分→第2周14分→第3周15分 (每周+1~2分)
+- 累计出汗次数、认知卡片张数
+- 隐私原则：只有自己看得到·没排名·没比较
 
-### 夜间 (放松+恢复)
-- night_yoga: 夜间拉伸 6体式×30s (300s, light)
-- night_core_stretch: 核心+拉伸 (360s, medium)
-- night_breath: 4-7-8呼吸法 (180s, light)
-- night_body: 渐进式肌肉放松PMR (300s, deep)
-- night_write: 写三行字 (180s, light)
-
-### 问题轴 (随时按需)
-- problem_dizzy: 起身不晕 踝泵+缓起 (90s, light)
-- problem_energy: 快速回血 开合跳+冷水 (120s, medium)
-- problem_core: 腰痛急救 死虫+臀桥+猫牛 (300s, medium)
-- problem_posture: 驼背急救 YTW+门框拉伸 (180s, light)
-- problem_neck: 颈痛急救 颈后缩+侧屈 (150s, light)
-- problem_eyes: 眼疲劳急救 远眺+眨眼+热敷 (120s, light)
-
-## 核心数据
-- **12 世界:** forest/sea/window/warm/tea/night + 6锁定
-- **360 彩蛋:** 12世界 × 30插画 × 2版(blur+clear)
-- **状态管理:** localStorage, appState 结构
+## 微光契约
+- 用户自愿签署·不催·不评·不显示"还差X"
+- 自己写奖励或选预设(看电影/甜甜圈/小物件/懒觉)
+- App只见证
 
 ## 技术栈
 - **前端:** 原生微信小程序, AppID: wx91db22c766984692
-- **状态:** wx.setStorageSync (纯本地, 无后端依赖)
-- **核心模块:** utils/actions.js (行动库+世界数据+时段逻辑+标签匹配)
+- **状态:** wx.setStorageSync('appState'), 纯本地
 - **Git:** https://github.com/bobBot-claw/hh-miniapp
 
 ## 关键文件
-- `client/utils/actions.js` — 行动库 + 世界数据 + 时段逻辑
-- `client/assets/eggs/README.md` — 插画资源目录结构
-- `client/app.wxss` — 全局样式（暖光主题）
+- `client/pages/home/home.js` — 七日计划+WEEK_PLAN数据+周历逻辑
+- `client/app.wxss` — 全局CSS变量+共享组件样式

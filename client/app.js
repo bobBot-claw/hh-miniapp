@@ -1,4 +1,4 @@
-// app.js — 慢慢变好 v0.7
+// app.js — 慢慢变好 · 七日微光计划
 App({
   onLaunch() {
     this.getSystemInfo()
@@ -19,7 +19,6 @@ App({
   },
 
   initAppState() {
-    // 读取本地持久化状态
     try {
       this.globalData.appState = wx.getStorageSync('appState') || {}
     } catch (e) {
